@@ -1,30 +1,8 @@
 package wsepr.easypoi.excel.util;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import org.apache.poi.hssf.model.RecordStream;
-import org.apache.poi.hssf.model.Sheet;
-import org.apache.poi.hssf.model.Workbook;
-import org.apache.poi.hssf.record.LabelRecord;
-import org.apache.poi.hssf.record.LabelSSTRecord;
-import org.apache.poi.hssf.record.Record;
-import org.apache.poi.hssf.record.RecordFactory;
-import org.apache.poi.hssf.record.UnicodeString;
-import org.apache.poi.hssf.record.aggregates.RecordAggregate.RecordVisitor;
-import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 
 public class MergeUtil {
-
+/*
 	public static void merge(File output, File... inputs) {
 		if (inputs.length == 0) {
 			throw new IllegalArgumentException("必须提供一个以上的输入文件");
@@ -163,9 +141,6 @@ public class MergeUtil {
 		merge(output, input);
 	}
 
-	/**
-	 * Totals the sizes of all sheet records and eventually serializes them
-	 */
 	private static final class SheetRecordCollector implements RecordVisitor {
 
 		private List<Record> _list;
@@ -195,4 +170,5 @@ public class MergeUtil {
 			return result;
 		}
 	}
+	*/
 }

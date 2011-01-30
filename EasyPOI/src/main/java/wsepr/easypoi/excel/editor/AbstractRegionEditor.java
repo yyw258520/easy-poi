@@ -2,6 +2,7 @@ package wsepr.easypoi.excel.editor;
 
 import java.util.List;
 
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.util.CellRangeAddress;
 
 import wsepr.easypoi.excel.ExcelContext;
@@ -227,8 +228,19 @@ public abstract class AbstractRegionEditor<T> extends AbstractExcelEditor{
 	 */
 	public T merge() {
 		for(CellRangeAddress cellRange : this.getCellRange()){
-			this.workingSheet.addMergedRegion(cellRange);
+			workingSheet.addMergedRegion(cellRange);
 		}
 		return (T) this;
+	}
+	
+	/**
+	 * 设置自定义的样式
+	 * @param style 样式
+	 * @return
+	 */
+	public T style(HSSFCellStyle style){
+		ExcelCellEditor cellEditor = newCellEditor();
+		cellEditor.style(style);
+		return (T)this;
 	}
 }

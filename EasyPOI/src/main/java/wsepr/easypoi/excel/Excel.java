@@ -66,8 +66,7 @@ public class Excel {
 		HSSFWorkbook workBook;
 		HSSFCellStyle tempCellStyle;// 临时的样式
 		HSSFFont tempFont;// 临时的字体
-		ctx = new ExcelContext();
-		ctx.setDefaultStyle(defaultStyle);
+		
 		if(excelPath == null || excelPath.trim().equals("")){
 			workBook = new HSSFWorkbook();
 		}else{
@@ -76,7 +75,8 @@ public class Excel {
 				workBook = new HSSFWorkbook();
 			}
 		}
-		ctx.setWorkBook(workBook);
+		ctx = new ExcelContext(workBook);
+		ctx.setDefaultStyle(defaultStyle);
 		//
 		setWorkingSheet(0);
 		tempCellStyle = workBook.createCellStyle();

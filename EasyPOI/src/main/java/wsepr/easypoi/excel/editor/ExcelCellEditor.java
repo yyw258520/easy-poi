@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,12 +19,6 @@ import wsepr.easypoi.excel.ExcelContext;
 
 
 public class ExcelCellEditor extends AbstractExcelEditor{
-	
-	/**
-	 * 缓存style对象
-	 */
-	private Map<Integer, HSSFCellStyle> styleCache = new HashMap<Integer, HSSFCellStyle>();
-	private Map<Integer, HSSFFont> fontCache = new HashMap<Integer, HSSFFont>();
 	private List<HSSFCell> workingCell = new ArrayList<HSSFCell>(2);
 
 	public ExcelCellEditor(int row, int col, ExcelContext context) {
@@ -39,20 +32,7 @@ public class ExcelCellEditor extends AbstractExcelEditor{
 	}
 
 	private void init(){
-		short numStyle = this.workBook.getNumCellStyles();
-		for(short i=0; i<numStyle;i++){
-			HSSFCellStyle style = this.workBook.getCellStyleAt(i);
-			if(style != this.tempCellStyle){
-				this.styleCache.put(style.hashCode() - style.getIndex(), style);
-			}
-		}
-		short numFont = this.workBook.getNumberOfFonts();
-		for(short i=0; i<numFont;i++){
-			HSSFFont font = this.workBook.getFontAt(i);
-			if(font != this.tempFont){
-				this.fontCache.put(font.hashCode() - font.getIndex(), font);
-			}
-		}
+		
 	}
 	
 	/**
@@ -88,13 +68,42 @@ public class ExcelCellEditor extends AbstractExcelEditor{
 	 * 添加其他单元格到编辑队列，该方法应该在改变单元格属性前调用
 	 *	否则所做的修改不会影响到新加入的单元格
 	 * 
-	 * @param row
-	 * @param col
+	 * @param row 第n行，从0开始
+	 * @param col 第n列，从0开始
 	 * @return
 	 */
 	public ExcelCellEditor add(int row, int col) {
 		HSSFCell cell = getCell(row, col);
 		workingCell.add(cell);
+		return this;
+	}
+	
+	/**
+	 * 添加其他单元格到编辑队列，该方法应该在改变单元格属性前调用
+	 *	否则所做的修改不会影响到新加入的单元格
+	 * 
+	 * @param row ExcelRowEditor
+	 * @param col 第n列，从0开始
+	 * @return
+	 */
+	public ExcelCellEditor add(ExcelRowEditor row, int col) {
+		HSSFCell cell = getCell(row.getHSSFRow(), col);
+		workingCell.add(cell);
+		return this;
+	}
+	
+	/**
+	 * 添加其他单元格到编辑队列，该方法应该在改变单元格属性前调用
+	 *	否则所做的修改不会影响到新加入的单元格
+	 * 
+	 * @param row ExcelRowEditor
+	 * @param col 第n列，从0开始
+	 * @return
+	 */
+	public ExcelCellEditor add(ExcelCellEditor cell) {
+		//HSSFCell cell = cell.
+		//workingCell.add(cell);
+		workingCell.addAll(cell.getWorkingCell());
 		return this;
 	}
 
@@ -201,17 +210,26 @@ public class ExcelCellEditor extends AbstractExcelEditor{
 	 * @return
 	 */
 	public ExcelCellEditor font(IFontEditor fontEditor) {
+		Map<Integer, HSSFFont> fontCache = ctx.getFontCache();
 		for (HSSFCell cell : workingCell) {
+			//System.out.println("===============================================");
+			//System.out.println("设置单元格字体："+(cell.getCellType()== 1 ? cell.getRichStringCellValue():cell.getNumericCellValue()));
 			HSSFFont font = cell.getCellStyle().getFont(workBook);
 			copyFont(font, tempFont);
 			fontEditor.updateFont(tempFont);
 			int fontHash = tempFont.hashCode() - tempFont.getIndex();
+			//System.out.println("修改字体后，计算Hash:"+fontHash);
+			//System.out.println("设置的字体:"+tempFont);
 			tempCellStyle.cloneStyleFrom(cell.getCellStyle());
 			if (fontCache.containsKey(fontHash)) {
+				//System.out.println("缓存里找到字体");
+				//System.out.println("找到的字体:"+fontCache.get(fontHash)+", fontIndex="+fontCache.get(fontHash).getIndex());
 				tempCellStyle.setFont(fontCache.get(fontHash));
 			} else {
+				//System.out.println("没找到字体，新建一个");
 				HSSFFont newFont = workBook.createFont();
 				copyFont(tempFont, newFont);
+				//System.out.println("设置的字体:"+newFont.toString()+", fontIndex="+newFont.getIndex());
 				tempCellStyle.setFont(newFont);
 				int newFontHash = newFont.hashCode() - newFont.getIndex();
 				fontCache.put(newFontHash, newFont);
@@ -312,11 +330,23 @@ public class ExcelCellEditor extends AbstractExcelEditor{
 	 * @return
 	 */
 	public ExcelCellEditor comment(String content){
-		HSSFPatriarch patr = ctx.getHSSFPatriarch(this.workingSheet);
+		HSSFPatriarch patr = ctx.getHSSFPatriarch(workingSheet);
 		for (HSSFCell cell : workingCell) {
 			HSSFComment comment = patr.createComment(new HSSFClientAnchor(0, 0, 0, 0, (short)cell.getColumnIndex(), cell.getRowIndex(), (short) (cell.getColumnIndex() + 3), cell.getRowIndex() + 4));
 			comment.setString(new HSSFRichTextString(content));
 			cell.setCellComment(comment);
+		}
+		return this;
+	}
+	
+	/**
+	 * 设置自定义的样式
+	 * @param style
+	 * @return
+	 */
+	public ExcelCellEditor style(HSSFCellStyle style){
+		for (HSSFCell cell : workingCell) {
+			cell.setCellStyle(style);
 		}
 		return this;
 	}
@@ -326,14 +356,18 @@ public class ExcelCellEditor extends AbstractExcelEditor{
 	 * @param cell
 	 */
 	private void updateCellStyle(HSSFCell cell){
+		Map<Integer, HSSFCellStyle> styleCache = ctx.getStyleCache();
 		int tempStyleHash = tempCellStyle.hashCode() - tempCellStyle.getIndex();
+		//System.out.println("寻找样式:"+tempStyleHash);
 		if (styleCache.containsKey(tempStyleHash)) {
+			//System.out.println("在缓存里找到样式");
 			cell.setCellStyle(styleCache.get(tempStyleHash));
 		} else {
 			HSSFCellStyle newStyle = workBook.createCellStyle();
 			newStyle.cloneStyleFrom(tempCellStyle);
 			cell.setCellStyle(newStyle);
 			int newStyleHash = newStyle.hashCode() - newStyle.getIndex();
+			//System.out.println("新建样式，Hash="+newStyleHash);
 			styleCache.put(newStyleHash, newStyle);
 		}
 	}
@@ -391,7 +425,10 @@ public class ExcelCellEditor extends AbstractExcelEditor{
 			}
 		}
 	}
-
+	
+	protected List<HSSFCell> getWorkingCell() {
+		return workingCell;
+	}
 	
 	/**
 	 * 转换成浮点数

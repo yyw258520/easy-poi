@@ -10,28 +10,12 @@ import wsepr.easypoi.excel.ExcelContext;
 
 
 public class ExcelRowEditor extends AbstractRegionEditor<ExcelRowEditor> {
-	private List<HSSFRow> workingRow = new ArrayList<HSSFRow>(2);
+	private HSSFRow row;
 	public ExcelRowEditor(int row, ExcelContext context) {
 		super(context);
-		this.add(row);
+		this.row = this.getRow(row);
 	}
 
-	/**
-	 * 把更多的行加入编辑队列，以进行一系列相同的操作。该方法应该在改变行属性前调用
-	 *	否则所做的修改不会影响到新加入的行
-	 * @param row
-	 * @param rows
-	 * @return
-	 */
-	public ExcelRowEditor add(int row, int... rows) {
-		HSSFRow newRow = this.getRow(row);
-		this.workingRow.add(newRow);
-		for(int r : rows){
-			newRow = this.getRow(r);
-			this.workingRow.add(newRow);
-		}
-		return this;
-	}
 
 	/**
 	 * 设置该行的内容，该方法会覆盖该行已有的内容
@@ -60,9 +44,7 @@ public class ExcelRowEditor extends AbstractRegionEditor<ExcelRowEditor> {
 		if (startCol < 0) {
 			startCol = 0;
 		}
-		for (HSSFRow row : workingRow) {
-			insertData(rowData, row, startCol, true);
-		}
+		insertData(rowData, row, startCol, true);
 		return this;
 	}
 	
@@ -87,9 +69,7 @@ public class ExcelRowEditor extends AbstractRegionEditor<ExcelRowEditor> {
 		if (startCol < 0) {
 			startCol = 0;
 		}
-		for (HSSFRow row : workingRow) {
-			insertData(rowData, row, startCol, false);
-		}
+		insertData(rowData, row, startCol, false);
 		return this;
 	}
 	
@@ -99,12 +79,29 @@ public class ExcelRowEditor extends AbstractRegionEditor<ExcelRowEditor> {
 	 * @return
 	 */
 	public ExcelRowEditor append(Object[] rowData){
-		for (HSSFRow row : workingRow) {
-			insertData(rowData, row, row.getLastCellNum(), true);
-		}
+		insertData(rowData, row, row.getLastCellNum(), true);
 		return this;
 	}
 	
+	/**
+	 * 设置行高度
+	 * @param h 高度，单位像素
+	 * @return
+	 */
+	public ExcelRowEditor height(float h){
+		row.setHeightInPoints(h);
+		return this;
+	}
+	
+	/**
+	 * 获取该行的第col列的单元格
+	 * @param col 列，从0开始
+	 * @return
+	 */
+	public ExcelCellEditor cell(int col){
+		ExcelCellEditor cellEditor = new ExcelCellEditor(row.getRowNum(), col, ctx);
+		return cellEditor;
+	}
 	
 	/**
 	 * 插入数据
@@ -121,11 +118,11 @@ public class ExcelRowEditor extends AbstractRegionEditor<ExcelRowEditor> {
 	 */
 	private void insertData(Object[] rowData, HSSFRow row, int startCol, boolean overwrite) {
 		if (!overwrite) {
-			this.workingSheet.shiftRows(row.getRowNum(), this.workingSheet.getLastRowNum(), 1, true, false);
+			workingSheet.shiftRows(row.getRowNum(), workingSheet.getLastRowNum(), 1, true, false);
 		}
 		short i = 0;
 		for (Object obj : rowData) {
-			ExcelCellEditor cellEditor = new ExcelCellEditor(row.getRowNum(), startCol + i, this.ctx);
+			ExcelCellEditor cellEditor = new ExcelCellEditor(row.getRowNum(), startCol + i, ctx);
 			cellEditor.value(obj);
 			i++;
 		}
@@ -133,15 +130,13 @@ public class ExcelRowEditor extends AbstractRegionEditor<ExcelRowEditor> {
 
 	@Override
 	protected ExcelCellEditor newCellEditor(){
-		ExcelCellEditor cellEditor = new ExcelCellEditor(this.ctx);
+		ExcelCellEditor cellEditor = new ExcelCellEditor(ctx);
 		short minColIx = 0;
 		short maxColIx = 0;
-		for (HSSFRow row : workingRow) {
-			minColIx = row.getFirstCellNum();
-			maxColIx = row.getLastCellNum();
-			for(int i=minColIx; i< maxColIx; i++){
-				cellEditor.add(row.getRowNum(), i);
-			}
+		minColIx = row.getFirstCellNum();
+		maxColIx = row.getLastCellNum();
+		for(int i=minColIx; i< maxColIx; i++){
+			cellEditor.add(row.getRowNum(), i);
 		}
 		return cellEditor;
 	}
@@ -153,19 +148,15 @@ public class ExcelRowEditor extends AbstractRegionEditor<ExcelRowEditor> {
 
 	@Override
 	protected ExcelCellEditor newLeftCellEditor() {
-		ExcelCellEditor cellEditor = new ExcelCellEditor(this.ctx);
-		for (HSSFRow row : workingRow) {
-			cellEditor.add(row.getRowNum(), row.getFirstCellNum());
-		}
+		ExcelCellEditor cellEditor = new ExcelCellEditor(ctx);
+		cellEditor.add(row.getRowNum(), row.getFirstCellNum());
 		return cellEditor;
 	}
 
 	@Override
 	protected ExcelCellEditor newRightCellEditor() {
-		ExcelCellEditor cellEditor = new ExcelCellEditor(this.ctx);
-		for (HSSFRow row : workingRow) {
-			cellEditor.add(row.getRowNum(), row.getLastCellNum());
-		}
+		ExcelCellEditor cellEditor = new ExcelCellEditor(ctx);
+		cellEditor.add(row.getRowNum(), row.getLastCellNum());
 		return cellEditor;
 	}
 
@@ -177,9 +168,11 @@ public class ExcelRowEditor extends AbstractRegionEditor<ExcelRowEditor> {
 	@Override
 	protected List<CellRangeAddress> getCellRange() {
 		List<CellRangeAddress> cellRangeList = new ArrayList<CellRangeAddress>();
-		for (HSSFRow row : workingRow) {
-			cellRangeList.add(new CellRangeAddress(row.getRowNum(), row.getRowNum(), row.getFirstCellNum(), row.getLastCellNum()));
-		}
+		cellRangeList.add(new CellRangeAddress(row.getRowNum(), row.getRowNum(), row.getFirstCellNum(), row.getLastCellNum()));
 		return cellRangeList;
+	}
+	
+	protected HSSFRow getHSSFRow(){
+		return row;
 	}
 }

@@ -12,32 +12,10 @@ import wsepr.easypoi.excel.util.ExcelUtil;
 
 public class ExcelColumnEditor extends AbstractRegionEditor<ExcelColumnEditor> {
 
-	private List<Integer> workingCol = new ArrayList<Integer>();
-	
+	private int col = 0;
 	public ExcelColumnEditor(int col, ExcelContext context) {
 		super(context);
-		this.add(col);
-	}
-
-	/**
-	 * 把更多的列加入编辑队列，以进行一系列相同的操作。该方法应该在改变列属性前调用
-	 *	否则所做的修改不会影响到新加入的列
-	 * @param col 列序号，从0开始
-	 * @param cols n个列序号，从0开始
-	 * @return
-	 */
-	public ExcelColumnEditor add(int col, int... cols){
-		if(col < 0){
-			col = 0;
-		}
-		this.workingCol.add(col);
-		for(int c : cols){
-			if(c < 0){
-				c = 0;
-			}
-			this.workingCol.add(c);
-		}
-		return this;
+		this.col = col;
 	}
 	
 	/**
@@ -67,9 +45,7 @@ public class ExcelColumnEditor extends AbstractRegionEditor<ExcelColumnEditor> {
 		if (startRow < 0) {
 			startRow = 0;
 		}
-		for (Integer col : workingCol) {
-			insertData(rowData, col, startRow);
-		}
+		insertData(rowData, col, startRow);
 		return this;
 	}
 	
@@ -78,9 +54,7 @@ public class ExcelColumnEditor extends AbstractRegionEditor<ExcelColumnEditor> {
 	 * @param width 要设置的宽度。1表示一个文字宽度的1/256
 	 */
 	public ExcelColumnEditor width(int width){
-		for (Integer col : workingCol) {
-			this.workingSheet.setColumnWidth(col, width);
-		}
+		workingSheet.setColumnWidth(col, width);
 		return this;
 	}
 	
@@ -89,11 +63,8 @@ public class ExcelColumnEditor extends AbstractRegionEditor<ExcelColumnEditor> {
 	 * @param width 要设置的宽度。1表示一个文字宽度的1/256
 	 */
 	public ExcelColumnEditor addWidth(int width){
-		int w = 0;
-		for (Integer col : workingCol) {
-			w = this.workingSheet.getColumnWidth(col);
-			this.workingSheet.setColumnWidth(col, width+w);
-		}
+		int w = workingSheet.getColumnWidth(col);
+		workingSheet.setColumnWidth(col, width+w);
 		return this;
 	}
 	
@@ -101,10 +72,18 @@ public class ExcelColumnEditor extends AbstractRegionEditor<ExcelColumnEditor> {
 	 * 根据内容自动设置列宽度。自动计算宽度性能比较低，因此建议在操作完数据后调用一次
 	 */
 	public void autoWidth(){
-		for (Integer col : workingCol) {
-			this.workingSheet.autoSizeColumn(col.shortValue(), false);
-			this.workingSheet.setColumnWidth(col, this.workingSheet.getColumnWidth(col)+1000);
-		}
+		workingSheet.autoSizeColumn((short)col, false);
+		workingSheet.setColumnWidth(col, workingSheet.getColumnWidth(col)+1000);
+	}
+	
+	/**
+	 * 获取该列的第row行的单元格
+	 * @param row 列，从0开始
+	 * @return
+	 */
+	public ExcelCellEditor cell(int row){
+		ExcelCellEditor cellEditor = new ExcelCellEditor(row, col, ctx);
+		return cellEditor;
 	}
 	
 	/**
@@ -121,7 +100,7 @@ public class ExcelColumnEditor extends AbstractRegionEditor<ExcelColumnEditor> {
 	private void insertData(Object[] rowData, int col, int startRow) {
 		short i = 0;
 		for (Object obj : rowData) {
-			ExcelCellEditor cellEditor = new ExcelCellEditor(startRow + i, col, this.ctx);
+			ExcelCellEditor cellEditor = new ExcelCellEditor(startRow + i, col, ctx);
 			cellEditor.value(obj);
 			i++;
 		}
@@ -129,30 +108,20 @@ public class ExcelColumnEditor extends AbstractRegionEditor<ExcelColumnEditor> {
 	
 	@Override
 	protected ExcelCellEditor newBottomCellEditor() {
-		int lastRowNum = ExcelUtil.getLastRowNum(this.workingSheet);
-		ExcelCellEditor cellEditor = new ExcelCellEditor(this.ctx);
-		for (Integer col : workingCol) {
-			cellEditor.add(lastRowNum, col);
-		}
+		int lastRowNum = ExcelUtil.getLastRowNum(workingSheet);
+		ExcelCellEditor cellEditor = new ExcelCellEditor(ctx);
+		cellEditor.add(lastRowNum, col);
 		return cellEditor;
 	}
 
 	@Override
 	protected ExcelCellEditor newCellEditor() {
-		ExcelCellEditor cellEditor = new ExcelCellEditor(this.ctx);
-//		for (Iterator<HSSFRow> rit = this.workingSheet.rowIterator(); rit.hasNext(); ) {
-//			HSSFRow row = rit.next();
-//			for (Integer col : workingCol) {
-//				cellEditor.add(row.getRowNum(), col);
-//			}
-//		}
-		int lastRowNum = ExcelUtil.getLastRowNum(this.workingSheet);
-		int firstRowNum = this.workingSheet.getFirstRowNum();
+		ExcelCellEditor cellEditor = new ExcelCellEditor(ctx);
+		int lastRowNum = ExcelUtil.getLastRowNum(workingSheet);
+		int firstRowNum = workingSheet.getFirstRowNum();
 		for(int i=firstRowNum; i<= lastRowNum; i++){
 			HSSFRow row = getRow(i);
-			for (Integer col : workingCol) {
-				cellEditor.add(row.getRowNum(), col);
-			}
+			cellEditor.add(row.getRowNum(), col);
 		}
 		return cellEditor;
 	}
@@ -169,22 +138,18 @@ public class ExcelColumnEditor extends AbstractRegionEditor<ExcelColumnEditor> {
 
 	@Override
 	protected ExcelCellEditor newTopCellEditor() {
-		int firstRowNum = this.workingSheet.getFirstRowNum();
-		ExcelCellEditor cellEditor = new ExcelCellEditor(this.ctx);
-		for (Integer col : workingCol) {
-			cellEditor.add(firstRowNum, col);
-		}
+		int firstRowNum = workingSheet.getFirstRowNum();
+		ExcelCellEditor cellEditor = new ExcelCellEditor(ctx);
+		cellEditor.add(firstRowNum, col);
 		return cellEditor;
 	}
 
 	@Override
 	protected List<CellRangeAddress> getCellRange() {
-		int firstRowNum = this.workingSheet.getFirstRowNum();
-		int lastRowNum = ExcelUtil.getLastRowNum(this.workingSheet);
+		int firstRowNum = workingSheet.getFirstRowNum();
+		int lastRowNum = ExcelUtil.getLastRowNum(workingSheet);
 		List<CellRangeAddress> cellRangeList = new ArrayList<CellRangeAddress>();
-		for (Integer col : workingCol) {
-			cellRangeList.add(new CellRangeAddress(firstRowNum, lastRowNum, col, col));
-		}
+		cellRangeList.add(new CellRangeAddress(firstRowNum, lastRowNum, col, col));
 		return cellRangeList;
 	}	
 }

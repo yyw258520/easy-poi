@@ -92,9 +92,43 @@ public class ExcelSheetEditor extends AbstractExcelEditor{
 		return ExcelUtil.getLastRowNum(sheet);
 	}
 	
+	/**
+	 * 是否显示表格线
+	 * @param show
+	 * @return
+	 */
 	public ExcelSheetEditor displayGridlines(boolean show){
 		this.sheet.setDisplayGridlines(show);
 		return this;
 	}
 	
+	/**
+	 * 是否打印表格线
+	 * @param newPrintGridlines
+	 * @return
+	 */
+	public ExcelSheetEditor printGridlines(boolean newPrintGridlines){
+		this.sheet.setPrintGridlines(newPrintGridlines);
+		return this;
+	}
+	
+	/**
+	 * 设置是否适合页面大小
+	 * @param isFit
+	 * @return
+	 */
+	public ExcelSheetEditor fitToPage(boolean isFit){
+		this.sheet.setFitToPage(isFit);
+		return this;
+	}
+	
+	/**
+	 * 设置打印时内容是否水平居中
+	 * @param isCenter
+	 * @return
+	 */
+	public ExcelSheetEditor horizontallyCenter(boolean isCenter){
+		this.sheet.setHorizontallyCenter(isCenter);
+		return this;
+	}
 }
