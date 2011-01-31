@@ -8,6 +8,7 @@ import org.apache.poi.hssf.util.CellRangeAddress;
 import wsepr.easypoi.excel.ExcelContext;
 import wsepr.easypoi.excel.style.Align;
 import wsepr.easypoi.excel.style.BorderStyle;
+import wsepr.easypoi.excel.style.Color;
 import wsepr.easypoi.excel.style.FillPattern;
 import wsepr.easypoi.excel.style.VAlign;
 
@@ -22,31 +23,31 @@ public abstract class AbstractRegionEditor<T> extends AbstractExcelEditor{
 	 * 新建一个单元格编辑器，包含所有单元格
 	 * @return
 	 */
-	abstract protected ExcelCellEditor newCellEditor();
+	abstract protected CellEditor newCellEditor();
 	
 	/**
 	 * 新建一个单元格编辑器，包含上边单元格
 	 * @return
 	 */
-	abstract protected ExcelCellEditor newTopCellEditor();
+	abstract protected CellEditor newTopCellEditor();
 	
 	/**
 	 * 新建一个单元格编辑器，包含下边单元格
 	 * @return
 	 */
-	abstract protected ExcelCellEditor newBottomCellEditor();
+	abstract protected CellEditor newBottomCellEditor();
 	
 	/**
 	 * 新建一个单元格编辑器，包含左边单元格
 	 * @return
 	 */
-	abstract protected ExcelCellEditor newLeftCellEditor();
+	abstract protected CellEditor newLeftCellEditor();
 	
 	/**
 	 * 新建一个单元格编辑器，包含右边单元格
 	 * @return
 	 */
-	abstract protected ExcelCellEditor newRightCellEditor();
+	abstract protected CellEditor newRightCellEditor();
 	
 	abstract protected List<CellRangeAddress> getCellRange();
 	
@@ -59,7 +60,7 @@ public abstract class AbstractRegionEditor<T> extends AbstractExcelEditor{
 	 *            颜色，例如HSSFColor.RED.index
 	 * @return
 	 */
-	public T borderOuter(BorderStyle borderStyle, int borderColor){
+	public T borderOuter(BorderStyle borderStyle, Color borderColor){
 		this.borderBottom(borderStyle, borderColor);
 		this.borderLeft(borderStyle, borderColor);
 		this.borderRight(borderStyle, borderColor);
@@ -76,8 +77,8 @@ public abstract class AbstractRegionEditor<T> extends AbstractExcelEditor{
 	 *            颜色，例如HSSFColor.RED.index
 	 * @return
 	 */
-	public T borderFull(BorderStyle borderStyle, int borderColor){
-		ExcelCellEditor cellEditor = newCellEditor();
+	public T borderFull(BorderStyle borderStyle, Color borderColor){
+		CellEditor cellEditor = newCellEditor();
 		cellEditor.border(borderStyle, borderColor);
 		return (T) this;
 	}
@@ -91,9 +92,9 @@ public abstract class AbstractRegionEditor<T> extends AbstractExcelEditor{
 	 *            颜色，例如HSSFColor.RED.index
 	 * @return
 	 */
-	public T borderLeft(BorderStyle borderStyle, int borderColor){
+	public T borderLeft(BorderStyle borderStyle, Color borderColor){
 		//左边框
-		ExcelCellEditor cellEditorLeft = this.newLeftCellEditor();
+		CellEditor cellEditorLeft = this.newLeftCellEditor();
 		cellEditorLeft.borderLeft(borderStyle, borderColor);
 		return (T) this;
 	}
@@ -107,9 +108,9 @@ public abstract class AbstractRegionEditor<T> extends AbstractExcelEditor{
 	 *            颜色，例如HSSFColor.RED.index
 	 * @return
 	 */
-	public T borderRight(BorderStyle borderStyle, int borderColor){
+	public T borderRight(BorderStyle borderStyle, Color borderColor){
 		//右边框
-		ExcelCellEditor cellEditorRight = this.newRightCellEditor();
+		CellEditor cellEditorRight = this.newRightCellEditor();
 		cellEditorRight.borderRight(borderStyle, borderColor);
 		return (T) this;
 	}
@@ -123,9 +124,9 @@ public abstract class AbstractRegionEditor<T> extends AbstractExcelEditor{
 	 *            颜色，例如HSSFColor.RED.index
 	 * @return
 	 */
-	public T borderTop(BorderStyle borderStyle, int borderColor){
+	public T borderTop(BorderStyle borderStyle, Color borderColor){
 		//上边框
-		ExcelCellEditor cellEditorTop = this.newTopCellEditor();
+		CellEditor cellEditorTop = this.newTopCellEditor();
 		cellEditorTop.borderTop(borderStyle, borderColor);
 		return (T) this;
 	}
@@ -139,9 +140,9 @@ public abstract class AbstractRegionEditor<T> extends AbstractExcelEditor{
 	 *            颜色，例如HSSFColor.RED.index
 	 * @return
 	 */
-	public T borderBottom(BorderStyle borderStyle, int borderColor){
+	public T borderBottom(BorderStyle borderStyle, Color borderColor){
 		//下边框
-		ExcelCellEditor cellEditorBottom = this.newBottomCellEditor();
+		CellEditor cellEditorBottom = this.newBottomCellEditor();
 		cellEditorBottom.borderBottom(borderStyle, borderColor);
 		return (T) this;
 	}
@@ -154,7 +155,7 @@ public abstract class AbstractRegionEditor<T> extends AbstractExcelEditor{
 	 * @return
 	 */
 	public T font(IFontEditor fontEditor) {
-		ExcelCellEditor cellEditor = newCellEditor();
+		CellEditor cellEditor = newCellEditor();
 		cellEditor.font(fontEditor);
 		return (T) this;
 	}
@@ -166,8 +167,8 @@ public abstract class AbstractRegionEditor<T> extends AbstractExcelEditor{
 	 *            颜色，例如HSSFColor.RED.index
 	 * @return
 	 */
-	public T bgColor(short bg) {
-		ExcelCellEditor cellEditor = newCellEditor();
+	public T bgColor(Color bg) {
+		CellEditor cellEditor = newCellEditor();
 		cellEditor.bgColor(bg);
 		return (T) this;
 	}
@@ -186,8 +187,8 @@ public abstract class AbstractRegionEditor<T> extends AbstractExcelEditor{
 	 *            SQUARES, DIAMONDS
 	 * @return
 	 */
-	public T bgColor(short bg, FillPattern fillPattern) {
-		ExcelCellEditor cellEditor = newCellEditor();
+	public T bgColor(Color bg, FillPattern fillPattern) {
+		CellEditor cellEditor = newCellEditor();
 		cellEditor.bgColor(bg, fillPattern);
 		return (T) this;
 	}
@@ -198,7 +199,7 @@ public abstract class AbstractRegionEditor<T> extends AbstractExcelEditor{
 	 * @return
 	 */
 	public T align(Align align){
-		ExcelCellEditor cellEditor = newCellEditor();
+		CellEditor cellEditor = newCellEditor();
 		cellEditor.align(align);
 		return (T) this;
 	}
@@ -209,7 +210,7 @@ public abstract class AbstractRegionEditor<T> extends AbstractExcelEditor{
 	 * @return
 	 */
 	public T vAlign(VAlign align){
-		ExcelCellEditor cellEditor = newCellEditor();
+		CellEditor cellEditor = newCellEditor();
 		cellEditor.vAlign(align);
 		return (T) this;
 	}
@@ -220,7 +221,7 @@ public abstract class AbstractRegionEditor<T> extends AbstractExcelEditor{
 	 * @return
 	 */
 	public T warpText(boolean autoWarp){
-		ExcelCellEditor cellEditor = newCellEditor();
+		CellEditor cellEditor = newCellEditor();
 		cellEditor.warpText(autoWarp);
 		return (T) this;
 	}
@@ -243,7 +244,7 @@ public abstract class AbstractRegionEditor<T> extends AbstractExcelEditor{
 	 * @return
 	 */
 	public T style(HSSFCellStyle style){
-		ExcelCellEditor cellEditor = newCellEditor();
+		CellEditor cellEditor = newCellEditor();
 		cellEditor.style(style);
 		return (T)this;
 	}

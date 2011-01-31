@@ -10,10 +10,10 @@ import wsepr.easypoi.excel.ExcelContext;
 import wsepr.easypoi.excel.util.ExcelUtil;
 
 
-public class ExcelColumnEditor extends AbstractRegionEditor<ExcelColumnEditor> {
+public class ColumnEditor extends AbstractRegionEditor<ColumnEditor> {
 
 	private int col = 0;
-	public ExcelColumnEditor(int col, ExcelContext context) {
+	public ColumnEditor(int col, ExcelContext context) {
 		super(context);
 		this.col = col;
 	}
@@ -26,7 +26,7 @@ public class ExcelColumnEditor extends AbstractRegionEditor<ExcelColumnEditor> {
 	 *            使用Excel.setDefaultDatePattern方法设置默认模式
 	 * @return
 	 */
-	public ExcelColumnEditor value(Object[] rowData) {
+	public ColumnEditor value(Object[] rowData) {
 		value(rowData, 0);
 		return this;
 	}
@@ -41,7 +41,7 @@ public class ExcelColumnEditor extends AbstractRegionEditor<ExcelColumnEditor> {
 	 *            从指定的列开始写入，从0开始
 	 * @return
 	 */
-	public ExcelColumnEditor value(Object[] rowData, int startRow) {
+	public ColumnEditor value(Object[] rowData, int startRow) {
 		if (startRow < 0) {
 			startRow = 0;
 		}
@@ -53,7 +53,7 @@ public class ExcelColumnEditor extends AbstractRegionEditor<ExcelColumnEditor> {
 	 * 设置列的宽度
 	 * @param width 要设置的宽度。1表示一个文字宽度的1/256
 	 */
-	public ExcelColumnEditor width(int width){
+	public ColumnEditor width(int width){
 		workingSheet.setColumnWidth(col, width);
 		return this;
 	}
@@ -62,7 +62,7 @@ public class ExcelColumnEditor extends AbstractRegionEditor<ExcelColumnEditor> {
 	 * 在原来宽度基础上增加列的宽度
 	 * @param width 要设置的宽度。1表示一个文字宽度的1/256
 	 */
-	public ExcelColumnEditor addWidth(int width){
+	public ColumnEditor addWidth(int width){
 		int w = workingSheet.getColumnWidth(col);
 		workingSheet.setColumnWidth(col, width+w);
 		return this;
@@ -81,8 +81,8 @@ public class ExcelColumnEditor extends AbstractRegionEditor<ExcelColumnEditor> {
 	 * @param row 列，从0开始
 	 * @return
 	 */
-	public ExcelCellEditor cell(int row){
-		ExcelCellEditor cellEditor = new ExcelCellEditor(row, col, ctx);
+	public CellEditor cell(int row){
+		CellEditor cellEditor = new CellEditor(row, col, ctx);
 		return cellEditor;
 	}
 	
@@ -100,23 +100,23 @@ public class ExcelColumnEditor extends AbstractRegionEditor<ExcelColumnEditor> {
 	private void insertData(Object[] rowData, int col, int startRow) {
 		short i = 0;
 		for (Object obj : rowData) {
-			ExcelCellEditor cellEditor = new ExcelCellEditor(startRow + i, col, ctx);
+			CellEditor cellEditor = new CellEditor(startRow + i, col, ctx);
 			cellEditor.value(obj);
 			i++;
 		}
 	}
 	
 	@Override
-	protected ExcelCellEditor newBottomCellEditor() {
+	protected CellEditor newBottomCellEditor() {
 		int lastRowNum = ExcelUtil.getLastRowNum(workingSheet);
-		ExcelCellEditor cellEditor = new ExcelCellEditor(ctx);
+		CellEditor cellEditor = new CellEditor(ctx);
 		cellEditor.add(lastRowNum, col);
 		return cellEditor;
 	}
 
 	@Override
-	protected ExcelCellEditor newCellEditor() {
-		ExcelCellEditor cellEditor = new ExcelCellEditor(ctx);
+	protected CellEditor newCellEditor() {
+		CellEditor cellEditor = new CellEditor(ctx);
 		int lastRowNum = ExcelUtil.getLastRowNum(workingSheet);
 		int firstRowNum = workingSheet.getFirstRowNum();
 		for(int i=firstRowNum; i<= lastRowNum; i++){
@@ -127,19 +127,19 @@ public class ExcelColumnEditor extends AbstractRegionEditor<ExcelColumnEditor> {
 	}
 
 	@Override
-	protected ExcelCellEditor newLeftCellEditor() {
+	protected CellEditor newLeftCellEditor() {
 		return newCellEditor();
 	}
 
 	@Override
-	protected ExcelCellEditor newRightCellEditor() {
+	protected CellEditor newRightCellEditor() {
 		return newCellEditor();
 	}
 
 	@Override
-	protected ExcelCellEditor newTopCellEditor() {
+	protected CellEditor newTopCellEditor() {
 		int firstRowNum = workingSheet.getFirstRowNum();
-		ExcelCellEditor cellEditor = new ExcelCellEditor(ctx);
+		CellEditor cellEditor = new CellEditor(ctx);
 		cellEditor.add(firstRowNum, col);
 		return cellEditor;
 	}

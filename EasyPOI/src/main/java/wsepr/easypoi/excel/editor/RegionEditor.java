@@ -19,11 +19,11 @@ import org.apache.poi.hssf.util.CellRangeAddress;
 import wsepr.easypoi.excel.ExcelContext;
 
 
-public class ExcelRegionEditor extends AbstractRegionEditor<ExcelRegionEditor> {
+public class RegionEditor extends AbstractRegionEditor<RegionEditor> {
 
 	private CellRangeAddress cellRange;
 
-	public ExcelRegionEditor(int beginRow, int beginCol, int endRow, int endCol, ExcelContext context) {
+	public RegionEditor(int beginRow, int beginCol, int endRow, int endCol, ExcelContext context) {
 		super(context);
 		cellRange = new CellRangeAddress(beginRow, endRow, beginCol, endCol);
 	}
@@ -32,7 +32,7 @@ public class ExcelRegionEditor extends AbstractRegionEditor<ExcelRegionEditor> {
 	 * 插入一张图片
 	 * @return
 	 */
-	public ExcelRegionEditor image(String imgPath) {
+	public RegionEditor image(String imgPath) {
 		ByteArrayOutputStream byteArrayOut = null;
 		BufferedImage bufferImg = null;
 		try {
@@ -70,8 +70,8 @@ public class ExcelRegionEditor extends AbstractRegionEditor<ExcelRegionEditor> {
 	 * @return
 	 */
 	@Override
-	protected ExcelCellEditor newCellEditor(){
-		ExcelCellEditor cellEditor = new ExcelCellEditor(this.ctx);
+	protected CellEditor newCellEditor(){
+		CellEditor cellEditor = new CellEditor(this.ctx);
 		for(int i=cellRange.getFirstRow(); i<=cellRange.getLastRow() ;i++){
 			for(int j=cellRange.getFirstColumn();j<=cellRange.getLastColumn();j++){
 				cellEditor.add(i, j);
@@ -81,9 +81,9 @@ public class ExcelRegionEditor extends AbstractRegionEditor<ExcelRegionEditor> {
 	}
 
 	@Override
-	protected ExcelCellEditor newBottomCellEditor() {
+	protected CellEditor newBottomCellEditor() {
 		//下边框
-		ExcelCellEditor cellEditorBottom = new ExcelCellEditor(this.ctx);
+		CellEditor cellEditorBottom = new CellEditor(this.ctx);
 		for(int i=cellRange.getFirstColumn();i<=cellRange.getLastColumn();i++){
 			cellEditorBottom.add(cellRange.getLastRow(), i);
 		}
@@ -91,9 +91,9 @@ public class ExcelRegionEditor extends AbstractRegionEditor<ExcelRegionEditor> {
 	}
 
 	@Override
-	protected ExcelCellEditor newLeftCellEditor() {
+	protected CellEditor newLeftCellEditor() {
 		//左边框
-		ExcelCellEditor cellEditorLeft = new ExcelCellEditor(this.ctx);
+		CellEditor cellEditorLeft = new CellEditor(this.ctx);
 		for(int i=cellRange.getFirstRow();i<=cellRange.getLastRow();i++){
 			cellEditorLeft.add(i, cellRange.getFirstColumn());
 		}
@@ -101,9 +101,9 @@ public class ExcelRegionEditor extends AbstractRegionEditor<ExcelRegionEditor> {
 	}
 
 	@Override
-	protected ExcelCellEditor newRightCellEditor() {
+	protected CellEditor newRightCellEditor() {
 		//右边框
-		ExcelCellEditor cellEditorRight = new ExcelCellEditor(this.ctx);
+		CellEditor cellEditorRight = new CellEditor(this.ctx);
 		for(int i=cellRange.getFirstRow();i<=cellRange.getLastRow();i++){
 			cellEditorRight.add(i, cellRange.getLastColumn());
 		}
@@ -111,9 +111,9 @@ public class ExcelRegionEditor extends AbstractRegionEditor<ExcelRegionEditor> {
 	}
 
 	@Override
-	protected ExcelCellEditor newTopCellEditor() {
+	protected CellEditor newTopCellEditor() {
 		//上边框
-		ExcelCellEditor cellEditorTop = new ExcelCellEditor(this.ctx);
+		CellEditor cellEditorTop = new CellEditor(this.ctx);
 		for(int i=cellRange.getFirstColumn();i<=cellRange.getLastColumn();i++){
 			cellEditorTop.add(cellRange.getFirstRow(), i);
 		}

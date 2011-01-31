@@ -2,16 +2,16 @@ package wsepr.easypoi.excel.demo;
 
 import java.util.Calendar;
 
-import org.apache.poi.hssf.usermodel.HSSFFont;
-import org.apache.poi.hssf.util.HSSFColor;
-
 import wsepr.easypoi.excel.Excel;
-import wsepr.easypoi.excel.editor.ExcelRegionEditor;
-import wsepr.easypoi.excel.editor.ExcelRowEditor;
 import wsepr.easypoi.excel.editor.IFontEditor;
+import wsepr.easypoi.excel.editor.RegionEditor;
+import wsepr.easypoi.excel.editor.RowEditor;
 import wsepr.easypoi.excel.style.Align;
 import wsepr.easypoi.excel.style.BorderStyle;
+import wsepr.easypoi.excel.style.Color;
 import wsepr.easypoi.excel.style.VAlign;
+import wsepr.easypoi.excel.style.font.BoldWeight;
+import wsepr.easypoi.excel.style.font.Font;
 
 public class CalendarDemo {
 	private static final int PRINT_YEAR = 2011;
@@ -25,20 +25,20 @@ public class CalendarDemo {
 		calendar.set(Calendar.YEAR, PRINT_YEAR);
 		int year = calendar.get(Calendar.YEAR);
 		Excel excel = new Excel();
-		short borderColor = HSSFColor.GREY_50_PERCENT.index;
+		Color borderColor = Color.GREY_50_PERCENT;
 		//日期字体设置器
 		IFontEditor dayFont = new IFontEditor() {
-			public void updateFont(HSSFFont font) {
-				font.setFontHeightInPoints((short)14);
-				font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+			public void updateFont(Font font) {
+				font.fontHeightInPoints(14)
+					.boldweight(BoldWeight.BOLD);
 			}
 		};
 		//星期字体设置器
 		IFontEditor monthFont = new IFontEditor() {
-			public void updateFont(HSSFFont font) {
-				font.setFontHeightInPoints((short)14);
-				font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
-				font.setColor(HSSFColor.WHITE.index);
+			public void updateFont(Font font) {
+				font.fontHeightInPoints(14)
+					.boldweight(BoldWeight.BOLD)
+					.color(Color.WHITE);
 			}
 		};
 		for (int month = 0; month < 12; month++) {
@@ -55,9 +55,9 @@ public class CalendarDemo {
             	.align(Align.CENTER)
             	.font(new IFontEditor() {
             		//也可以这样设置字体
-					public void updateFont(HSSFFont font) {
-						font.setFontHeightInPoints((short)48);
-				        font.setColor(HSSFColor.DARK_BLUE.index);
+					public void updateFont(Font font) {
+						font.fontHeightInPoints(48)
+				        	.color(Color.DARK_BLUE);
 					}
 				});
             excel.region(0, 0, 0, 13).merge();//合并标题的单元格
@@ -68,7 +68,7 @@ public class CalendarDemo {
             	excel.region(1, i*2, 1, i*2+1).merge();
             	excel.cell(1, i*2).value(days[i])
         			.align(Align.CENTER)
-        			.bgColor(HSSFColor.DARK_BLUE.index)
+        			.bgColor(Color.DARK_BLUE)
         			.font(monthFont);
             }
             
@@ -76,9 +76,9 @@ public class CalendarDemo {
             int cnt = 1, day=1;
             int rownum = 2;
             for (int j = 0; j < 6; j++) {
-            	ExcelRowEditor row = excel.row(rownum).height(100);//设置行高度，并返回行编辑器
+            	RowEditor row = excel.row(rownum).height(100);//设置行高度，并返回行编辑器
                 for (int i = 0; i < days.length; i++) {
-                	ExcelRegionEditor dayCell = excel.region(rownum, i*2, rownum, i*2+1);
+                	RegionEditor dayCell = excel.region(rownum, i*2, rownum, i*2+1);
                 	dayCell.align(Align.LEFT)//设置区域内所有单元格水平对齐方式
                 		.vAlign(VAlign.TOP)//设置垂直对齐方式
                 		.borderOuter(BorderStyle.THIN, borderColor)//设置外边框
@@ -89,12 +89,12 @@ public class CalendarDemo {
                         calendar.set(Calendar.DAY_OF_MONTH, ++day);
                         //下面设置背景色
                         if(i == 0 || i == days.length-1) {                        	
-                        	dayCell.bgColor(HSSFColor.LIGHT_CORNFLOWER_BLUE.index);//周末的颜色
+                        	dayCell.bgColor(Color.LIGHT_CORNFLOWER_BLUE);//周末的颜色
                         } else {
-                        	dayCell.bgColor(HSSFColor.WHITE.index);//非周末
+                        	dayCell.bgColor(Color.WHITE);//非周末
                         }
                     } else {
-                    	dayCell.bgColor(HSSFColor.GREY_25_PERCENT.index);//没日期的格子
+                    	dayCell.bgColor(Color.GREY_25_PERCENT);//没日期的格子
                     }
                     cnt++;
                 }

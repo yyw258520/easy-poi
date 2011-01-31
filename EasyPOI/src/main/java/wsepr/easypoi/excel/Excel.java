@@ -12,11 +12,11 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 
-import wsepr.easypoi.excel.editor.ExcelCellEditor;
-import wsepr.easypoi.excel.editor.ExcelColumnEditor;
-import wsepr.easypoi.excel.editor.ExcelRegionEditor;
-import wsepr.easypoi.excel.editor.ExcelRowEditor;
-import wsepr.easypoi.excel.editor.ExcelSheetEditor;
+import wsepr.easypoi.excel.editor.CellEditor;
+import wsepr.easypoi.excel.editor.ColumnEditor;
+import wsepr.easypoi.excel.editor.RegionEditor;
+import wsepr.easypoi.excel.editor.RowEditor;
+import wsepr.easypoi.excel.editor.SheetEditor;
 import wsepr.easypoi.excel.util.ExcelUtil;
 
 
@@ -150,7 +150,7 @@ public class Excel {
 	 *            工作簿序号，从0开始
 	 * @return 第n个工作表
 	 */
-	public ExcelSheetEditor setWorkingSheet(int index) {
+	public SheetEditor setWorkingSheet(int index) {
 		if (index < 0) {
 			index = 0;
 		}
@@ -165,8 +165,8 @@ public class Excel {
 	 * @param col
 	 * @return
 	 */
-	public ExcelCellEditor cell(int row, int col) {
-		ExcelCellEditor cellEditor = new ExcelCellEditor(row, col, ctx);
+	public CellEditor cell(int row, int col) {
+		CellEditor cellEditor = new CellEditor(row, col, ctx);
 		return cellEditor;
 	}
 
@@ -175,8 +175,8 @@ public class Excel {
 	 * @param row
 	 * @return
 	 */
-	public ExcelRowEditor row(int row){
-		ExcelRowEditor rowEditor = new ExcelRowEditor(row, ctx);
+	public RowEditor row(int row){
+		RowEditor rowEditor = new RowEditor(row, ctx);
 		return rowEditor;
 	}
 	
@@ -185,8 +185,8 @@ public class Excel {
 	 * @param col
 	 * @return
 	 */
-	public ExcelColumnEditor column(int col){
-		ExcelColumnEditor columnEditor = new ExcelColumnEditor(col, ctx);
+	public ColumnEditor column(int col){
+		ColumnEditor columnEditor = new ColumnEditor(col, ctx);
 		return columnEditor;
 	}
 	
@@ -198,8 +198,8 @@ public class Excel {
 	 * @param endCol 结束列
 	 * @return
 	 */
-	public ExcelRegionEditor region(int beginRow, int beginCol, int endRow, int endCol){
-		ExcelRegionEditor regionEditor = new ExcelRegionEditor(beginRow, beginCol, endRow, endCol, ctx);
+	public RegionEditor region(int beginRow, int beginCol, int endRow, int endCol){
+		RegionEditor regionEditor = new RegionEditor(beginRow, beginCol, endRow, endCol, ctx);
 		return regionEditor;
 	}
 	
@@ -208,11 +208,11 @@ public class Excel {
 	 * @param index
 	 * @return
 	 */
-	public ExcelSheetEditor sheet(int index){
+	public SheetEditor sheet(int index){
 		if(index < 0){
 			index = 0;
 		}
-		ExcelSheetEditor sheetEditor = new ExcelSheetEditor(getHSSFSheet(index), ctx);
+		SheetEditor sheetEditor = new SheetEditor(getHSSFSheet(index), ctx);
 		return sheetEditor;
 	}
 	
@@ -220,7 +220,7 @@ public class Excel {
 	 * 选择处于工作状态的工作表
 	 * @return
 	 */
-	public ExcelSheetEditor sheet() {
+	public SheetEditor sheet() {
 		return this.sheet(ctx.getWorkingSheetIndex());
 	}
 	

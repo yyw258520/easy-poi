@@ -8,11 +8,11 @@ import wsepr.easypoi.excel.ExcelContext;
 import wsepr.easypoi.excel.util.ExcelUtil;
 
 
-public class ExcelSheetEditor extends AbstractExcelEditor{
+public class SheetEditor extends AbstractExcelEditor{
 
 	private HSSFSheet sheet;
 	private int sheetIndex;
-	public ExcelSheetEditor(HSSFSheet sheet, ExcelContext context){
+	public SheetEditor(HSSFSheet sheet, ExcelContext context){
 		super(context);
 		this.sheet = sheet;
 		this.sheetIndex = this.workBook.getSheetIndex(this.sheet);
@@ -25,7 +25,7 @@ public class ExcelSheetEditor extends AbstractExcelEditor{
 	 * @param right
 	 * @return
 	 */
-	public ExcelSheetEditor header(String left, String center, String right){
+	public SheetEditor header(String left, String center, String right){
 		HSSFHeader header = this.sheet.getHeader();
 		header.setLeft(left == null ? "" : left);
 		header.setCenter(center == null ? "" : center);
@@ -40,7 +40,7 @@ public class ExcelSheetEditor extends AbstractExcelEditor{
 	 * @param right
 	 * @return
 	 */
-	public ExcelSheetEditor footer(String left, String center, String right){
+	public SheetEditor footer(String left, String center, String right){
 		HSSFFooter footer = this.sheet.getFooter();
 		footer.setLeft(left == null ? "" : left);
 		footer.setCenter(center == null ? "" : center);
@@ -53,7 +53,7 @@ public class ExcelSheetEditor extends AbstractExcelEditor{
 	 * @param name 表名
 	 * @return
 	 */
-	public ExcelSheetEditor sheetName(String name){
+	public SheetEditor sheetName(String name){
 		this.workBook.setSheetName(this.sheetIndex, name);
 		return this;
 	}
@@ -62,7 +62,7 @@ public class ExcelSheetEditor extends AbstractExcelEditor{
 	 * 把该表设置为活动状态，用Excel打开后首先显示该表
 	 * @return
 	 */
-	public ExcelSheetEditor active(){
+	public SheetEditor active(){
 		this.workBook.setActiveSheet(this.sheetIndex);
 		return this;
 	}
@@ -73,7 +73,7 @@ public class ExcelSheetEditor extends AbstractExcelEditor{
 	 * @param col 从指定的列开始冻结，如果传入0则不冻结任何列
 	 * @return
 	 */
-	public ExcelSheetEditor freeze(int row, int col){
+	public SheetEditor freeze(int row, int col){
 		if(row < 0){
 			row = 0;
 		}
@@ -97,7 +97,7 @@ public class ExcelSheetEditor extends AbstractExcelEditor{
 	 * @param show
 	 * @return
 	 */
-	public ExcelSheetEditor displayGridlines(boolean show){
+	public SheetEditor displayGridlines(boolean show){
 		this.sheet.setDisplayGridlines(show);
 		return this;
 	}
@@ -107,7 +107,7 @@ public class ExcelSheetEditor extends AbstractExcelEditor{
 	 * @param newPrintGridlines
 	 * @return
 	 */
-	public ExcelSheetEditor printGridlines(boolean newPrintGridlines){
+	public SheetEditor printGridlines(boolean newPrintGridlines){
 		this.sheet.setPrintGridlines(newPrintGridlines);
 		return this;
 	}
@@ -117,7 +117,7 @@ public class ExcelSheetEditor extends AbstractExcelEditor{
 	 * @param isFit
 	 * @return
 	 */
-	public ExcelSheetEditor fitToPage(boolean isFit){
+	public SheetEditor fitToPage(boolean isFit){
 		this.sheet.setFitToPage(isFit);
 		return this;
 	}
@@ -127,7 +127,7 @@ public class ExcelSheetEditor extends AbstractExcelEditor{
 	 * @param isCenter
 	 * @return
 	 */
-	public ExcelSheetEditor horizontallyCenter(boolean isCenter){
+	public SheetEditor horizontallyCenter(boolean isCenter){
 		this.sheet.setHorizontallyCenter(isCenter);
 		return this;
 	}

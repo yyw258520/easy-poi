@@ -4,14 +4,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.util.HSSFColor;
 
 import wsepr.easypoi.excel.DefaultExcelStyle;
 import wsepr.easypoi.excel.Excel;
-import wsepr.easypoi.excel.editor.IFontEditor;
-import wsepr.easypoi.excel.style.Align;
 import wsepr.easypoi.excel.style.BorderStyle;
+import wsepr.easypoi.excel.style.Color;
 import wsepr.easypoi.excel.style.VAlign;
 
 public class ExcelTest {
@@ -29,28 +27,14 @@ public class ExcelTest {
 		style.setFontSize((short)20);
 		Excel excel = new Excel();
 		System.out.println(excel.sheet().getLastRowNum());
-		excel.cell(0, 0).add(0, 1).add(0, 2).value(new Date(), "yyyy-MM-dd HH:mm").borderRight(BorderStyle.MEDIUM_DASH_DOT, HSSFColor.RED.index);
-		excel.cell(1, 0).add(1, 1)
-			.border(BorderStyle.DASHED, HSSFColor.BLACK.index)
-			.value("测试一下测试一下测试一下测试一下测试一下测试一下")
-			.bgColor(HSSFColor.BLUE.index)
-			.font(new IFontEditor(){
-				public void updateFont(HSSFFont font) {
-					font.setFontName("黑体");
-					font.setColor(HSSFFont.COLOR_NORMAL);
-					font.setUnderline(HSSFFont.U_DOUBLE);
-					font.setItalic(true);
-					font.setFontHeightInPoints((short)18);
-				}
-			})
-			.align(Align.CENTER);		
+		excel.cell(0, 0).add(0, 1).add(0, 2).value(new Date(), "yyyy-MM-dd HH:mm").borderRight(BorderStyle.MEDIUM_DASH_DOT, Color.RED);
 		excel.row(11).value(new Object[]{123123,"aabbcc",new Date(),3.1415926}).merge();
-		excel.row(2).borderFull(BorderStyle.DASH_DOT, HSSFColor.BLUE_GREY.index).value(new Object[]{123123,"aabbcc",new Date(),3.1415926}, 2);
-		excel.row(2).append(new Object[]{"添加的内容"}).borderFull(BorderStyle.SLANTED_DASH_DOT, HSSFColor.BLUE.index);
+		excel.row(2).borderFull(BorderStyle.DASH_DOT, Color.BLUE_GREY).value(new Object[]{123123,"aabbcc",new Date(),3.1415926}, 2);
+		excel.row(2).append(new Object[]{"添加的内容"}).borderFull(BorderStyle.SLANTED_DASH_DOT, Color.BLUE);
 		excel.cell(3, 0).add(4, 0).value("合并的区间112233").comment("这只是一个测试的例子");
 		
 		excel.region(3, 3, 8, 8).image("http://www.google.com.hk/intl/zh-CN/images/logo_cn.png");
-		excel.column(10).borderFull(BorderStyle.MEDIUM, HSSFColor.BLUE_GREY.index);
+		excel.column(10).borderFull(BorderStyle.MEDIUM, Color.BLUE_GREY);
 		//excel.region(4, 4, 4, 4).borderFull(HSSFCellStyle.BORDER_MEDIUM_DASH_DOT, HSSFColor.BLUE_GREY.index);
 		//excel.region(15, 0, 15, 5).borderOuter(HSSFCellStyle.BORDER_DOUBLE, HSSFColor.BLUE.index);
 		excel.column(10).value(new Object[]{"aaa","bbb","ccc","ddd","eee"},3).vAlign(VAlign.CENTER);

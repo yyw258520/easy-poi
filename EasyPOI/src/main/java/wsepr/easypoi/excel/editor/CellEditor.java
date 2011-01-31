@@ -18,19 +18,21 @@ import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import wsepr.easypoi.excel.ExcelContext;
 import wsepr.easypoi.excel.style.Align;
 import wsepr.easypoi.excel.style.BorderStyle;
+import wsepr.easypoi.excel.style.Color;
 import wsepr.easypoi.excel.style.FillPattern;
 import wsepr.easypoi.excel.style.VAlign;
+import wsepr.easypoi.excel.style.font.Font;
 
 
-public class ExcelCellEditor extends AbstractExcelEditor{
+public class CellEditor extends AbstractExcelEditor{
 	private List<HSSFCell> workingCell = new ArrayList<HSSFCell>(2);
 
-	public ExcelCellEditor(int row, int col, ExcelContext context) {
+	public CellEditor(int row, int col, ExcelContext context) {
 		this(context);
 		this.add(row, col);
 	}
 	
-	public ExcelCellEditor(ExcelContext context) {
+	public CellEditor(ExcelContext context) {
 		super(context);
 	}
 
@@ -41,7 +43,7 @@ public class ExcelCellEditor extends AbstractExcelEditor{
 	 * @param value
 	 * @return
 	 */
-	public ExcelCellEditor value(Object value) {
+	public CellEditor value(Object value) {
 		for (HSSFCell cell : workingCell) {
 			this.setCellValue(cell, value, null);
 		}
@@ -57,7 +59,7 @@ public class ExcelCellEditor extends AbstractExcelEditor{
 	 *            格式化字符串
 	 * @return
 	 */
-	public ExcelCellEditor value(Date value, String pattern) {
+	public CellEditor value(Date value, String pattern) {
 		for (HSSFCell cell : workingCell) {
 			this.setCellValue(cell, value, pattern);
 		}
@@ -72,7 +74,7 @@ public class ExcelCellEditor extends AbstractExcelEditor{
 	 * @param col 第n列，从0开始
 	 * @return
 	 */
-	public ExcelCellEditor add(int row, int col) {
+	public CellEditor add(int row, int col) {
 		HSSFCell cell = getCell(row, col);
 		workingCell.add(cell);
 		return this;
@@ -86,7 +88,7 @@ public class ExcelCellEditor extends AbstractExcelEditor{
 	 * @param col 第n列，从0开始
 	 * @return
 	 */
-	public ExcelCellEditor add(ExcelRowEditor row, int col) {
+	public CellEditor add(RowEditor row, int col) {
 		HSSFCell cell = getCell(row.getHSSFRow(), col);
 		workingCell.add(cell);
 		return this;
@@ -100,7 +102,7 @@ public class ExcelCellEditor extends AbstractExcelEditor{
 	 * @param col 第n列，从0开始
 	 * @return
 	 */
-	public ExcelCellEditor add(int row, ExcelColumnEditor col) {
+	public CellEditor add(int row, ColumnEditor col) {
 		return add(row, col.getCol());
 	}
 	
@@ -112,7 +114,7 @@ public class ExcelCellEditor extends AbstractExcelEditor{
 	 * @param col 第n列，从0开始
 	 * @return
 	 */
-	public ExcelCellEditor add(ExcelCellEditor cell) {
+	public CellEditor add(CellEditor cell) {
 		workingCell.addAll(cell.getWorkingCell());
 		return this;
 	}
@@ -126,7 +128,7 @@ public class ExcelCellEditor extends AbstractExcelEditor{
 	 *            颜色，例如HSSFColor.RED.index
 	 * @return
 	 */
-	public ExcelCellEditor border(BorderStyle borderStyle, int borderColor) {
+	public CellEditor border(BorderStyle borderStyle, Color borderColor) {
 		for (HSSFCell cell : workingCell) {
 			HSSFCellStyle style = cell.getCellStyle();
 			tempCellStyle.cloneStyleFrom(style);
@@ -135,10 +137,10 @@ public class ExcelCellEditor extends AbstractExcelEditor{
 			tempCellStyle.setBorderTop(borderStyle.getBorderType());
 			tempCellStyle.setBorderLeft( borderStyle.getBorderType());
 			tempCellStyle.setBorderRight( borderStyle.getBorderType());
-			tempCellStyle.setBottomBorderColor((short) borderColor);
-			tempCellStyle.setTopBorderColor((short) borderColor);
-			tempCellStyle.setLeftBorderColor((short) borderColor);
-			tempCellStyle.setRightBorderColor((short) borderColor);
+			tempCellStyle.setBottomBorderColor(borderColor.getIndex());
+			tempCellStyle.setTopBorderColor(borderColor.getIndex());
+			tempCellStyle.setLeftBorderColor(borderColor.getIndex());
+			tempCellStyle.setRightBorderColor(borderColor.getIndex());
 			updateCellStyle(cell);
 		}
 		return this;
@@ -150,12 +152,12 @@ public class ExcelCellEditor extends AbstractExcelEditor{
 	 * @param borderColor 颜色，例如HSSFColor.RED.index
 	 * @return
 	 */
-	public ExcelCellEditor borderLeft(BorderStyle borderStyle, int borderColor){
+	public CellEditor borderLeft(BorderStyle borderStyle, Color borderColor){
 		for (HSSFCell cell : workingCell) {
 			HSSFCellStyle style = cell.getCellStyle();
 			tempCellStyle.cloneStyleFrom(style);
 			tempCellStyle.setBorderLeft(borderStyle.getBorderType());
-			tempCellStyle.setLeftBorderColor((short) borderColor);
+			tempCellStyle.setLeftBorderColor(borderColor.getIndex());
 			updateCellStyle(cell);
 		}
 		return this;
@@ -167,12 +169,12 @@ public class ExcelCellEditor extends AbstractExcelEditor{
 	 * @param borderColor 颜色，例如HSSFColor.RED.index
 	 * @return
 	 */
-	public ExcelCellEditor borderRight(BorderStyle borderStyle, int borderColor){
+	public CellEditor borderRight(BorderStyle borderStyle, Color borderColor){
 		for (HSSFCell cell : workingCell) {
 			HSSFCellStyle style = cell.getCellStyle();
 			tempCellStyle.cloneStyleFrom(style);
 			tempCellStyle.setBorderRight(borderStyle.getBorderType());
-			tempCellStyle.setRightBorderColor((short) borderColor);
+			tempCellStyle.setRightBorderColor(borderColor.getIndex());
 			updateCellStyle(cell);
 		}
 		return this;
@@ -184,12 +186,12 @@ public class ExcelCellEditor extends AbstractExcelEditor{
 	 * @param borderColor 颜色，例如HSSFColor.RED.index
 	 * @return
 	 */
-	public ExcelCellEditor borderTop(BorderStyle borderStyle, int borderColor){
+	public CellEditor borderTop(BorderStyle borderStyle, Color borderColor){
 		for (HSSFCell cell : workingCell) {
 			HSSFCellStyle style = cell.getCellStyle();
 			tempCellStyle.cloneStyleFrom(style);
 			tempCellStyle.setBorderTop(borderStyle.getBorderType());
-			tempCellStyle.setTopBorderColor((short) borderColor);
+			tempCellStyle.setTopBorderColor(borderColor.getIndex());
 			updateCellStyle(cell);
 		}
 		return this;
@@ -201,12 +203,12 @@ public class ExcelCellEditor extends AbstractExcelEditor{
 	 * @param borderColor 颜色，例如HSSFColor.RED.index
 	 * @return
 	 */
-	public ExcelCellEditor borderBottom(BorderStyle borderStyle, int borderColor){
+	public CellEditor borderBottom(BorderStyle borderStyle, Color borderColor){
 		for (HSSFCell cell : workingCell) {
 			HSSFCellStyle style = cell.getCellStyle();
 			tempCellStyle.cloneStyleFrom(style);
 			tempCellStyle.setBorderBottom(borderStyle.getBorderType());
-			tempCellStyle.setBottomBorderColor((short) borderColor);
+			tempCellStyle.setBottomBorderColor(borderColor.getIndex());
 			updateCellStyle(cell);
 		}
 		return this;
@@ -219,14 +221,14 @@ public class ExcelCellEditor extends AbstractExcelEditor{
 	 *            实现IFontEditor接口
 	 * @return
 	 */
-	public ExcelCellEditor font(IFontEditor fontEditor) {
+	public CellEditor font(IFontEditor fontEditor) {
 		Map<Integer, HSSFFont> fontCache = ctx.getFontCache();
 		for (HSSFCell cell : workingCell) {
 			//System.out.println("===============================================");
 			//System.out.println("设置单元格字体："+(cell.getCellType()== 1 ? cell.getRichStringCellValue():cell.getNumericCellValue()));
 			HSSFFont font = cell.getCellStyle().getFont(workBook);
 			copyFont(font, tempFont);
-			fontEditor.updateFont(tempFont);
+			fontEditor.updateFont(new Font(tempFont));
 			int fontHash = tempFont.hashCode() - tempFont.getIndex();
 			//System.out.println("修改字体后，计算Hash:"+fontHash);
 			//System.out.println("设置的字体:"+tempFont);
@@ -256,7 +258,7 @@ public class ExcelCellEditor extends AbstractExcelEditor{
 	 *            颜色，例如HSSFColor.RED.index
 	 * @return
 	 */
-	public ExcelCellEditor bgColor(short bg) {
+	public CellEditor bgColor(Color bg) {
 		return bgColor(bg, FillPattern.SOLID_FOREGROUND);
 	}
 
@@ -274,13 +276,13 @@ public class ExcelCellEditor extends AbstractExcelEditor{
 	 *            SQUARES, DIAMONDS
 	 * @return
 	 */
-	public ExcelCellEditor bgColor(short bg, FillPattern fillPattern) {
+	public CellEditor bgColor(Color bg, FillPattern fillPattern) {
 		for (HSSFCell cell : workingCell) {
 			HSSFCellStyle style = cell.getCellStyle();
 			tempCellStyle.cloneStyleFrom(style);
 			//
 			tempCellStyle.setFillPattern(fillPattern.getFillPattern());
-			tempCellStyle.setFillForegroundColor(bg);
+			tempCellStyle.setFillForegroundColor(bg.getIndex());
 			updateCellStyle(cell);
 		}
 		return this;
@@ -291,7 +293,7 @@ public class ExcelCellEditor extends AbstractExcelEditor{
 	 * @param align 对齐方式，例如HSSFCellStyle.ALIGN_CENTER。可选值：ALIGN_GENERAL, ALIGN_LEFT, ALIGN_CENTER, ALIGN_RIGHT, ALIGN_FILL, ALIGN_JUSTIFY, ALIGN_CENTER_SELECTION
 	 * @return
 	 */
-	public ExcelCellEditor align(Align align){
+	public CellEditor align(Align align){
 		for (HSSFCell cell : workingCell) {
 			HSSFCellStyle style = cell.getCellStyle();
 			tempCellStyle.cloneStyleFrom(style);
@@ -307,7 +309,7 @@ public class ExcelCellEditor extends AbstractExcelEditor{
 	 * @param align 对齐方式，例如HSSFCellStyle.VERTICAL_TOP。可选值：VERTICAL_TOP, VERTICAL_CENTER, VERTICAL_BOTTOM, VERTICAL_JUSTIFY
 	 * @return
 	 */
-	public ExcelCellEditor vAlign(VAlign align){
+	public CellEditor vAlign(VAlign align){
 		for (HSSFCell cell : workingCell) {
 			HSSFCellStyle style = cell.getCellStyle();
 			tempCellStyle.cloneStyleFrom(style);
@@ -323,7 +325,7 @@ public class ExcelCellEditor extends AbstractExcelEditor{
 	 * @param autoWarp true自动换行，false不换行
 	 * @return
 	 */
-	public ExcelCellEditor warpText(boolean autoWarp){
+	public CellEditor warpText(boolean autoWarp){
 		for (HSSFCell cell : workingCell) {
 			HSSFCellStyle style = cell.getCellStyle();
 			tempCellStyle.cloneStyleFrom(style);
@@ -339,7 +341,7 @@ public class ExcelCellEditor extends AbstractExcelEditor{
 	 * @param content 批注内容
 	 * @return
 	 */
-	public ExcelCellEditor comment(String content){
+	public CellEditor comment(String content){
 		HSSFPatriarch patr = ctx.getHSSFPatriarch(workingSheet);
 		for (HSSFCell cell : workingCell) {
 			HSSFComment comment = patr.createComment(new HSSFClientAnchor(0, 0, 0, 0, (short)cell.getColumnIndex(), cell.getRowIndex(), (short) (cell.getColumnIndex() + 3), cell.getRowIndex() + 4));
@@ -354,7 +356,7 @@ public class ExcelCellEditor extends AbstractExcelEditor{
 	 * @param style
 	 * @return
 	 */
-	public ExcelCellEditor style(HSSFCellStyle style){
+	public CellEditor style(HSSFCellStyle style){
 		for (HSSFCell cell : workingCell) {
 			cell.setCellStyle(style);
 		}

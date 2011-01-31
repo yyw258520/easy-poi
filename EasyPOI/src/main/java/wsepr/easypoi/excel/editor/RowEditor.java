@@ -9,9 +9,9 @@ import org.apache.poi.hssf.util.CellRangeAddress;
 import wsepr.easypoi.excel.ExcelContext;
 
 
-public class ExcelRowEditor extends AbstractRegionEditor<ExcelRowEditor> {
+public class RowEditor extends AbstractRegionEditor<RowEditor> {
 	private HSSFRow row;
-	public ExcelRowEditor(int row, ExcelContext context) {
+	public RowEditor(int row, ExcelContext context) {
 		super(context);
 		this.row = this.getRow(row);
 	}
@@ -25,7 +25,7 @@ public class ExcelRowEditor extends AbstractRegionEditor<ExcelRowEditor> {
 	 *            使用Excel.setDefaultDatePattern方法设置默认模式
 	 * @return
 	 */
-	public ExcelRowEditor value(Object[] rowData) {
+	public RowEditor value(Object[] rowData) {
 		value(rowData, 0);
 		return this;
 	}
@@ -40,7 +40,7 @@ public class ExcelRowEditor extends AbstractRegionEditor<ExcelRowEditor> {
 	 *            从指定的列开始写入，从0开始
 	 * @return
 	 */
-	public ExcelRowEditor value(Object[] rowData, int startCol) {
+	public RowEditor value(Object[] rowData, int startCol) {
 		if (startCol < 0) {
 			startCol = 0;
 		}
@@ -54,7 +54,7 @@ public class ExcelRowEditor extends AbstractRegionEditor<ExcelRowEditor> {
 	 *            使用Excel.setDefaultDatePattern方法设置默认模式
 	 * @return
 	 */
-	public ExcelRowEditor insert(Object[] rowData){
+	public RowEditor insert(Object[] rowData){
 		return insert(rowData, 0);
 	}
 	
@@ -65,7 +65,7 @@ public class ExcelRowEditor extends AbstractRegionEditor<ExcelRowEditor> {
 	 * @param startCol 从指定的列开始写入，从0开始
 	 * @return
 	 */
-	public ExcelRowEditor insert(Object[] rowData, int startCol){
+	public RowEditor insert(Object[] rowData, int startCol){
 		if (startCol < 0) {
 			startCol = 0;
 		}
@@ -78,7 +78,7 @@ public class ExcelRowEditor extends AbstractRegionEditor<ExcelRowEditor> {
 	 * @param rowData
 	 * @return
 	 */
-	public ExcelRowEditor append(Object[] rowData){
+	public RowEditor append(Object[] rowData){
 		insertData(rowData, row, row.getLastCellNum(), true);
 		return this;
 	}
@@ -88,7 +88,7 @@ public class ExcelRowEditor extends AbstractRegionEditor<ExcelRowEditor> {
 	 * @param h 高度，单位像素
 	 * @return
 	 */
-	public ExcelRowEditor height(float h){
+	public RowEditor height(float h){
 		row.setHeightInPoints(h);
 		return this;
 	}
@@ -98,8 +98,8 @@ public class ExcelRowEditor extends AbstractRegionEditor<ExcelRowEditor> {
 	 * @param col 列，从0开始
 	 * @return
 	 */
-	public ExcelCellEditor cell(int col){
-		ExcelCellEditor cellEditor = new ExcelCellEditor(row.getRowNum(), col, ctx);
+	public CellEditor cell(int col){
+		CellEditor cellEditor = new CellEditor(row.getRowNum(), col, ctx);
 		return cellEditor;
 	}
 	
@@ -122,15 +122,15 @@ public class ExcelRowEditor extends AbstractRegionEditor<ExcelRowEditor> {
 		}
 		short i = 0;
 		for (Object obj : rowData) {
-			ExcelCellEditor cellEditor = new ExcelCellEditor(row.getRowNum(), startCol + i, ctx);
+			CellEditor cellEditor = new CellEditor(row.getRowNum(), startCol + i, ctx);
 			cellEditor.value(obj);
 			i++;
 		}
 	}
 
 	@Override
-	protected ExcelCellEditor newCellEditor(){
-		ExcelCellEditor cellEditor = new ExcelCellEditor(ctx);
+	protected CellEditor newCellEditor(){
+		CellEditor cellEditor = new CellEditor(ctx);
 		short minColIx = 0;
 		short maxColIx = 0;
 		minColIx = row.getFirstCellNum();
@@ -142,26 +142,26 @@ public class ExcelRowEditor extends AbstractRegionEditor<ExcelRowEditor> {
 	}
 	
 	@Override
-	protected ExcelCellEditor newBottomCellEditor() {
+	protected CellEditor newBottomCellEditor() {
 		return newCellEditor();
 	}
 
 	@Override
-	protected ExcelCellEditor newLeftCellEditor() {
-		ExcelCellEditor cellEditor = new ExcelCellEditor(ctx);
+	protected CellEditor newLeftCellEditor() {
+		CellEditor cellEditor = new CellEditor(ctx);
 		cellEditor.add(row.getRowNum(), row.getFirstCellNum());
 		return cellEditor;
 	}
 
 	@Override
-	protected ExcelCellEditor newRightCellEditor() {
-		ExcelCellEditor cellEditor = new ExcelCellEditor(ctx);
+	protected CellEditor newRightCellEditor() {
+		CellEditor cellEditor = new CellEditor(ctx);
 		cellEditor.add(row.getRowNum(), row.getLastCellNum());
 		return cellEditor;
 	}
 
 	@Override
-	protected ExcelCellEditor newTopCellEditor() {
+	protected CellEditor newTopCellEditor() {
 		return newCellEditor();
 	}
 
