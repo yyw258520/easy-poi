@@ -1,7 +1,7 @@
 package wsepr.easypoi.excel.editor;
 
-import org.apache.poi.hssf.usermodel.HSSFFont;
+import wsepr.easypoi.excel.style.font.Font;
 
 public interface IFontEditor {
-	public void updateFont(HSSFFont font);
+	public void updateFont(Font font);
 }
