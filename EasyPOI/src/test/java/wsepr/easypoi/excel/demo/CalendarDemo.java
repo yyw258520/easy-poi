@@ -2,7 +2,6 @@ package wsepr.easypoi.excel.demo;
 
 import java.util.Calendar;
 
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.util.HSSFColor;
 
@@ -10,6 +9,9 @@ import wsepr.easypoi.excel.Excel;
 import wsepr.easypoi.excel.editor.ExcelRegionEditor;
 import wsepr.easypoi.excel.editor.ExcelRowEditor;
 import wsepr.easypoi.excel.editor.IFontEditor;
+import wsepr.easypoi.excel.style.Align;
+import wsepr.easypoi.excel.style.BorderStyle;
+import wsepr.easypoi.excel.style.VAlign;
 
 public class CalendarDemo {
 	private static final int PRINT_YEAR = 2011;
@@ -50,7 +52,7 @@ public class CalendarDemo {
             excel.row(0).height(80);
             //标题
             excel.cell(0, 0).value(months[month] + " " + year)
-            	.align(HSSFCellStyle.ALIGN_CENTER)
+            	.align(Align.CENTER)
             	.font(new IFontEditor() {
             		//也可以这样设置字体
 					public void updateFont(HSSFFont font) {
@@ -65,7 +67,7 @@ public class CalendarDemo {
             	excel.column(i*2+1).width(13*256);
             	excel.region(1, i*2, 1, i*2+1).merge();
             	excel.cell(1, i*2).value(days[i])
-        			.align(HSSFCellStyle.ALIGN_CENTER)
+        			.align(Align.CENTER)
         			.bgColor(HSSFColor.DARK_BLUE.index)
         			.font(monthFont);
             }
@@ -77,9 +79,9 @@ public class CalendarDemo {
             	ExcelRowEditor row = excel.row(rownum).height(100);//设置行高度，并返回行编辑器
                 for (int i = 0; i < days.length; i++) {
                 	ExcelRegionEditor dayCell = excel.region(rownum, i*2, rownum, i*2+1);
-                	dayCell.align(HSSFCellStyle.ALIGN_LEFT)//设置区域内所有单元格水平对齐方式
-                		.vAlign(HSSFCellStyle.VERTICAL_TOP)//设置垂直对齐方式
-                		.borderOuter(HSSFCellStyle.BORDER_THIN, borderColor)//设置外边框
+                	dayCell.align(Align.LEFT)//设置区域内所有单元格水平对齐方式
+                		.vAlign(VAlign.TOP)//设置垂直对齐方式
+                		.borderOuter(BorderStyle.THIN, borderColor)//设置外边框
                 		.font(dayFont);//设置字体
                     int day_of_week = calendar.get(Calendar.DAY_OF_WEEK);
                     if(cnt >= day_of_week && calendar.get(Calendar.MONTH) == month) {

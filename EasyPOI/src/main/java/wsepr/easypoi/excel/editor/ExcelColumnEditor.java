@@ -151,5 +151,9 @@ public class ExcelColumnEditor extends AbstractRegionEditor<ExcelColumnEditor> {
 		List<CellRangeAddress> cellRangeList = new ArrayList<CellRangeAddress>();
 		cellRangeList.add(new CellRangeAddress(firstRowNum, lastRowNum, col, col));
 		return cellRangeList;
+	}
+
+	protected int getCol() {
+		return col;
 	}	
 }
