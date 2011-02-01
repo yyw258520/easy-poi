@@ -31,7 +31,7 @@ public class ExcelTest {
 		excel.row(11).value(new Object[]{123123,"aabbcc",new Date(),3.1415926}).merge();
 		excel.row(2).borderFull(BorderStyle.DASH_DOT, Color.BLUE_GREY).value(new Object[]{123123,"aabbcc",new Date(),3.1415926}, 2);
 		excel.row(2).append(new Object[]{"添加的内容"}).borderFull(BorderStyle.SLANTED_DASH_DOT, Color.BLUE);
-		excel.cell(3, 0).add(4, 0).value("合并的区间112233").comment("这只是一个测试的例子");
+		excel.cell(3, 0).add(4, 0).value("合并的区间112233").rotate(90).comment("这只是一个测试的例子");
 		
 		excel.region(3, 3, 8, 8).image("http://www.google.com.hk/intl/zh-CN/images/logo_cn.png");
 		excel.column(10).borderFull(BorderStyle.MEDIUM, Color.BLUE_GREY);
@@ -43,6 +43,7 @@ public class ExcelTest {
 //		excel.sheet(1).sheetName("另一个表").active();
 //		excel.setWorkingSheet(1);
 //		excel.cell(10, 10).add(0, 0).value("测试批注").comment("这只是一个测试");
+		excel.sheet().password("123");
 		excel.saveExcel(excelFile);
 	}
 }

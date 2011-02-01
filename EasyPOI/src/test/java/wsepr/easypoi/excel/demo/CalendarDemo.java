@@ -2,8 +2,11 @@ package wsepr.easypoi.excel.demo;
 
 import java.util.Calendar;
 
+import org.apache.poi.hssf.usermodel.HSSFPrintSetup;
+
 import wsepr.easypoi.excel.Excel;
 import wsepr.easypoi.excel.editor.IFontEditor;
+import wsepr.easypoi.excel.editor.IPrintSetup;
 import wsepr.easypoi.excel.editor.RegionEditor;
 import wsepr.easypoi.excel.editor.RowEditor;
 import wsepr.easypoi.excel.style.Align;
@@ -48,7 +51,17 @@ public class CalendarDemo {
             	.sheetName(months[month])//修改表名
             	.fitToPage(true)
             	.horizontallyCenter(true)
-            	.displayGridlines(false);
+            	.printGridlines(false)
+            	.displayGridlines(false)
+            	.autobreaks(true)
+            	.printSetup(new IPrintSetup(){
+					public void setup(HSSFPrintSetup printSetup) {
+						printSetup.setLandscape(true);//是否打印背景
+						printSetup.setFitHeight((short)1);//调整缩放
+			            printSetup.setFitWidth((short)1);//调整缩放
+					}
+            	});
+            //设置第一行的高度
             excel.row(0).height(80);
             //标题
             excel.cell(0, 0).value(months[month] + " " + year)
