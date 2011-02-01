@@ -24,7 +24,7 @@ import wsepr.easypoi.excel.style.VAlign;
 import wsepr.easypoi.excel.style.font.Font;
 
 
-public class CellEditor extends AbstractExcelEditor{
+public class CellEditor extends AbstractEditor{
 	private List<HSSFCell> workingCell = new ArrayList<HSSFCell>(2);
 
 	public CellEditor(int row, int col, ExcelContext context) {
@@ -123,9 +123,9 @@ public class CellEditor extends AbstractExcelEditor{
 	 * 设置边框样式和颜色
 	 * 
 	 * @param borderStyle
-	 *            样式，例如HSSFCellStyle.BORDER_MEDIUM
+	 *            样式
 	 * @param borderColor
-	 *            颜色，例如HSSFColor.RED.index
+	 *            颜色
 	 * @return
 	 */
 	public CellEditor border(BorderStyle borderStyle, Color borderColor) {
@@ -148,8 +148,8 @@ public class CellEditor extends AbstractExcelEditor{
 	
 	/**
 	 * 设置左边框
-	 * @param borderStyle 样式，例如HSSFCellStyle.BORDER_MEDIUM
-	 * @param borderColor 颜色，例如HSSFColor.RED.index
+	 * @param borderStyle 样式
+	 * @param borderColor 颜色
 	 * @return
 	 */
 	public CellEditor borderLeft(BorderStyle borderStyle, Color borderColor){
@@ -165,8 +165,8 @@ public class CellEditor extends AbstractExcelEditor{
 	
 	/**
 	 * 设置右边框
-	 * @param borderStyle 样式，例如HSSFCellStyle.BORDER_MEDIUM
-	 * @param borderColor 颜色，例如HSSFColor.RED.index
+	 * @param borderStyle 样式
+	 * @param borderColor 颜色
 	 * @return
 	 */
 	public CellEditor borderRight(BorderStyle borderStyle, Color borderColor){
@@ -182,8 +182,8 @@ public class CellEditor extends AbstractExcelEditor{
 	
 	/**
 	 * 设置上边框
-	 * @param borderStyle 样式，例如HSSFCellStyle.BORDER_MEDIUM
-	 * @param borderColor 颜色，例如HSSFColor.RED.index
+	 * @param borderStyle 样式
+	 * @param borderColor 颜色
 	 * @return
 	 */
 	public CellEditor borderTop(BorderStyle borderStyle, Color borderColor){
@@ -199,8 +199,8 @@ public class CellEditor extends AbstractExcelEditor{
 	
 	/**
 	 * 设置下边框
-	 * @param borderStyle 样式，例如HSSFCellStyle.BORDER_MEDIUM
-	 * @param borderColor 颜色，例如HSSFColor.RED.index
+	 * @param borderStyle 样式
+	 * @param borderColor 颜色
 	 * @return
 	 */
 	public CellEditor borderBottom(BorderStyle borderStyle, Color borderColor){
@@ -255,7 +255,7 @@ public class CellEditor extends AbstractExcelEditor{
 	 * 设置背景色
 	 * 
 	 * @param bg
-	 *            颜色，例如HSSFColor.RED.index
+	 *            颜色
 	 * @return
 	 */
 	public CellEditor bgColor(Color bg) {
@@ -266,14 +266,8 @@ public class CellEditor extends AbstractExcelEditor{
 	 * 设置背景色，可设置填充的样式
 	 * 
 	 * @param bg
-	 *            颜色，例如HSSFColor.RED.index
-	 * @param fillPattern
-	 *            填充样式，如HSSFCellStyle.FINE_DOTS。可选值：NO_FILL,
-	 *            SOLID_FOREGROUND, FINE_DOTS, ALT_BARS, SPARSE_DOTS,
-	 *            THICK_HORZ_BANDS, THICK_VERT_BANDS, THICK_BACKWARD_DIAG,
-	 *            THICK_FORWARD_DIAG, BIG_SPOTS, BRICKS, THIN_HORZ_BANDS,
-	 *            THIN_VERT_BANDS, THIN_BACKWARD_DIAG, THIN_FORWARD_DIAG,
-	 *            SQUARES, DIAMONDS
+	 *            颜色
+	 * @param fillPattern 填充样式
 	 * @return
 	 */
 	public CellEditor bgColor(Color bg, FillPattern fillPattern) {
@@ -290,7 +284,7 @@ public class CellEditor extends AbstractExcelEditor{
 	
 	/**
 	 * 设置单元格水平对齐方式
-	 * @param align 对齐方式，例如HSSFCellStyle.ALIGN_CENTER。可选值：ALIGN_GENERAL, ALIGN_LEFT, ALIGN_CENTER, ALIGN_RIGHT, ALIGN_FILL, ALIGN_JUSTIFY, ALIGN_CENTER_SELECTION
+	 * @param align 对齐方式
 	 * @return
 	 */
 	public CellEditor align(Align align){
@@ -306,7 +300,7 @@ public class CellEditor extends AbstractExcelEditor{
 	
 	/**
 	 * 设置单元格垂直对齐方式
-	 * @param align 对齐方式，例如HSSFCellStyle.VERTICAL_TOP。可选值：VERTICAL_TOP, VERTICAL_CENTER, VERTICAL_BOTTOM, VERTICAL_JUSTIFY
+	 * @param align 对齐方式
 	 * @return
 	 */
 	public CellEditor vAlign(VAlign align){
@@ -331,6 +325,66 @@ public class CellEditor extends AbstractExcelEditor{
 			tempCellStyle.cloneStyleFrom(style);
 			//
 			tempCellStyle.setWrapText(autoWarp);
+			updateCellStyle(cell);
+		}
+		return this;
+	}
+	
+	/**
+	 * 是否隐藏公式，只有给工作表设置密码后，该设置才生效
+	 * @param hidden true隐藏，false显示
+	 * @return
+	 */
+	public CellEditor hidden(boolean hidden){
+		for (HSSFCell cell : workingCell) {
+			HSSFCellStyle style = cell.getCellStyle();
+			tempCellStyle.cloneStyleFrom(style);
+			tempCellStyle.setHidden(hidden);
+			updateCellStyle(cell);
+		}
+		return this;
+	}
+	
+	/**
+	 * 设置缩进
+	 * @param indent
+	 * @return
+	 */
+	public CellEditor indent(int indent){
+		for (HSSFCell cell : workingCell) {
+			HSSFCellStyle style = cell.getCellStyle();
+			tempCellStyle.cloneStyleFrom(style);
+			tempCellStyle.setIndention((short)indent);
+			updateCellStyle(cell);
+		}
+		return this;
+	}
+	
+	/**
+	 * 是否锁定，锁定后用户将不能编辑该单元格。只有给工作表设置密码后，该设置才生效
+	 * @param locked true锁定，false解锁
+	 * @return
+	 */
+	public CellEditor lock(boolean locked){
+		for (HSSFCell cell : workingCell) {
+			HSSFCellStyle style = cell.getCellStyle();
+			tempCellStyle.cloneStyleFrom(style);
+			tempCellStyle.setLocked(locked);
+			updateCellStyle(cell);
+		}
+		return this;
+	}
+	
+	/**
+	 * 设置文字旋转角度
+	 * @param rotation 角度，-90度至90度
+	 * @return
+	 */
+	public CellEditor rotate(int rotation){
+		for (HSSFCell cell : workingCell) {
+			HSSFCellStyle style = cell.getCellStyle();
+			tempCellStyle.cloneStyleFrom(style);
+			tempCellStyle.setRotation((short)rotation);
 			updateCellStyle(cell);
 		}
 		return this;

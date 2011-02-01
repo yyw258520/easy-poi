@@ -13,7 +13,7 @@ import wsepr.easypoi.excel.style.FillPattern;
 import wsepr.easypoi.excel.style.VAlign;
 
 
-public abstract class AbstractRegionEditor<T> extends AbstractExcelEditor{
+public abstract class AbstractRegionEditor<T> extends AbstractEditor{
 
 	protected AbstractRegionEditor(ExcelContext context) {
 		super(context);
@@ -55,9 +55,9 @@ public abstract class AbstractRegionEditor<T> extends AbstractExcelEditor{
 	 * 设置外部四条边框样式和颜色
 	 * 
 	 * @param borderStyle
-	 *            样式，例如HSSFCellStyle.BORDER_MEDIUM
+	 *            样式
 	 * @param borderColor
-	 *            颜色，例如HSSFColor.RED.index
+	 *            颜色
 	 * @return
 	 */
 	public T borderOuter(BorderStyle borderStyle, Color borderColor){
@@ -72,9 +72,9 @@ public abstract class AbstractRegionEditor<T> extends AbstractExcelEditor{
 	 * 设置全部内外边框样式和颜色
 	 * 
 	 * @param borderStyle
-	 *            样式，例如HSSFCellStyle.BORDER_MEDIUM
+	 *            样式
 	 * @param borderColor
-	 *            颜色，例如HSSFColor.RED.index
+	 *            颜色
 	 * @return
 	 */
 	public T borderFull(BorderStyle borderStyle, Color borderColor){
@@ -87,9 +87,9 @@ public abstract class AbstractRegionEditor<T> extends AbstractExcelEditor{
 	 * 设置外部左边框样式和颜色
 	 * 
 	 * @param borderStyle
-	 *            样式，例如HSSFCellStyle.BORDER_MEDIUM
+	 *            样式
 	 * @param borderColor
-	 *            颜色，例如HSSFColor.RED.index
+	 *            颜色
 	 * @return
 	 */
 	public T borderLeft(BorderStyle borderStyle, Color borderColor){
@@ -103,9 +103,9 @@ public abstract class AbstractRegionEditor<T> extends AbstractExcelEditor{
 	 * 设置外部右边框样式和颜色
 	 * 
 	 * @param borderStyle
-	 *            样式，例如HSSFCellStyle.BORDER_MEDIUM
+	 *            样式
 	 * @param borderColor
-	 *            颜色，例如HSSFColor.RED.index
+	 *            颜色
 	 * @return
 	 */
 	public T borderRight(BorderStyle borderStyle, Color borderColor){
@@ -119,9 +119,9 @@ public abstract class AbstractRegionEditor<T> extends AbstractExcelEditor{
 	 * 设置外部上边框样式和颜色
 	 * 
 	 * @param borderStyle
-	 *            样式，例如HSSFCellStyle.BORDER_MEDIUM
+	 *            样式
 	 * @param borderColor
-	 *            颜色，例如HSSFColor.RED.index
+	 *            颜色
 	 * @return
 	 */
 	public T borderTop(BorderStyle borderStyle, Color borderColor){
@@ -135,9 +135,9 @@ public abstract class AbstractRegionEditor<T> extends AbstractExcelEditor{
 	 * 设置外部下边框样式和颜色
 	 * 
 	 * @param borderStyle
-	 *            样式，例如HSSFCellStyle.BORDER_MEDIUM
+	 *            样式
 	 * @param borderColor
-	 *            颜色，例如HSSFColor.RED.index
+	 *            颜色
 	 * @return
 	 */
 	public T borderBottom(BorderStyle borderStyle, Color borderColor){
@@ -246,6 +246,50 @@ public abstract class AbstractRegionEditor<T> extends AbstractExcelEditor{
 	public T style(HSSFCellStyle style){
 		CellEditor cellEditor = newCellEditor();
 		cellEditor.style(style);
+		return (T)this;
+	}
+	
+	/**
+	 * 是否隐藏公式，只有给工作表设置密码后，该设置才生效
+	 * @param hidden true隐藏，false显示
+	 * @return
+	 */
+	public T hidden(boolean hidden){
+		CellEditor cellEditor = newCellEditor();
+		cellEditor.hidden(hidden);
+		return (T)this;
+	}
+	
+	/**
+	 * 设置缩进
+	 * @param indent
+	 * @return
+	 */
+	public T indent(int indent){
+		CellEditor cellEditor = newCellEditor();
+		cellEditor.indent(indent);
+		return (T)this;
+	}
+	
+	/**
+	 * 是否锁定，锁定后用户将不能编辑该单元格。只有给工作表设置密码后，该设置才生效
+	 * @param locked true锁定，false解锁
+	 * @return
+	 */
+	public T lock(boolean locked){
+		CellEditor cellEditor = newCellEditor();
+		cellEditor.lock(locked);
+		return (T)this;
+	}
+	
+	/**
+	 * 设置文字旋转角度
+	 * @param rotation 角度，-90度至90度
+	 * @return
+	 */
+	public T rotate(int rotation){
+		CellEditor cellEditor = newCellEditor();
+		cellEditor.rotate(rotation);
 		return (T)this;
 	}
 }

@@ -11,13 +11,13 @@ import wsepr.easypoi.excel.ExcelContext;
 import wsepr.easypoi.excel.util.ExcelUtil;
 
 
-public abstract class AbstractExcelEditor {
+public abstract class AbstractEditor {
 	protected HSSFWorkbook workBook;
 	protected HSSFCellStyle tempCellStyle;// 临时的样式
 	protected HSSFFont tempFont;// 临时的字体
 	protected HSSFSheet workingSheet;
 	protected ExcelContext ctx;
-	protected AbstractExcelEditor(ExcelContext context){
+	protected AbstractEditor(ExcelContext context){
 		this.workBook = context.getWorkBook();
 		this.workingSheet = context.getWorkingSheet();
 		this.tempFont = context.getTempFont();
