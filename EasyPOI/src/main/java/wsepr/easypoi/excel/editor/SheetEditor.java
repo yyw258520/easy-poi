@@ -8,7 +8,7 @@ import wsepr.easypoi.excel.ExcelContext;
 import wsepr.easypoi.excel.util.ExcelUtil;
 
 
-public class SheetEditor extends AbstractExcelEditor{
+public class SheetEditor extends AbstractEditor{
 
 	private HSSFSheet sheet;
 	private int sheetIndex;
@@ -131,4 +131,15 @@ public class SheetEditor extends AbstractExcelEditor{
 		this.sheet.setHorizontallyCenter(isCenter);
 		return this;
 	}
+	
+	/**
+	 * 保护工作表
+	 * @param pw 密码
+	 * @return
+	 */
+	public SheetEditor password(String pw){
+		this.sheet.protectSheet(pw);
+		return this;
+	}
+	
 }
