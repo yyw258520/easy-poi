@@ -142,4 +142,19 @@ public class SheetEditor extends AbstractEditor{
 		return this;
 	}
 	
+	public SheetEditor printSetup(IPrintSetup printSetup){
+		printSetup.setup(this.sheet.getPrintSetup());
+		return this;
+	}
+	
+	/**
+	 * 只有设置为true，printSetup中的setFitHeight和setFitWidth才会生效
+	 * @param b
+	 * @return
+	 */
+	public SheetEditor autobreaks(boolean b){
+		this.sheet.setAutobreaks(b);
+		return this;
+	}
+	
 }
