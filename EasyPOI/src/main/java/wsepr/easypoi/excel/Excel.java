@@ -2,7 +2,9 @@ package wsepr.easypoi.excel;
 
 import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.OutputStream;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -122,12 +124,29 @@ public class Excel {
 	 * @param excelPath
 	 *            保存路径
 	 * @return true保存成功，false失败
+	 * @throws FileNotFoundException 
 	 */
 	public boolean saveExcel(String excelPath) {
-		boolean result = false;
-		BufferedOutputStream fileOut = null;
+		BufferedOutputStream fileOut;
 		try {
 			fileOut = new BufferedOutputStream(new FileOutputStream(excelPath));
+			return saveExcel(fileOut);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	/**
+	 * 保存Excel文件
+	 * 
+	 * @param excelPath
+	 *            保存路径
+	 * @return true保存成功，false失败
+	 */
+	public boolean saveExcel(OutputStream fileOut) {
+		boolean result = false;
+		try {
 			ctx.getWorkBook().write(fileOut);
 			result = true;
 		} catch (Exception e) {
@@ -142,6 +161,7 @@ public class Excel {
 		}
 		return result;
 	}
+	
 
 	/**
 	 * 选择第n个工作簿为工作状态，如果不存在则新建一个
