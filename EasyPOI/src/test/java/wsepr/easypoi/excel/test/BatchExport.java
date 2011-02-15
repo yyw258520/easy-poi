@@ -10,7 +10,7 @@ import org.apache.commons.lang.RandomStringUtils;
 import wsepr.easypoi.excel.Excel;
 
 public class BatchExport {
-	private final static int DATA_COUNT = 60000;
+	private final static int DATA_COUNT = 6000;
 	private final static int FIELD_COUNT = 10;
 	private final static int BATCH_SIZE = 1000;
 	private static Excel excel = new Excel();
@@ -49,16 +49,8 @@ public class BatchExport {
 	}
 	
 	private static void export(List<Object[]> data){
-		int lastRow = excel.sheet().getLastRowNum();
-		if(lastRow + data.size() > 65535){
-			excel.setWorkingSheet(excel.getWorkingSheetIndex() + 1);
-			lastRow = excel.sheet().getLastRowNum();
-		}
-		if(lastRow > 0){
-			lastRow++;
-		}
 		for(int i=0;i<data.size();i++){
-			excel.row(i + lastRow).value(data.get(i));
+			excel.nextRow().value(data.get(i));
 		}
 	}
 

@@ -3,13 +3,12 @@ package wsepr.easypoi.excel.test;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.util.HSSFColor;
-
 import wsepr.easypoi.excel.DefaultExcelStyle;
 import wsepr.easypoi.excel.Excel;
+import wsepr.easypoi.excel.style.Align;
 import wsepr.easypoi.excel.style.BorderStyle;
 import wsepr.easypoi.excel.style.Color;
+import wsepr.easypoi.excel.style.FillPattern;
 import wsepr.easypoi.excel.style.VAlign;
 
 public class ExcelTest {
@@ -20,11 +19,11 @@ public class ExcelTest {
 		SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
 		String excelFile = "E:/" + format.format(new Date()) + ".xls";
 		DefaultExcelStyle style = new DefaultExcelStyle();
-		style.setBackgroundColor(HSSFColor.WHITE.index);
-		style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-		style.setAlign(HSSFCellStyle.ALIGN_CENTER);
-		style.setFontColor(HSSFColor.RED.index);
-		style.setFontSize((short)20);
+		style.setBackgroundColor(Color.BLUE_GREY);
+		style.setFillPattern(FillPattern.SQUARES);
+		style.setAlign(Align.CENTER);
+		style.setFontColor(Color.CORAL);
+		style.setFontSize(20);
 		Excel excel = new Excel();
 		System.out.println(excel.sheet().getLastRowNum());
 		excel.cell(0, 0).add(0, 1).add(0, 2).value(new Date(), "yyyy-MM-dd HH:mm").borderRight(BorderStyle.MEDIUM_DASH_DOT, Color.RED);

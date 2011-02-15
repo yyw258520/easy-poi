@@ -15,7 +15,7 @@ public class SheetEditor extends AbstractEditor{
 	public SheetEditor(HSSFSheet sheet, ExcelContext context){
 		super(context);
 		this.sheet = sheet;
-		this.sheetIndex = this.workBook.getSheetIndex(this.sheet);
+		sheetIndex = workBook.getSheetIndex(this.sheet);
 	}
 	
 	/**
@@ -26,7 +26,7 @@ public class SheetEditor extends AbstractEditor{
 	 * @return
 	 */
 	public SheetEditor header(String left, String center, String right){
-		HSSFHeader header = this.sheet.getHeader();
+		HSSFHeader header = sheet.getHeader();
 		header.setLeft(left == null ? "" : left);
 		header.setCenter(center == null ? "" : center);
 		header.setRight(right == null ? "" : right);
@@ -41,7 +41,7 @@ public class SheetEditor extends AbstractEditor{
 	 * @return
 	 */
 	public SheetEditor footer(String left, String center, String right){
-		HSSFFooter footer = this.sheet.getFooter();
+		HSSFFooter footer = sheet.getFooter();
 		footer.setLeft(left == null ? "" : left);
 		footer.setCenter(center == null ? "" : center);
 		footer.setRight(right == null ? "" : right);
@@ -54,7 +54,7 @@ public class SheetEditor extends AbstractEditor{
 	 * @return
 	 */
 	public SheetEditor sheetName(String name){
-		this.workBook.setSheetName(this.sheetIndex, name);
+		workBook.setSheetName(sheetIndex, name);
 		return this;
 	}
 	
@@ -63,7 +63,7 @@ public class SheetEditor extends AbstractEditor{
 	 * @return
 	 */
 	public SheetEditor active(){
-		this.workBook.setActiveSheet(this.sheetIndex);
+		workBook.setActiveSheet(sheetIndex);
 		return this;
 	}
 	
@@ -80,7 +80,7 @@ public class SheetEditor extends AbstractEditor{
 		if(col < 0){
 			col = 0;
 		}
-		this.sheet.createFreezePane(col, row, col, row);
+		sheet.createFreezePane(col, row, col, row);
 		return this;
 	}
 	
@@ -98,7 +98,7 @@ public class SheetEditor extends AbstractEditor{
 	 * @return
 	 */
 	public SheetEditor displayGridlines(boolean show){
-		this.sheet.setDisplayGridlines(show);
+		sheet.setDisplayGridlines(show);
 		return this;
 	}
 	
@@ -108,7 +108,7 @@ public class SheetEditor extends AbstractEditor{
 	 * @return
 	 */
 	public SheetEditor printGridlines(boolean newPrintGridlines){
-		this.sheet.setPrintGridlines(newPrintGridlines);
+		sheet.setPrintGridlines(newPrintGridlines);
 		return this;
 	}
 	
@@ -118,7 +118,7 @@ public class SheetEditor extends AbstractEditor{
 	 * @return
 	 */
 	public SheetEditor fitToPage(boolean isFit){
-		this.sheet.setFitToPage(isFit);
+		sheet.setFitToPage(isFit);
 		return this;
 	}
 	
@@ -128,7 +128,7 @@ public class SheetEditor extends AbstractEditor{
 	 * @return
 	 */
 	public SheetEditor horizontallyCenter(boolean isCenter){
-		this.sheet.setHorizontallyCenter(isCenter);
+		sheet.setHorizontallyCenter(isCenter);
 		return this;
 	}
 	
@@ -138,12 +138,17 @@ public class SheetEditor extends AbstractEditor{
 	 * @return
 	 */
 	public SheetEditor password(String pw){
-		this.sheet.protectSheet(pw);
+		sheet.protectSheet(pw);
 		return this;
 	}
 	
+	/**
+	 * 详细设置打印属性
+	 * @param printSetup
+	 * @return
+	 */
 	public SheetEditor printSetup(IPrintSetup printSetup){
-		printSetup.setup(this.sheet.getPrintSetup());
+		printSetup.setup(sheet.getPrintSetup());
 		return this;
 	}
 	
@@ -153,7 +158,7 @@ public class SheetEditor extends AbstractEditor{
 	 * @return
 	 */
 	public SheetEditor autobreaks(boolean b){
-		this.sheet.setAutobreaks(b);
+		sheet.setAutobreaks(b);
 		return this;
 	}
 	

@@ -256,4 +256,18 @@ public enum Color {
 	public short getIndex() {
 		return index;
 	}
+	
+	/**
+	 * 根据值返回对应的枚举值
+	 * @param weight
+	 * @return
+	 */
+	public static Color instance(short index){
+		for(Color e : Color.values()){
+			if(e.getIndex() == index){
+				return e;
+			}
+		}
+		return Color.AUTOMATIC;
+	}
 }

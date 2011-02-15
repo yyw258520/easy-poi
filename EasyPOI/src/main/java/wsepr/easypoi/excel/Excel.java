@@ -31,6 +31,7 @@ import wsepr.easypoi.excel.util.ExcelUtil;
 public class Excel {
 	
 	private ExcelContext ctx;
+	private boolean firstRowIsLastRow = true;
 	
 	/**
 	 * 新建一个Excel文件
@@ -88,15 +89,15 @@ public class Excel {
 		//设置默认样式
 		HSSFCell cell = ExcelUtil.getHSSFCell(ctx.getWorkingSheet(), 0, 0);
 		HSSFCellStyle cellStyle = cell.getCellStyle();
-		cellStyle.setFillForegroundColor(defaultStyle.getBackgroundColor());
-		cellStyle.setFillPattern(defaultStyle.getFillPattern());
-		cellStyle.setAlignment(defaultStyle.getAlign());
-		cellStyle.setVerticalAlignment(defaultStyle.getVAlign());
+		cellStyle.setFillForegroundColor(defaultStyle.getBackgroundColor().getIndex());
+		cellStyle.setFillPattern(defaultStyle.getFillPattern().getFillPattern());
+		cellStyle.setAlignment(defaultStyle.getAlign().getAlignment());
+		cellStyle.setVerticalAlignment(defaultStyle.getVAlign().getAlignment());
 		//默认字体
 		HSSFFont font = cellStyle.getFont(workBook);
 		font.setFontHeightInPoints(defaultStyle.getFontSize());
 		font.setFontName(defaultStyle.getFontName());
-		font.setColor(defaultStyle.getFontColor());
+		font.setColor(defaultStyle.getFontColor().getIndex());
 	}
 
 	
@@ -138,7 +139,7 @@ public class Excel {
 	}
 	
 	/**
-	 * 保存Excel文件
+	 * 保存Excel文件，该方法完成操作后会关闭输出流
 	 * 
 	 * @param excelPath
 	 *            保存路径
@@ -181,8 +182,8 @@ public class Excel {
 	/**
 	 * 选择一个单元格
 	 * 
-	 * @param row
-	 * @param col
+	 * @param row 行，从0开始
+	 * @param col 列，从0开始
 	 * @return
 	 */
 	public CellEditor cell(int row, int col) {
@@ -192,17 +193,30 @@ public class Excel {
 
 	/**
 	 * 选择一行
-	 * @param row
+	 * @param row 行，从0开始
 	 * @return
 	 */
 	public RowEditor row(int row){
-		RowEditor rowEditor = new RowEditor(row, ctx);
-		return rowEditor;
+		return new RowEditor(row, ctx);
+	}
+	
+	/**
+	 * 始终选择最后一个空白行，当需要循环插入n行时特别有用
+	 * @return
+	 */
+	public RowEditor nextRow(){
+		int rowNum = ExcelUtil.getLastRowNum(ctx.getWorkingSheet());
+		if(rowNum == 0 && firstRowIsLastRow){
+			firstRowIsLastRow = false;
+		}else{
+			rowNum++;
+		}
+		return new RowEditor(rowNum, ctx);
 	}
 	
 	/**
 	 * 选择一列
-	 * @param col
+	 * @param col 列，从0开始
 	 * @return
 	 */
 	public ColumnEditor column(int col){
@@ -212,10 +226,10 @@ public class Excel {
 	
 	/**
 	 * 选择一个区域
-	 * @param beginRow 开始行
-	 * @param beginCol	开始列
-	 * @param endRow 结束行
-	 * @param endCol 结束列
+	 * @param beginRow 开始行，从0开始
+	 * @param beginCol	开始列，从0开始
+	 * @param endRow 结束行，从0开始
+	 * @param endCol 结束列，从0开始
 	 * @return
 	 */
 	public RegionEditor region(int beginRow, int beginCol, int endRow, int endCol){
@@ -225,7 +239,7 @@ public class Excel {
 	
 	/**
 	 * 选择一个工作表
-	 * @param index
+	 * @param index，从0开始
 	 * @return
 	 */
 	public SheetEditor sheet(int index){
@@ -288,6 +302,10 @@ public class Excel {
 		return ExcelUtil.getHSSFCell(sheet, row, col);
 	}
 	
+	/**
+	 * 获取处于工作状态的工作表的需要
+	 * @return 工作表序号，从0开始
+	 */
 	public int getWorkingSheetIndex() {
 		return ctx.getWorkingSheetIndex();
 	}

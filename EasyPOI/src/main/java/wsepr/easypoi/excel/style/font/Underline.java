@@ -39,7 +39,18 @@ public enum Underline {
 		return line;
 	}
 	
+	/**
+	 * 根据值返回对应的枚举值
+	 * @param weight
+	 * @return
+	 */
+	public static Underline instance(byte line){
+		for(Underline e : Underline.values()){
+			if(e.getLine() == line){
+				return e;
+			}
+		}
+		return Underline.NONE;
+	}
 	
-
-
 }

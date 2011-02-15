@@ -30,4 +30,17 @@ public enum TypeOffset {
 		return offset;
 	}
 
+	/**
+	 * 根据值返回对应的枚举值
+	 * @param weight
+	 * @return
+	 */
+	public static TypeOffset instance(short offset){
+		for(TypeOffset e : TypeOffset.values()){
+			if(e.getOffset() == offset){
+				return e;
+			}
+		}
+		return TypeOffset.NONE;
+	}
 }

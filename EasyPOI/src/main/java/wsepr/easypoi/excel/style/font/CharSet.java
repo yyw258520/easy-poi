@@ -22,5 +22,19 @@ public enum CharSet {
 	public byte getCharset() {
 		return charset;
 	}
+	
+	/**
+	 * 根据值返回对应的枚举值
+	 * @param weight
+	 * @return
+	 */
+	public static CharSet instance(byte charset){
+		for(CharSet e : CharSet.values()){
+			if(e.getCharset() == charset){
+				return e;
+			}
+		}
+		return CharSet.DEFAULT;
+	}
 
 }

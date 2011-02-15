@@ -3,7 +3,7 @@ package wsepr.easypoi.excel.style.font;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 
 /**
- * 加粗
+ * 字体加粗
  */
 public enum BoldWeight {
 	/**
@@ -24,6 +24,19 @@ public enum BoldWeight {
 
 	public short getWeight() {
 		return weight;
-	}		
+	}
 
+	/**
+	 * 根据值返回对应的枚举值
+	 * @param weight
+	 * @return
+	 */
+	public static BoldWeight instance(short weight){
+		for(BoldWeight e : BoldWeight.values()){
+			if(e.getWeight() == weight){
+				return e;
+			}
+		}
+		return BoldWeight.NORMAL;
+	}
 }

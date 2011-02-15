@@ -1,8 +1,9 @@
 package wsepr.easypoi.excel;
 
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFFont;
-import org.apache.poi.hssf.util.HSSFColor;
+import wsepr.easypoi.excel.style.Align;
+import wsepr.easypoi.excel.style.Color;
+import wsepr.easypoi.excel.style.FillPattern;
+import wsepr.easypoi.excel.style.VAlign;
 
 /**
  * 默认样式
@@ -15,15 +16,15 @@ public class DefaultExcelStyle {
 
 	private String fontName = "宋体";
 
-	private short backgroundColor = HSSFColor.AUTOMATIC.index;
+	private Color backgroundColor = Color.AUTOMATIC;//HSSFColor.AUTOMATIC.index;
 
-	private short fillPattern = HSSFCellStyle.NO_FILL;
+	private FillPattern fillPattern = FillPattern.NO_FILL;//HSSFCellStyle.NO_FILL;
 
-	private short align = HSSFCellStyle.ALIGN_GENERAL;
+	private Align align = Align.GENERAL;//HSSFCellStyle.ALIGN_GENERAL;
 
-	private short vAlign = HSSFCellStyle.VERTICAL_CENTER;
+	private VAlign vAlign = VAlign.CENTER;//HSSFCellStyle.VERTICAL_CENTER;
 
-	private short fontColor = HSSFFont.COLOR_NORMAL;
+	private Color fontColor = Color.AUTOMATIC;//HSSFFont.COLOR_NORMAL;
 
 	private String defaultDatePattern = "yyyy/MM/dd HH:mm:ss";
 	
@@ -31,8 +32,8 @@ public class DefaultExcelStyle {
 	 * 字体大小，默认12
 	 * @param fontSize
 	 */
-	public void setFontSize(short fontSize) {
-		this.fontSize = fontSize;
+	public void setFontSize(int fontSize) {
+		this.fontSize = (short)fontSize;
 	}
 
 	/**
@@ -62,14 +63,14 @@ public class DefaultExcelStyle {
 	 * 背景色，默认HSSFColor.AUTOMATIC.index，即无填充色
 	 * @param backgroundColor 颜色，例如HSSFColor.RED.index
 	 */
-	public void setBackgroundColor(short backgroundColor) {
+	public void setBackgroundColor(Color backgroundColor) {
 		this.backgroundColor = backgroundColor;
 	}
 
 	/**
 	 * 背景色，默认HSSFColor.AUTOMATIC.index，即无色
 	 */
-	public short getBackgroundColor() {
+	public Color getBackgroundColor() {
 		return backgroundColor;
 	}
 
@@ -78,7 +79,7 @@ public class DefaultExcelStyle {
 	 * 要设置填充色必须把该值设置为NO_FILL以外的值
 	 * @param fillPattern 
 	 */
-	public void setFillPattern(short fillPattern) {
+	public void setFillPattern(FillPattern fillPattern) {
 		this.fillPattern = fillPattern;
 	}
 
@@ -86,7 +87,7 @@ public class DefaultExcelStyle {
 	 * 背景色填充样式，默认HSSFCellStyle.NO_FILL，即无填充
 	 * 要设置填充色必须把该值设置为NO_FILL以外的值
 	 */
-	public short getFillPattern() {
+	public FillPattern getFillPattern() {
 		return fillPattern;
 	}
 
@@ -94,14 +95,14 @@ public class DefaultExcelStyle {
 	 * 水平对齐方式，默认是HSSFCellStyle.ALIGN_GENERAL
 	 * @param align 对齐方式，例如HSSFCellStyle.ALIGN_CENTER。可选值：ALIGN_GENERAL, ALIGN_LEFT, ALIGN_CENTER, ALIGN_RIGHT, ALIGN_FILL, ALIGN_JUSTIFY, ALIGN_CENTER_SELECTION
 	 */
-	public void setAlign(short align) {
+	public void setAlign(Align align) {
 		this.align = align;
 	}
 
 	/**
 	 * 水平对齐方式，默认是HSSFCellStyle.ALIGN_GENERAL
 	 */
-	public short getAlign() {
+	public Align getAlign() {
 		return align;
 	}
 
@@ -109,7 +110,7 @@ public class DefaultExcelStyle {
 	 * 垂直对齐方式，默认HSSFCellStyle.VERTICAL_CENTER，即居中
 	 * @param vAlign 对齐方式，例如HSSFCellStyle.VERTICAL_TOP。可选值：VERTICAL_TOP, VERTICAL_CENTER, VERTICAL_BOTTOM, VERTICAL_JUSTIFY
 	 */
-	public void setVAlign(short vAlign) {
+	public void setVAlign(VAlign vAlign) {
 		this.vAlign = vAlign;
 	}
 
@@ -117,7 +118,7 @@ public class DefaultExcelStyle {
 	 * 垂直对齐方式，默认HSSFCellStyle.VERTICAL_CENTER，即居中
 	 * @param vAlign
 	 */
-	public short getVAlign() {
+	public VAlign getVAlign() {
 		return vAlign;
 	}
 
@@ -125,14 +126,14 @@ public class DefaultExcelStyle {
 	 * 字体颜色，默认是HSSFFont.COLOR_NORMAL
 	 * @param fontColor 颜色，例如HSSFColor.RED.index
 	 */
-	public void setFontColor(short fontColor) {
+	public void setFontColor(Color fontColor) {
 		this.fontColor = fontColor;
 	}
 
 	/**
 	 * 字体颜色，默认是HSSFFont.COLOR_NORMAL
 	 */
-	public short getFontColor() {
+	public Color getFontColor() {
 		return fontColor;
 	}
 	
