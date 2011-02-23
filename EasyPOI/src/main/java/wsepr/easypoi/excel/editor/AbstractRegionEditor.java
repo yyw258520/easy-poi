@@ -292,4 +292,48 @@ public abstract class AbstractRegionEditor<T> extends AbstractEditor{
 		cellEditor.rotate(rotation);
 		return (T)this;
 	}
+	
+	/**
+	 * 设置区域内单元格所在列的宽度
+	 * @param width 宽，1表示一个字符好宽度的1/256
+	 * @return
+	 */
+	public T width(int width){
+		CellEditor cellEditor = newTopCellEditor();
+		cellEditor.width(width);
+		return (T)this;
+	}
+	
+	/**
+	 * 增加区域内单元格所在列的宽度
+	 * @param width 要增加的宽度，1表示一个字符好宽度的1/256
+	 * @return
+	 */
+	public T addWidth(int width){
+		CellEditor cellEditor = newTopCellEditor();
+		cellEditor.addWidth(width);
+		return (T)this;
+	}
+	
+	/**
+	 * 设置区域内单元格所在行的高度
+	 * @param height 高，单位是像素
+	 * @return
+	 */
+	public T height(float height){
+		CellEditor cellEditor = newLeftCellEditor();
+		cellEditor.height(height);
+		return (T)this;
+	}
+	
+	/**
+	 * 增加区域单元格所在行的高度
+	 * @param height 要增加的高度，单位是像素
+	 * @return
+	 */
+	public T addHeight(float height){
+		CellEditor cellEditor = newLeftCellEditor();
+		cellEditor.addHeight(height);
+		return (T)this;
+	}
 }

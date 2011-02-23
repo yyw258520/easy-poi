@@ -14,6 +14,7 @@ import org.apache.poi.hssf.usermodel.HSSFComment;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFPatriarch;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
+import org.apache.poi.hssf.usermodel.HSSFRow;
 
 import wsepr.easypoi.excel.ExcelContext;
 import wsepr.easypoi.excel.style.Align;
@@ -417,7 +418,57 @@ public class CellEditor extends AbstractEditor{
 		return this;
 	}
 	
-	//TODO 加上width、addWidth、height和addHeight方法
+	/**
+	 * 设置单元格所在列的宽度
+	 * @param width 宽，1表示一个字符好宽度的1/256
+	 * @return
+	 */
+	public CellEditor width(int width){
+		for (HSSFCell cell : workingCell) {
+			workingSheet.setColumnWidth(cell.getColumnIndex(), width);
+		}
+		return this;
+	}
+	
+	/**
+	 * 增加单元格所在列的宽度
+	 * @param width 要增加的宽度，1表示一个字符好宽度的1/256
+	 * @return
+	 */
+	public CellEditor addWidth(int width){
+		for (HSSFCell cell : workingCell) {
+			int w = workingSheet.getColumnWidth(cell.getColumnIndex());
+			workingSheet.setColumnWidth(cell.getColumnIndex(), width + w);
+		}
+		return this;
+	}
+	
+	/**
+	 * 设置单元格所在行的高度
+	 * @param height 高，单位是像素
+	 * @return
+	 */
+	public CellEditor height(float height){
+		for (HSSFCell cell : workingCell) {
+			HSSFRow row = getRow(cell.getRowIndex());
+			row.setHeightInPoints(height);
+		}
+		return this;
+	}
+	
+	/**
+	 * 增加单元格所在行的高度
+	 * @param height 要增加的高度，单位是像素
+	 * @return
+	 */
+	public CellEditor addHeight(float height){
+		for (HSSFCell cell : workingCell) {
+			HSSFRow row = getRow(cell.getRowIndex());
+			float h = row.getHeightInPoints();
+			row.setHeightInPoints(height + h);
+		}
+		return this;
+	}
 
 	/**
 	 * 更新单元格的样式

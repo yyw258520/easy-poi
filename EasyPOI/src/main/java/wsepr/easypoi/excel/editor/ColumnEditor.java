@@ -47,25 +47,6 @@ public class ColumnEditor extends AbstractRegionEditor<ColumnEditor> {
 	}
 	
 	/**
-	 * 设置列的宽度
-	 * @param width 要设置的宽度。1表示一个文字宽度的1/256
-	 */
-	public ColumnEditor width(int width){
-		workingSheet.setColumnWidth(col, width);
-		return this;
-	}
-	
-	/**
-	 * 在原来宽度基础上增加列的宽度
-	 * @param width 要设置的宽度。1表示一个文字宽度的1/256
-	 */
-	public ColumnEditor addWidth(int width){
-		int w = workingSheet.getColumnWidth(col);
-		workingSheet.setColumnWidth(col, width+w);
-		return this;
-	}
-	
-	/**
 	 * 根据内容自动设置列宽度。自动计算宽度性能比较低，因此建议在操作完数据后调用一次
 	 */
 	public void autoWidth(){
