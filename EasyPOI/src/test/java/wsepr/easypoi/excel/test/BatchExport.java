@@ -10,9 +10,9 @@ import org.apache.commons.lang.RandomStringUtils;
 import wsepr.easypoi.excel.Excel;
 
 public class BatchExport {
-	private final static int DATA_COUNT = 6000;
+	private final static int DATA_COUNT = 60;
 	private final static int FIELD_COUNT = 10;
-	private final static int BATCH_SIZE = 1000;
+	private final static int BATCH_SIZE = DATA_COUNT / 10;
 	private static Excel excel = new Excel();
 	private static SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
 	private static String excelFile = "F:/temp/batch_" + format.format(new Date()) + ".xls";
@@ -49,6 +49,7 @@ public class BatchExport {
 	}
 	
 	private static void export(List<Object[]> data){
+		excel.nextRow();
 		for(int i=0;i<data.size();i++){
 			excel.nextRow().value(data.get(i));
 		}

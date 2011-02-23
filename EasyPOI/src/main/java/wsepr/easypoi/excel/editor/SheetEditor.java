@@ -5,9 +5,13 @@ import org.apache.poi.hssf.usermodel.HSSFHeader;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 
 import wsepr.easypoi.excel.ExcelContext;
+import wsepr.easypoi.excel.editor.listener.CellValueListener;
 import wsepr.easypoi.excel.util.ExcelUtil;
 
-
+/**
+ * 表单编辑器
+ *
+ */
 public class SheetEditor extends AbstractEditor{
 
 	private HSSFSheet sheet;
@@ -162,4 +166,19 @@ public class SheetEditor extends AbstractEditor{
 		return this;
 	}
 	
+	/**
+	 * 添加单元格监听器
+	 * @param listener 监听器，在单元格的值改变时触发
+	 */
+	public void addCellValueListener(CellValueListener listener){
+		ctx.getListenerList(sheetIndex).add(listener);
+	}
+	
+	/**
+	 * 移除单元格监听器
+	 * @param listener 监听器，在单元格的值改变时触发
+	 */
+	public void removeCellValueListener(CellValueListener listener){
+		ctx.getListenerList(sheetIndex).remove(listener);
+	}
 }

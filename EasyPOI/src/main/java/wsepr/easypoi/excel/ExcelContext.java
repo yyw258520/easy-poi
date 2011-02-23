@@ -1,6 +1,8 @@
 package wsepr.easypoi.excel;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -8,6 +10,8 @@ import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFPatriarch;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+
+import wsepr.easypoi.excel.editor.listener.CellValueListener;
 
 /**
  * 存放公共变量
@@ -24,6 +28,10 @@ public final class ExcelContext {
 	private HSSFWorkbook workBook;
 	private HSSFCellStyle tempCellStyle;// 临时的样式
 	private HSSFFont tempFont;// 临时的字体
+	private Excel excel;
+	/**
+	 * 处于工作状态的工作表
+	 */
 	private HSSFSheet workingSheet;
 	/**
 	 * 默认样式
@@ -34,7 +42,12 @@ public final class ExcelContext {
 	 */
 	private int workingSheetIndex = 0;
 	
-	protected ExcelContext(HSSFWorkbook workBook){
+	/**
+	 * 监听器列表
+	 */
+	private Map<Integer, List<CellValueListener>> cellValueListener;
+	
+	protected ExcelContext(Excel excel, HSSFWorkbook workBook){
 		this.workBook = workBook;
 		short numStyle = workBook.getNumCellStyles();
 		for(short i=0; i<numStyle;i++){
@@ -86,7 +99,7 @@ public final class ExcelContext {
 	}
 
 	/**
-	 * 返回Patriarch，每个工作表对有一个Patriarch，Patriarch是所有图形的容器
+	 * 返回Patriarch，每个工作表都有一个Patriarch，Patriarch是所有图形的容器
 	 * 
 	 * @return
 	 */
@@ -130,5 +143,31 @@ public final class ExcelContext {
 
 	public Map<Integer, HSSFFont> getFontCache() {
 		return fontCache;
+	}
+
+	private Map<Integer, List<CellValueListener>> getCellValueListener() {
+		if(cellValueListener == null){
+			cellValueListener = new HashMap<Integer, List<CellValueListener>>();
+		}
+		return cellValueListener;
+	}
+	
+	/**
+	 * 获取指定表单的监听器
+	 * @param sheetIndex
+	 * @return
+	 */
+	public List<CellValueListener> getListenerList(int sheetIndex){
+		Map<Integer, List<CellValueListener>> map = getCellValueListener();
+		List<CellValueListener> listenerList = map.get(sheetIndex);
+		if(listenerList == null){
+			listenerList = new ArrayList<CellValueListener>();
+			map.put(sheetIndex, listenerList);
+		}
+		return listenerList;
+	}
+
+	public Excel getExcel() {
+		return excel;
 	}
 }

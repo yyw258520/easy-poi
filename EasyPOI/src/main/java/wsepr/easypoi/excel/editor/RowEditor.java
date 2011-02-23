@@ -85,6 +85,7 @@ public class RowEditor extends AbstractRegionEditor<RowEditor> {
 	 * @param h 高度，单位像素
 	 * @return
 	 */
+	@Override
 	public RowEditor height(float h){
 		row.setHeightInPoints(h);
 		return this;
@@ -92,12 +93,12 @@ public class RowEditor extends AbstractRegionEditor<RowEditor> {
 	
 	/**
 	 * 获取该行的第col列的单元格
-	 * @param col 列，从0开始
+	 * @param col 列，从0开始。可指定多个
 	 * @return
 	 */
-	public CellEditor cell(int... col){
-		CellEditor cellEditor = new CellEditor(ctx);
-		for(int c : col){
+	public CellEditor cell(int col, int... cols){
+		CellEditor cellEditor = new CellEditor(row.getRowNum(), col, ctx);
+		for(int c : cols){
 			cellEditor.add(row.getRowNum(), c);
 		}
 		return cellEditor;

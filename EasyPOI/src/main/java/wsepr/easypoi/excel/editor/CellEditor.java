@@ -17,6 +17,7 @@ import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 
 import wsepr.easypoi.excel.ExcelContext;
+import wsepr.easypoi.excel.editor.listener.CellValueListener;
 import wsepr.easypoi.excel.style.Align;
 import wsepr.easypoi.excel.style.BorderStyle;
 import wsepr.easypoi.excel.style.Color;
@@ -75,7 +76,7 @@ public class CellEditor extends AbstractEditor{
 	 * @param col 第n列，从0开始
 	 * @return
 	 */
-	public CellEditor add(int row, int col) {
+	protected CellEditor add(int row, int col) {
 		HSSFCell cell = getCell(row, col);
 		workingCell.add(cell);
 		return this;
@@ -89,7 +90,7 @@ public class CellEditor extends AbstractEditor{
 	 * @param col 第n列，从0开始
 	 * @return
 	 */
-	public CellEditor add(RowEditor row, int col) {
+	protected CellEditor add(RowEditor row, int col) {
 		HSSFCell cell = getCell(row.getHSSFRow(), col);
 		workingCell.add(cell);
 		return this;
@@ -103,7 +104,7 @@ public class CellEditor extends AbstractEditor{
 	 * @param col 第n列，从0开始
 	 * @return
 	 */
-	public CellEditor add(int row, ColumnEditor col) {
+	protected CellEditor add(int row, ColumnEditor col) {
 		return add(row, col.getCol());
 	}
 	
@@ -115,7 +116,7 @@ public class CellEditor extends AbstractEditor{
 	 * @param col 第n列，从0开始
 	 * @return
 	 */
-	public CellEditor add(CellEditor cell) {
+	protected CellEditor add(CellEditor cell) {
 		workingCell.addAll(cell.getWorkingCell());
 		return this;
 	}
@@ -469,6 +470,30 @@ public class CellEditor extends AbstractEditor{
 		}
 		return this;
 	}
+	
+	/**
+	 * 获取单元格所在的行
+	 * @return
+	 */
+	public RowEditor row(){
+		return new RowEditor(workingCell.get(0).getRowIndex(), ctx);
+	}
+	
+	/**
+	 * 获取单元格所在的列
+	 * @return
+	 */
+	public ColumnEditor colunm(){
+		return new ColumnEditor(workingCell.get(0).getColumnIndex(), ctx);
+	}
+	
+	/**
+	 * 获取单元格所在的表单
+	 * @return
+	 */
+	public SheetEditor sheet(){
+		return new SheetEditor(workingCell.get(0).getSheet(), ctx);
+	}
 
 	/**
 	 * 更新单元格的样式
@@ -542,6 +567,21 @@ public class CellEditor extends AbstractEditor{
 					cell.setCellType(HSSFCell.CELL_TYPE_STRING);
 				}
 			}
+		}
+		invokeListener(cell, value);
+	}
+	
+	/**
+	 * 调用监听器
+	 * @param cell
+	 * @param value
+	 */
+	private void invokeListener(HSSFCell cell, Object value) {
+		int sheetIndex = workBook.getSheetIndex(cell.getSheet());
+		List<CellValueListener> listeners = ctx.getListenerList(sheetIndex);
+		for (CellValueListener l : listeners) {
+			l.onValueChange(this, value, cell.getRowIndex(),
+					cell.getColumnIndex(), sheetIndex, ctx.getExcel());
 		}
 	}
 	

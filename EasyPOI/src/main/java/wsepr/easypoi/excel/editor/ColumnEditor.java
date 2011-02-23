@@ -56,12 +56,12 @@ public class ColumnEditor extends AbstractRegionEditor<ColumnEditor> {
 	
 	/**
 	 * 获取该列的第row行的单元格
-	 * @param row 列，从0开始
+	 * @param row 列，从0开始。可指定多个
 	 * @return
 	 */
-	public CellEditor cell(int... row){
-		CellEditor cellEditor = new CellEditor(ctx);
-		for(int r : row){
+	public CellEditor cell(int row, int... rows){
+		CellEditor cellEditor = new CellEditor(row, col, ctx);
+		for(int r : rows){
 			cellEditor.add(r, col);
 		}
 		return cellEditor;

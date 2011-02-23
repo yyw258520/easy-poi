@@ -78,7 +78,7 @@ public class Excel {
 				workBook = new HSSFWorkbook();
 			}
 		}
-		ctx = new ExcelContext(workBook);
+		ctx = new ExcelContext(this, workBook);
 		ctx.setDefaultStyle(defaultStyle);
 		//
 		setWorkingSheet(0);
@@ -327,4 +327,5 @@ public class Excel {
 	public int getWorkingSheetIndex() {
 		return ctx.getWorkingSheetIndex();
 	}
+	
 }
