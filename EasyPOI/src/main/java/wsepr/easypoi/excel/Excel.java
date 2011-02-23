@@ -215,12 +215,21 @@ public class Excel {
 	 */
 	public RowEditor nextRow(){
 		int rowNum = ExcelUtil.getLastRowNum(ctx.getWorkingSheet());
-		if(rowNum == 0 && firstRowIsLastRow){
-			firstRowIsLastRow = false;
-		}else{
+		if(!checkEmptyRow(rowNum)){
 			rowNum++;
 		}
 		return new RowEditor(rowNum, ctx);
+	}
+	
+	/**
+	 * 检查指定的行是否空行
+	 * @param rowNum
+	 * @return
+	 */
+	private boolean checkEmptyRow(int rowNum){
+		HSSFRow row = ctx.getWorkingSheet().getRow(rowNum);
+		int lastCell = row != null ? row.getLastCellNum() : 2;
+		return (lastCell == 1 || lastCell == -1);
 	}
 	
 	/**
