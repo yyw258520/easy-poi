@@ -1,8 +1,5 @@
 package wsepr.easypoi.excel.editor;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.util.CellRangeAddress;
 
@@ -98,8 +95,11 @@ public class RowEditor extends AbstractRegionEditor<RowEditor> {
 	 * @param col 列，从0开始
 	 * @return
 	 */
-	public CellEditor cell(int col){
-		CellEditor cellEditor = new CellEditor(row.getRowNum(), col, ctx);
+	public CellEditor cell(int... col){
+		CellEditor cellEditor = new CellEditor(ctx);
+		for(int c : col){
+			cellEditor.add(row.getRowNum(), c);
+		}
 		return cellEditor;
 	}
 	
@@ -166,10 +166,8 @@ public class RowEditor extends AbstractRegionEditor<RowEditor> {
 	}
 
 	@Override
-	protected List<CellRangeAddress> getCellRange() {
-		List<CellRangeAddress> cellRangeList = new ArrayList<CellRangeAddress>();
-		cellRangeList.add(new CellRangeAddress(row.getRowNum(), row.getRowNum(), row.getFirstCellNum(), row.getLastCellNum()));
-		return cellRangeList;
+	protected CellRangeAddress getCellRange() {
+		return new CellRangeAddress(row.getRowNum(), row.getRowNum(), row.getFirstCellNum(), row.getLastCellNum());
 	}
 	
 	protected HSSFRow getHSSFRow(){

@@ -93,6 +93,15 @@ public class Excel {
 		cellStyle.setFillPattern(defaultStyle.getFillPattern().getFillPattern());
 		cellStyle.setAlignment(defaultStyle.getAlign().getAlignment());
 		cellStyle.setVerticalAlignment(defaultStyle.getVAlign().getAlignment());
+		//设置边框样式
+		cellStyle.setBorderBottom(defaultStyle.getBorderStyle().getBorderType());
+		cellStyle.setBorderLeft(defaultStyle.getBorderStyle().getBorderType());
+		cellStyle.setBorderRight(defaultStyle.getBorderStyle().getBorderType());
+		cellStyle.setBorderTop(defaultStyle.getBorderStyle().getBorderType());
+		cellStyle.setBottomBorderColor(defaultStyle.getBorderColor().getIndex());
+		cellStyle.setTopBorderColor(defaultStyle.getBorderColor().getIndex());
+		cellStyle.setLeftBorderColor(defaultStyle.getBorderColor().getIndex());
+		cellStyle.setRightBorderColor(defaultStyle.getBorderColor().getIndex());
 		//默认字体
 		HSSFFont font = cellStyle.getFont(workBook);
 		font.setFontHeightInPoints(defaultStyle.getFontSize());

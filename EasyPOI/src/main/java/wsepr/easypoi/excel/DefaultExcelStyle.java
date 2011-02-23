@@ -1,6 +1,7 @@
 package wsepr.easypoi.excel;
 
 import wsepr.easypoi.excel.style.Align;
+import wsepr.easypoi.excel.style.BorderStyle;
 import wsepr.easypoi.excel.style.Color;
 import wsepr.easypoi.excel.style.FillPattern;
 import wsepr.easypoi.excel.style.VAlign;
@@ -28,6 +29,41 @@ public class DefaultExcelStyle {
 
 	private String defaultDatePattern = "yyyy/MM/dd HH:mm:ss";
 	
+	private Color borderColor = Color.AUTOMATIC;
+	
+	private BorderStyle borderStyle = BorderStyle.NONE;
+	
+	/**
+	 * 边框颜色
+	 * @return
+	 */
+	public Color getBorderColor() {
+		return borderColor;
+	}
+
+	/**
+	 * 边框颜色
+	 */
+	public void setBorderColor(Color borderColor) {
+		this.borderColor = borderColor;
+	}
+
+	/**
+	 * 边框样式
+	 * @return
+	 */
+	public BorderStyle getBorderStyle() {
+		return borderStyle;
+	}
+
+	/**
+	 * 边框样式
+	 * @param borderStyle
+	 */
+	public void setBorderStyle(BorderStyle borderStyle) {
+		this.borderStyle = borderStyle;
+	}
+
 	/**
 	 * 字体大小，默认12
 	 * @param fontSize

@@ -416,6 +416,8 @@ public class CellEditor extends AbstractEditor{
 		}
 		return this;
 	}
+	
+	//TODO 加上width、addWidth、height和addHeight方法
 
 	/**
 	 * 更新单元格的样式

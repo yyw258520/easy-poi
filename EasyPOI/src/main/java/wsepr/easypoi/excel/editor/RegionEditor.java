@@ -6,8 +6,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.imageio.ImageIO;
 
@@ -47,7 +45,7 @@ public class RegionEditor extends AbstractRegionEditor<RegionEditor> {
 					(short) cellRange.getFirstColumn(), cellRange.getFirstRow(), 
 					(short) (cellRange.getLastColumn()+1), cellRange.getLastRow()+1);
 			anchor.setAnchorType(3);
-			HSSFPatriarch patr = ctx.getHSSFPatriarch(this.workingSheet);
+			HSSFPatriarch patr = ctx.getHSSFPatriarch(workingSheet);
 			byteArrayOut = new ByteArrayOutputStream();
 			ImageIO.write(bufferImg, "JPEG", byteArrayOut);
 			int imageIndex = workBook.addPicture(byteArrayOut.toByteArray(),HSSFWorkbook.PICTURE_TYPE_JPEG);
@@ -71,7 +69,7 @@ public class RegionEditor extends AbstractRegionEditor<RegionEditor> {
 	 */
 	@Override
 	protected CellEditor newCellEditor(){
-		CellEditor cellEditor = new CellEditor(this.ctx);
+		CellEditor cellEditor = new CellEditor(ctx);
 		for(int i=cellRange.getFirstRow(); i<=cellRange.getLastRow() ;i++){
 			for(int j=cellRange.getFirstColumn();j<=cellRange.getLastColumn();j++){
 				cellEditor.add(i, j);
@@ -83,7 +81,7 @@ public class RegionEditor extends AbstractRegionEditor<RegionEditor> {
 	@Override
 	protected CellEditor newBottomCellEditor() {
 		//下边框
-		CellEditor cellEditorBottom = new CellEditor(this.ctx);
+		CellEditor cellEditorBottom = new CellEditor(ctx);
 		for(int i=cellRange.getFirstColumn();i<=cellRange.getLastColumn();i++){
 			cellEditorBottom.add(cellRange.getLastRow(), i);
 		}
@@ -93,7 +91,7 @@ public class RegionEditor extends AbstractRegionEditor<RegionEditor> {
 	@Override
 	protected CellEditor newLeftCellEditor() {
 		//左边框
-		CellEditor cellEditorLeft = new CellEditor(this.ctx);
+		CellEditor cellEditorLeft = new CellEditor(ctx);
 		for(int i=cellRange.getFirstRow();i<=cellRange.getLastRow();i++){
 			cellEditorLeft.add(i, cellRange.getFirstColumn());
 		}
@@ -103,7 +101,7 @@ public class RegionEditor extends AbstractRegionEditor<RegionEditor> {
 	@Override
 	protected CellEditor newRightCellEditor() {
 		//右边框
-		CellEditor cellEditorRight = new CellEditor(this.ctx);
+		CellEditor cellEditorRight = new CellEditor(ctx);
 		for(int i=cellRange.getFirstRow();i<=cellRange.getLastRow();i++){
 			cellEditorRight.add(i, cellRange.getLastColumn());
 		}
@@ -113,7 +111,7 @@ public class RegionEditor extends AbstractRegionEditor<RegionEditor> {
 	@Override
 	protected CellEditor newTopCellEditor() {
 		//上边框
-		CellEditor cellEditorTop = new CellEditor(this.ctx);
+		CellEditor cellEditorTop = new CellEditor(ctx);
 		for(int i=cellRange.getFirstColumn();i<=cellRange.getLastColumn();i++){
 			cellEditorTop.add(cellRange.getFirstRow(), i);
 		}
@@ -121,9 +119,7 @@ public class RegionEditor extends AbstractRegionEditor<RegionEditor> {
 	}
 
 	@Override
-	protected List<CellRangeAddress> getCellRange() {
-		List<CellRangeAddress> cellRangeList = new ArrayList<CellRangeAddress>();
-		cellRangeList.add(this.cellRange);
-		return cellRangeList;
+	protected CellRangeAddress getCellRange() {
+		return cellRange;
 	}	
 }

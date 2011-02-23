@@ -1,7 +1,5 @@
 package wsepr.easypoi.excel.editor;
 
-import java.util.List;
-
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.util.CellRangeAddress;
 
@@ -49,7 +47,11 @@ public abstract class AbstractRegionEditor<T> extends AbstractEditor{
 	 */
 	abstract protected CellEditor newRightCellEditor();
 	
-	abstract protected List<CellRangeAddress> getCellRange();
+	/**
+	 * 获取单元格范围，用于合并单元格等操作
+	 * @return
+	 */
+	abstract protected CellRangeAddress getCellRange();
 	
 	/**
 	 * 设置外部四条边框样式和颜色
@@ -232,9 +234,7 @@ public abstract class AbstractRegionEditor<T> extends AbstractEditor{
 	 * @return
 	 */
 	public T merge() {
-		for(CellRangeAddress cellRange : this.getCellRange()){
-			workingSheet.addMergedRegion(cellRange);
-		}
+		workingSheet.addMergedRegion(getCellRange());
 		return (T) this;
 	}
 	
