@@ -189,7 +189,7 @@ public class Excel {
 	}
 
 	/**
-	 * 选择一个单元格
+	 * 操作一个单元格
 	 * 
 	 * @param row 行，从0开始
 	 * @param col 列，从0开始
@@ -201,7 +201,7 @@ public class Excel {
 	}
 
 	/**
-	 * 选择一行
+	 * 操作一行的单元格
 	 * @param row 行，从0开始
 	 * @return
 	 */
@@ -210,10 +210,20 @@ public class Excel {
 	}
 	
 	/**
-	 * 始终选择最后一个空白行，当需要循环插入n行时特别有用
+	 * 操作指定行，从第startCol列开始的单元格
+	 * @param row 行，从0开始
+	 * @param startCol 只操作指定的列之后的单元格
 	 * @return
 	 */
-	public RowEditor nextRow(){
+	public RowEditor row(int row, int startCol){
+		return new RowEditor(row, startCol, ctx);
+	}
+	
+	/**
+	 * 该方法始终返回最后一个空白行的编辑器，当需要循环插入n行时特别有用
+	 * @return
+	 */
+	public RowEditor row(){
 		int rowNum = ExcelUtil.getLastRowNum(ctx.getWorkingSheet());
 		if(!checkEmptyRow(rowNum)){
 			rowNum++;
@@ -233,7 +243,7 @@ public class Excel {
 	}
 	
 	/**
-	 * 选择一列
+	 * 操作一列的单元格
 	 * @param col 列，从0开始
 	 * @return
 	 */
@@ -243,7 +253,18 @@ public class Excel {
 	}
 	
 	/**
-	 * 选择一个区域
+	 * 操作指定列中，从第startRow行
+	 * @param col 列，从0开始
+	 * @param startRow 只操作指定的行之后的单元格
+	 * @return
+	 */
+	public ColumnEditor column(int col, int startRow){
+		ColumnEditor columnEditor = new ColumnEditor(col, startRow, ctx);
+		return columnEditor;
+	}
+	
+	/**
+	 * 操作一个区域的单元格，如合并、插入图片，调整样式等
 	 * @param beginRow 开始行，从0开始
 	 * @param beginCol	开始列，从0开始
 	 * @param endRow 结束行，从0开始
@@ -256,7 +277,7 @@ public class Excel {
 	}
 	
 	/**
-	 * 选择一个工作表
+	 * 操作一个工作表，如设置表名、页眉页脚、打印格式、加密等
 	 * @param index，从0开始
 	 * @return
 	 */

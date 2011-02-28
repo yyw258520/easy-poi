@@ -8,6 +8,7 @@ import java.util.List;
 import org.apache.commons.lang.RandomStringUtils;
 
 import wsepr.easypoi.excel.Excel;
+import wsepr.easypoi.excel.style.Align;
 
 public class BatchExport {
 	private final static int DATA_COUNT = 60;
@@ -25,11 +26,15 @@ public class BatchExport {
 //		} catch (InterruptedException e) {
 //			e.printStackTrace();
 //		}
+		excel.row(0).value(new Object[]{"aabb","aabb","aabb","aabb","aabb"}).merge();
+		excel.row(1).value(new Object[]{"aabb","aabb","aabb","aabb","这是表头"});
 		long start = System.currentTimeMillis();
 		for(int i=BATCH_SIZE;i<=DATA_COUNT;i+=BATCH_SIZE){
 			List<Object[]> data = initData(BATCH_SIZE);
 			export(data);
 		}
+		excel.column(0, 2).align(Align.RIGHT).value(new Object[]{1,2,3,4,5,6}).merge();	
+		excel.sheet().sheetName("abcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabc123455");
 		excel.saveExcel(excelFile);
 		long end = System.currentTimeMillis();
 		System.out.println(end - start);
@@ -49,9 +54,9 @@ public class BatchExport {
 	}
 	
 	private static void export(List<Object[]> data){
-		excel.nextRow();
+		excel.row();
 		for(int i=0;i<data.size();i++){
-			excel.nextRow().value(data.get(i));
+			excel.row().value(data.get(i));
 		}
 	}
 

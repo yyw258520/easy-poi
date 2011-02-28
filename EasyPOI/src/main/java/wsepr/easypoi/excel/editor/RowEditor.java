@@ -8,9 +8,19 @@ import wsepr.easypoi.excel.ExcelContext;
 
 public class RowEditor extends AbstractRegionEditor<RowEditor> {
 	private HSSFRow row;
-	public RowEditor(int row, ExcelContext context) {
+	/**
+	 * 开始列
+	 */
+	private int startCol = 0;
+	
+	public RowEditor(int row, int startCol, ExcelContext context) {
 		super(context);
 		this.row = this.getRow(row);
+		this.startCol = startCol;
+	}
+	
+	public RowEditor(int row, ExcelContext context){
+		this(row, 0, context);
 	}
 
 
@@ -23,7 +33,7 @@ public class RowEditor extends AbstractRegionEditor<RowEditor> {
 	 * @return
 	 */
 	public RowEditor value(Object[] rowData) {
-		value(rowData, 0);
+		value(rowData, startCol);
 		return this;
 	}
 
@@ -52,7 +62,7 @@ public class RowEditor extends AbstractRegionEditor<RowEditor> {
 	 * @return
 	 */
 	public RowEditor insert(Object[] rowData){
-		return insert(rowData, 0);
+		return insert(rowData, startCol);
 	}
 	
 	/**
@@ -134,7 +144,7 @@ public class RowEditor extends AbstractRegionEditor<RowEditor> {
 		CellEditor cellEditor = new CellEditor(ctx);
 		short minColIx = 0;
 		short maxColIx = 0;
-		minColIx = row.getFirstCellNum();
+		minColIx = (short)startCol;//row.getFirstCellNum();
 		maxColIx = row.getLastCellNum();
 		for(int i=minColIx; i< maxColIx; i++){
 			cellEditor.add(row.getRowNum(), i);
@@ -150,7 +160,7 @@ public class RowEditor extends AbstractRegionEditor<RowEditor> {
 	@Override
 	protected CellEditor newLeftCellEditor() {
 		CellEditor cellEditor = new CellEditor(ctx);
-		cellEditor.add(row.getRowNum(), row.getFirstCellNum());
+		cellEditor.add(row.getRowNum(), startCol);
 		return cellEditor;
 	}
 
@@ -168,7 +178,7 @@ public class RowEditor extends AbstractRegionEditor<RowEditor> {
 
 	@Override
 	protected CellRangeAddress getCellRange() {
-		return new CellRangeAddress(row.getRowNum(), row.getRowNum(), row.getFirstCellNum(), row.getLastCellNum());
+		return new CellRangeAddress(row.getRowNum(), row.getRowNum(), startCol, row.getLastCellNum() - 1);
 	}
 	
 	protected HSSFRow getHSSFRow(){

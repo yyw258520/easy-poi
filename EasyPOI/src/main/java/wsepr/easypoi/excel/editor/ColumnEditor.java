@@ -10,9 +10,15 @@ import wsepr.easypoi.excel.util.ExcelUtil;
 public class ColumnEditor extends AbstractRegionEditor<ColumnEditor> {
 
 	private int col = 0;
-	public ColumnEditor(int col, ExcelContext context) {
+	private int startRow = 0;
+	public ColumnEditor(int col,int startRow, ExcelContext context) {
 		super(context);
 		this.col = col;
+		this.startRow = startRow;
+	}
+	
+	public ColumnEditor(int col, ExcelContext context){
+		this(col, 0, context);
 	}
 	
 	/**
@@ -24,7 +30,7 @@ public class ColumnEditor extends AbstractRegionEditor<ColumnEditor> {
 	 * @return
 	 */
 	public ColumnEditor value(Object[] rowData) {
-		value(rowData, 0);
+		value(rowData, startRow);
 		return this;
 	}
 
@@ -99,7 +105,7 @@ public class ColumnEditor extends AbstractRegionEditor<ColumnEditor> {
 	protected CellEditor newCellEditor() {
 		CellEditor cellEditor = new CellEditor(ctx);
 		int lastRowNum = ExcelUtil.getLastRowNum(workingSheet);
-		int firstRowNum = workingSheet.getFirstRowNum();
+		int firstRowNum = startRow;//workingSheet.getFirstRowNum();
 		for(int i=firstRowNum; i<= lastRowNum; i++){
 			HSSFRow row = getRow(i);
 			cellEditor.add(row.getRowNum(), col);
@@ -119,7 +125,7 @@ public class ColumnEditor extends AbstractRegionEditor<ColumnEditor> {
 
 	@Override
 	protected CellEditor newTopCellEditor() {
-		int firstRowNum = workingSheet.getFirstRowNum();
+		int firstRowNum = startRow;//workingSheet.getFirstRowNum();
 		CellEditor cellEditor = new CellEditor(ctx);
 		cellEditor.add(firstRowNum, col);
 		return cellEditor;
@@ -127,7 +133,7 @@ public class ColumnEditor extends AbstractRegionEditor<ColumnEditor> {
 
 	@Override
 	protected CellRangeAddress getCellRange() {
-		int firstRowNum = workingSheet.getFirstRowNum();
+		int firstRowNum = startRow;//workingSheet.getFirstRowNum();
 		int lastRowNum = ExcelUtil.getLastRowNum(workingSheet);
 		return new CellRangeAddress(firstRowNum, lastRowNum, col, col);
 	}

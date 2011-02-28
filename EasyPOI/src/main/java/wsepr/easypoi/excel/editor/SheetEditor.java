@@ -53,12 +53,34 @@ public class SheetEditor extends AbstractEditor{
 	}
 	
 	/**
-	 * 设置工作表名
+	 * 设置工作表名，如果新设置的表名已存在，则会抛出异常。
+	 * 该方法相当于sheetName(String,false)
 	 * @param name 表名
 	 * @return
 	 */
-	public SheetEditor sheetName(String name){
-		workBook.setSheetName(sheetIndex, name);
+	public SheetEditor sheetName(final String name){
+		sheetName(name, false);
+		return this;
+	}
+	
+	/**
+	 * 设置工作表名，当auto设置为true时该方法会自动处理重名的异常
+	 * @param name
+	 * @param auto
+	 * @return
+	 */
+	public SheetEditor sheetName(final String name, boolean auto){
+		if(auto){
+			String newName = new String(name);
+			HSSFSheet sheet = workBook.getSheet(name);
+			while(sheet != null){
+				newName += "_";
+				sheet = workBook.getSheet(newName);
+			}
+			workBook.setSheetName(sheetIndex, newName);
+		}else{
+			workBook.setSheetName(sheetIndex, name);
+		}
 		return this;
 	}
 	

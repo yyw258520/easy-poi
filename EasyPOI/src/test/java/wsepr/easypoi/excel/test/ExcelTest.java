@@ -48,7 +48,7 @@ public class ExcelTest {
 		});
 		
 		for(int i=0;i<10;i++){
-			excel.nextRow().value(new Object[]{"test",1,new Date(), RandomUtils.nextBoolean()});
+			excel.row().value(new Object[]{"test",1,new Date(), RandomUtils.nextBoolean()});
 		}
 		excel.saveExcel(excelFile);
 	}
