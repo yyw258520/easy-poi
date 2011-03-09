@@ -24,9 +24,9 @@ public class ExcelTest {
 		style.setFontSize(10);
 		style.setBorderColor(Color.BLACK);
 		style.setBorderStyle(BorderStyle.THIN);
-		Excel excel = new Excel();
-		excel.cell(0, 0).value(0.5781358).dataFormat("0.00%");
-		excel.cell(0, 1).value(56489643489L).dataFormat("0.00E+00");
+		Excel excel = new Excel("Book1.xls");
+		excel.cell(1, 0).value(0.5781358).dataFormat("0.00%");
+		excel.cell(1, 1).value(56489643489L).dataFormat("0.00E+00");
 		excel.saveExcel(excelFile);
 	}
 }
