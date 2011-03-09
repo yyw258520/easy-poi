@@ -11,6 +11,7 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFClientAnchor;
 import org.apache.poi.hssf.usermodel.HSSFComment;
+import org.apache.poi.hssf.usermodel.HSSFDataFormat;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFPatriarch;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
@@ -416,6 +417,21 @@ public class CellEditor extends AbstractEditor{
 		for (HSSFCell cell : workingCell) {
 			cell.setCellStyle(style);
 		}
+		return this;
+	}
+	
+	public CellEditor dataFormat(String format){
+		short index = HSSFDataFormat.getBuiltinFormat(format);
+		for (HSSFCell cell : workingCell) {
+			HSSFCellStyle style = cell.getCellStyle();
+			tempCellStyle.cloneStyleFrom(style);
+			if(index == -1){
+				HSSFDataFormat dataFormat = ctx.getWorkBook().createDataFormat();
+				index = dataFormat.getFormat(format);
+			}
+			tempCellStyle.setDataFormat(index);
+			updateCellStyle(cell);
+		}		
 		return this;
 	}
 	
