@@ -3,17 +3,11 @@ package wsepr.easypoi.excel.test;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.apache.commons.lang.math.RandomUtils;
-
 import wsepr.easypoi.excel.DefaultExcelStyle;
 import wsepr.easypoi.excel.Excel;
-import wsepr.easypoi.excel.editor.CellEditor;
-import wsepr.easypoi.excel.editor.IFontEditor;
-import wsepr.easypoi.excel.editor.listener.CellValueListener;
 import wsepr.easypoi.excel.style.Align;
 import wsepr.easypoi.excel.style.BorderStyle;
 import wsepr.easypoi.excel.style.Color;
-import wsepr.easypoi.excel.style.font.Font;
 
 public class ExcelTest {
 	/**
@@ -31,25 +25,8 @@ public class ExcelTest {
 		style.setBorderColor(Color.BLACK);
 		style.setBorderStyle(BorderStyle.THIN);
 		Excel excel = new Excel();
-		excel.sheet().addCellValueListener(new CellValueListener() {
-			public void onValueChange(CellEditor cell, Object newValue, int row,
-					int col, int sheetIndex, Excel excel) {
-				if(col == 3){
-					Boolean b = (Boolean)newValue;
-					if(b){
-						cell.font(new IFontEditor() {
-							public void updateFont(Font font) {
-								font.color(Color.RED);
-							}
-						}).row().bgColor(Color.LIGHT_YELLOW);
-					}
-				}
-			}
-		});
-		
-		for(int i=0;i<10;i++){
-			excel.row().value(new Object[]{"test",1,new Date(), RandomUtils.nextBoolean()});
-		}
+		excel.cell(0, 0).value(0.5781358).dataFormat("0.00%");
+		excel.cell(0, 1).value(56489643489L).dataFormat("0.00E+00");
 		excel.saveExcel(excelFile);
 	}
 }
