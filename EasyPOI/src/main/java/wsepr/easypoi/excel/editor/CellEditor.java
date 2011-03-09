@@ -420,6 +420,11 @@ public class CellEditor extends AbstractEditor{
 		return this;
 	}
 	
+	/**
+	 * 设置数据格式
+	 * @param format 格式字符串，如0.00%，0.00E+00，#,##0等，详情请查询excel单元格格式
+	 * @return
+	 */
 	public CellEditor dataFormat(String format){
 		short index = HSSFDataFormat.getBuiltinFormat(format);
 		for (HSSFCell cell : workingCell) {

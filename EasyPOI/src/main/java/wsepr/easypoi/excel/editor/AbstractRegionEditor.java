@@ -336,4 +336,15 @@ public abstract class AbstractRegionEditor<T> extends AbstractEditor{
 		cellEditor.addHeight(height);
 		return (T)this;
 	}
+	
+	/**
+	 * 设置数据格式
+	 * @param format 格式字符串，如0.00%，0.00E+00，#,##0等，详情请查询excel单元格格式
+	 * @return
+	 */
+	public T dataFormat(String format){
+		CellEditor cellEditor = newLeftCellEditor();
+		cellEditor.dataFormat(format);
+		return (T)this;
+	}
 }

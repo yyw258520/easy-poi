@@ -4,6 +4,7 @@ import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.OutputStream;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -49,20 +50,20 @@ public class Excel {
 	}
 
 	/**
-	 * 用一个Excel文件作为模板创建一个Excel
+	 * 用一个Excel文件作为模板创建一个Excel，如果模板文件不存在则创建一个空Excel文件
 	 * 
 	 * @param excelPath
-	 *            模板文件路径，如果模板文件不存在则创建一个空Excel文件
+	 *            模板文件路径，可以是文件绝对路径如C：/excel.xls，或classpath里的文件，如/wsepr/easypoi/excel/test/excel.xls
 	 */
 	public Excel(String excelPath) {
 		this(excelPath, new DefaultExcelStyle());
 	}
 	
 	/**
-	 * 用一个Excel文件作为模板创建一个Excel
+	 * 用一个Excel文件作为模板创建一个Excel，如果模板文件不存在则创建一个空Excel文件
 	 * 
 	 * @param excelPath
-	 *            模板文件路径，如果模板文件不存在则创建一个空Excel文件
+	 *            模板文件路径，可以是文件绝对路径如C：/excel.xls，或classpath里的文件，如/wsepr/easypoi/excel/test/excel.xls
 	 * @param defaultStyle 默认样式
 	 */
 	public Excel(String excelPath, DefaultExcelStyle defaultStyle) {
@@ -119,11 +120,33 @@ public class Excel {
 	 */
 	private HSSFWorkbook readExcel(String excelPath) {
 		HSSFWorkbook result = null;
+		POIFSFileSystem fs;
 		try {
-			POIFSFileSystem fs = new POIFSFileSystem(new FileInputStream(excelPath));
+			//在文件系统上找
+			fs = new POIFSFileSystem(new FileInputStream(excelPath));
 			result = new HSSFWorkbook(fs);
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			try {
+				//classpath绝对路径
+				fs = new POIFSFileSystem(getClass().getResourceAsStream(excelPath));
+				result = new HSSFWorkbook(fs);
+			} catch (Exception e1) {
+				try {
+					//调用者的相对路径
+					InputStream stream = null;
+					StackTraceElement[] st = new Throwable().getStackTrace();
+					for(int i=2;i<st.length;i++){
+						stream = Class.forName(st[i].getClassName()).getResourceAsStream(excelPath);
+						if(stream != null){
+							fs = new POIFSFileSystem(stream);
+							result = new HSSFWorkbook(fs);
+							break;
+						}
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
 		}
 		return result;
 	}
