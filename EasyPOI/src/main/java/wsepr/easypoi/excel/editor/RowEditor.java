@@ -5,7 +5,11 @@ import org.apache.poi.hssf.util.CellRangeAddress;
 
 import wsepr.easypoi.excel.ExcelContext;
 
-
+/**
+ * 行编辑器，可以设置一行的值、样式、数据格式和合并
+ * @author luxiaopan
+ *
+ */
 public class RowEditor extends AbstractRegionEditor<RowEditor> {
 	private HSSFRow row;
 	/**

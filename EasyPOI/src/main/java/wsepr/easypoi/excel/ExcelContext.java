@@ -14,8 +14,8 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import wsepr.easypoi.excel.editor.listener.CellValueListener;
 
 /**
- * 存放公共变量
- * @author q
+ * 存放公共变量，内部使用
+ * @author luxiaopan
  *
  */
 public final class ExcelContext {

@@ -10,7 +10,11 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import wsepr.easypoi.excel.ExcelContext;
 import wsepr.easypoi.excel.util.ExcelUtil;
 
-
+/**
+ * 所有编辑器的基类
+ * @author luxiaopan
+ *
+ */
 public abstract class AbstractEditor {
 	protected HSSFWorkbook workBook;
 	protected HSSFCellStyle tempCellStyle;// 临时的样式

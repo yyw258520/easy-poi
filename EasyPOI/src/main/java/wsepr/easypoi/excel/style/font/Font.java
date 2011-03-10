@@ -5,7 +5,7 @@ import org.apache.poi.hssf.usermodel.HSSFFont;
 import wsepr.easypoi.excel.style.Color;
 
 /**
- * 封装字体
+ * 封装字体，可以设置或获取字体的属性
  *
  */
 public class Font {

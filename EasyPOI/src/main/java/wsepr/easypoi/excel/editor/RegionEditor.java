@@ -16,7 +16,11 @@ import org.apache.poi.hssf.util.CellRangeAddress;
 
 import wsepr.easypoi.excel.ExcelContext;
 
-
+/**
+ * 区域编辑器，可设置一个区域的样式、单元格格式、合并区域或插入图片
+ * @author luxiaopan
+ *
+ */
 public class RegionEditor extends AbstractRegionEditor<RegionEditor> {
 
 	private CellRangeAddress cellRange;

@@ -10,7 +10,12 @@ import wsepr.easypoi.excel.style.Color;
 import wsepr.easypoi.excel.style.FillPattern;
 import wsepr.easypoi.excel.style.VAlign;
 
-
+/**
+ * 区域编辑器（如行、列、区域）的基类
+ * @author luxiaopan
+ *
+ * @param <T>
+ */
 public abstract class AbstractRegionEditor<T> extends AbstractEditor{
 
 	protected AbstractRegionEditor(ExcelContext context) {

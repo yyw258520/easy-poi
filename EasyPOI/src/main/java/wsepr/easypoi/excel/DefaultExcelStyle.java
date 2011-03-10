@@ -7,7 +7,7 @@ import wsepr.easypoi.excel.style.FillPattern;
 import wsepr.easypoi.excel.style.VAlign;
 
 /**
- * 默认样式
+ * 默认样式。当需要改变Excel文件的默认样式时，使用该类的一个对象来初始化Excel
  * 
  * @author luxiaopan
  * 

@@ -6,7 +6,11 @@ import org.apache.poi.hssf.util.CellRangeAddress;
 import wsepr.easypoi.excel.ExcelContext;
 import wsepr.easypoi.excel.util.ExcelUtil;
 
-
+/**
+ * 列编辑器，可以设置一列的值、样式、数据格式和合并
+ * @author luxiaopan
+ *
+ */
 public class ColumnEditor extends AbstractRegionEditor<ColumnEditor> {
 
 	private int col = 0;

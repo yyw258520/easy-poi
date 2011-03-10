@@ -9,7 +9,7 @@ import wsepr.easypoi.excel.editor.listener.CellValueListener;
 import wsepr.easypoi.excel.util.ExcelUtil;
 
 /**
- * 表单编辑器
+ * 表单编辑器，可设置表单的页眉、页脚、打印格式、表名、获取总行数等
  *
  */
 public class SheetEditor extends AbstractEditor{

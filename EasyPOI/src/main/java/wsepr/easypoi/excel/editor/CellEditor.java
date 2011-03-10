@@ -26,7 +26,11 @@ import wsepr.easypoi.excel.style.FillPattern;
 import wsepr.easypoi.excel.style.VAlign;
 import wsepr.easypoi.excel.style.font.Font;
 
-
+/**
+ * 单元格编辑器，可以设置单元格的值、样式、数据格式、批注等
+ * @author luxiaopan
+ *
+ */
 public class CellEditor extends AbstractEditor{
 	private List<HSSFCell> workingCell = new ArrayList<HSSFCell>(2);
 

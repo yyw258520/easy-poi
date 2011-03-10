@@ -24,6 +24,7 @@ import wsepr.easypoi.excel.util.ExcelUtil;
 
 
 /**
+ * 核心类，能获取所有编辑器的实例
  * 建议使用POI 3.2以上
  * 
  * @author luxiaopan
