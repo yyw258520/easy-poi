@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="javadoc">
+    <target name="javadoc">
+        <javadoc encoding="UTF-8" charset="UTF-8" access="protected" author="false" classpath="C:\Documents and Settings\Administrator\.m2\repository\log4j\log4j\1.2.14\log4j-1.2.14.jar;C:\Documents and Settings\Administrator\.m2\repository\net\sourceforge\jexcelapi\jxl\2.6.10\jxl-2.6.10.jar;C:\Documents and Settings\Administrator\.m2\repository\commons-logging\commons-logging\1.1\commons-logging-1.1.jar;C:\Documents and Settings\Administrator\.m2\repository\commons-lang\commons-lang\2.6\commons-lang-2.6.jar;../target/test-classes;C:\Documents and Settings\Administrator\.m2\repository\org\apache\poi\poi\3.2-FINAL\poi-3.2-FINAL.jar" destdir="" doctitle="Easy POI 0.1.2" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" source="1.5" sourcefiles="../src/main/java/wsepr/easypoi/excel/Excel.java,../src/main/java/wsepr/easypoi/excel/ExcelContext.java,../src/main/java/wsepr/easypoi/excel/DefaultExcelStyle.java" sourcepath="../src/main/java;../src/main/resources" splitindex="true" use="true" version="true"/>
+    </target>
+</project>
