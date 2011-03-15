@@ -11,7 +11,6 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 
@@ -309,7 +308,7 @@ public class Excel {
 		if(index < 0){
 			index = 0;
 		}
-		SheetEditor sheetEditor = new SheetEditor(getHSSFSheet(index), ctx);
+		SheetEditor sheetEditor = new SheetEditor(ExcelUtil.getHSSFSheet(ctx.getWorkBook(), index), ctx);
 		return sheetEditor;
 	}
 	
@@ -334,9 +333,9 @@ public class Excel {
 	 * @param index 工作表序号，从0开始
 	 * @return
 	 */
-	public HSSFSheet getHSSFSheet(int index){
-		return ExcelUtil.getHSSFSheet(ctx.getWorkBook(), index);
-	}
+//	public HSSFSheet getHSSFSheet(int index){
+//		return ExcelUtil.getHSSFSheet(ctx.getWorkBook(), index);
+//	}
 	
 	/**
 	 * 获取POI的行对象
@@ -346,10 +345,10 @@ public class Excel {
 	 *            行，从0开始
 	 * @return 指定行的对象
 	 */
-	public HSSFRow getHSSFRow(int index, int row) {
-		HSSFSheet sheet = getHSSFSheet(index);
-		return ExcelUtil.getHSSFRow(sheet, row);
-	}
+//	public HSSFRow getHSSFRow(int index, int row) {
+//		HSSFSheet sheet = getHSSFSheet(index);
+//		return ExcelUtil.getHSSFRow(sheet, row);
+//	}
 	
 	/**
 	 * 获取POI的单元格对象
@@ -360,10 +359,10 @@ public class Excel {
 	 *            列，从0开始
 	 * @return row行col列的单元格对象
 	 */
-	protected HSSFCell getHSSFCell(int index, int row, int col) {
-		HSSFSheet sheet = getHSSFSheet(index);
-		return ExcelUtil.getHSSFCell(sheet, row, col);
-	}
+//	protected HSSFCell getHSSFCell(int index, int row, int col) {
+//		HSSFSheet sheet = getHSSFSheet(index);
+//		return ExcelUtil.getHSSFCell(sheet, row, col);
+//	}
 	
 	/**
 	 * 获取处于工作状态的工作表的需要
