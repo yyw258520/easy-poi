@@ -1,7 +1,6 @@
 package wsepr.easypoi.excel.test;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import wsepr.easypoi.excel.Excel;
 
 public class Test {
 
@@ -11,38 +10,11 @@ public class Test {
 	 * @throws SecurityException 
 	 */
 	public static void main(String[] args){
-		Test test = new Test();
-		
-		try {
-			Method say = Test.class.getMethod("say", String.class, int.class);
-			long start = System.currentTimeMillis();
-			for(int i=0;i<1000000;i++){
-				say.invoke(test,"hello", 5);
-			}
-			long end = System.currentTimeMillis();
-			System.out.println(end - start);
-			start = System.currentTimeMillis();
-			for(int i=0;i<1000000;i++){
-				test.say("hello",5);
-			}
-			end = System.currentTimeMillis();
-			System.out.println(end - start);
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NoSuchMethodException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		Excel excel = new Excel("F:/temp/1.xls");
+//		for(int i=0;i<excel.sheet().getLastRowNum();i++){
+//			System.out.println(excel.row(i));
+//		}
+		System.out.println(excel.column(1,1));
 	}
 	
 	public void say(String hello, int n){
