@@ -12,6 +12,7 @@ import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFClientAnchor;
 import org.apache.poi.hssf.usermodel.HSSFComment;
 import org.apache.poi.hssf.usermodel.HSSFDataFormat;
+import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFPatriarch;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
@@ -71,6 +72,38 @@ public class CellEditor extends AbstractEditor{
 			this.setCellValue(cell, value, pattern);
 		}
 		return this;
+	}
+	
+	/**
+	 * 读取单元格的值
+	 * @return
+	 */
+	public Object value(){
+		if(workingCell.size() == 1){
+			return this.getCellValue(workingCell.get(0));
+		}else{
+			Object[] vals = new Object[workingCell.size()];
+			int i=0;
+			for (HSSFCell cell : workingCell) {
+				vals[i++] = this.getCellValue(cell);
+			}
+			return vals;
+		}		
+	}
+	
+	/**
+	 * 把单元格的值转换成字符串
+	 */
+	@Override
+	public String toString(){
+		StringBuilder str = new StringBuilder();
+		for (HSSFCell cell : workingCell) {
+			str.append(cell.toString()).append("\t");
+		}
+		if(str.length() > 0){
+			str.deleteCharAt(str.length() - 1);
+		}
+		return str.toString();
 	}
 
 	/**
@@ -519,6 +552,17 @@ public class CellEditor extends AbstractEditor{
 	public SheetEditor sheet(){
 		return new SheetEditor(workingCell.get(0).getSheet(), ctx);
 	}
+	
+	/**
+	 * 转换为POI的对象
+	 * @return HSSFCell
+	 */
+	public HSSFCell toHSSFCell(){
+		if(workingCell.size() > 0){
+			return workingCell.get(0);
+		}
+		return null;
+	}
 
 	/**
 	 * 更新单元格的样式
@@ -594,6 +638,35 @@ public class CellEditor extends AbstractEditor{
 			}
 		}
 		invokeListener(cell, value);
+	}
+	
+	/**
+	 * 获取单元格的值
+	 * @param cell
+	 * @return
+	 */
+	private Object getCellValue(HSSFCell cell){
+		int cellType = cell.getCellType();
+		switch(cellType){
+		case HSSFCell.CELL_TYPE_BLANK:
+            return "";
+        case HSSFCell.CELL_TYPE_BOOLEAN:
+            return cell.getBooleanCellValue();
+        case HSSFCell.CELL_TYPE_ERROR:
+            return cell.getErrorCellValue();
+        case HSSFCell.CELL_TYPE_FORMULA:
+            return cell.getCellFormula();
+        case HSSFCell.CELL_TYPE_NUMERIC:
+            if (HSSFDateUtil.isCellDateFormatted(cell)) {                
+                return cell.getDateCellValue();
+            } else {
+                return cell.getNumericCellValue();
+            }
+        case HSSFCell.CELL_TYPE_STRING:
+            return cell.getRichStringCellValue().toString();
+        default:
+            return "";
+		}
 	}
 	
 	/**

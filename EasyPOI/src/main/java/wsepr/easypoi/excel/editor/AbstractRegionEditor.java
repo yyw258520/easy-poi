@@ -352,4 +352,26 @@ public abstract class AbstractRegionEditor<T> extends AbstractEditor{
 		cellEditor.dataFormat(format);
 		return (T)this;
 	}
+	
+	/**
+	 * 获取所有单元格的值
+	 * @return 包含所有单元格值的数组
+	 */
+	public Object[] value(){
+		CellEditor cellEditor = newCellEditor();
+		if(cellEditor.getWorkingCell().size() == 1){
+			return new Object[]{cellEditor.value()};
+		}else{
+			return (Object[]) cellEditor.value();
+		}
+	}
+	
+	/**
+	 * 把所有单元格的值转换成字符串，多个值之间用\t分隔
+	 */
+	@Override
+	public String toString(){
+		CellEditor cellEditor = newCellEditor();
+		return cellEditor.toString();
+	}
 }

@@ -119,6 +119,14 @@ public class RowEditor extends AbstractRegionEditor<RowEditor> {
 	}
 	
 	/**
+	 * 转换为POI的对象
+	 * @return HSSFRow
+	 */
+	public HSSFRow toHSSFRow(){
+		return row;
+	}
+	
+	/**
 	 * 插入数据
 	 * 
 	 * @param rowData

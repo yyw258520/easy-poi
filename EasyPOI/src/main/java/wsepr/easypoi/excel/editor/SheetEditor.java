@@ -203,4 +203,12 @@ public class SheetEditor extends AbstractEditor{
 	public void removeCellValueListener(CellValueListener listener){
 		ctx.getListenerList(sheetIndex).remove(listener);
 	}
+	
+	/**
+	 * 转换为POI的对象
+	 * @return HSSFSheet
+	 */
+	public HSSFSheet toHSSFSheet(){
+		return sheet;
+	}
 }
