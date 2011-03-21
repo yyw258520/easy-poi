@@ -32,7 +32,6 @@ import wsepr.easypoi.excel.util.ExcelUtil;
 public class Excel {
 	
 	private ExcelContext ctx;
-	private boolean firstRowIsLastRow = true;
 	
 	/**
 	 * 新建一个Excel文件
@@ -327,42 +326,6 @@ public class Excel {
 	public HSSFWorkbook getWorkBook() {
 		return ctx.getWorkBook();
 	}
-
-	/**
-	 * 获取POI的表对象
-	 * @param index 工作表序号，从0开始
-	 * @return
-	 */
-//	public HSSFSheet getHSSFSheet(int index){
-//		return ExcelUtil.getHSSFSheet(ctx.getWorkBook(), index);
-//	}
-	
-	/**
-	 * 获取POI的行对象
-	 * 
-	 * @param index 工作表序号，从0开始
-	 * @param row
-	 *            行，从0开始
-	 * @return 指定行的对象
-	 */
-//	public HSSFRow getHSSFRow(int index, int row) {
-//		HSSFSheet sheet = getHSSFSheet(index);
-//		return ExcelUtil.getHSSFRow(sheet, row);
-//	}
-	
-	/**
-	 * 获取POI的单元格对象
-	 * @param index 工作表序号，从0开始
-	 * @param row
-	 *            行，从0开始
-	 * @param col
-	 *            列，从0开始
-	 * @return row行col列的单元格对象
-	 */
-//	protected HSSFCell getHSSFCell(int index, int row, int col) {
-//		HSSFSheet sheet = getHSSFSheet(index);
-//		return ExcelUtil.getHSSFCell(sheet, row, col);
-//	}
 	
 	/**
 	 * 获取处于工作状态的工作表的需要
