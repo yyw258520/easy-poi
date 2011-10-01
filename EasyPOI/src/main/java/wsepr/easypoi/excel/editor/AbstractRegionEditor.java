@@ -1,7 +1,7 @@
 package wsepr.easypoi.excel.editor;
 
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.util.CellRangeAddress;
+import org.apache.poi.ss.util.CellRangeAddress;
 
 import wsepr.easypoi.excel.ExcelContext;
 import wsepr.easypoi.excel.style.Align;
@@ -65,8 +65,9 @@ public abstract class AbstractRegionEditor<T> extends AbstractEditor{
 	 *            样式
 	 * @param borderColor
 	 *            颜色
-	 * @return
+	 * @return 返回编辑器，以供链式调用
 	 */
+	@SuppressWarnings("unchecked")
 	public T borderOuter(BorderStyle borderStyle, Color borderColor){
 		this.borderBottom(borderStyle, borderColor);
 		this.borderLeft(borderStyle, borderColor);
@@ -82,8 +83,9 @@ public abstract class AbstractRegionEditor<T> extends AbstractEditor{
 	 *            样式
 	 * @param borderColor
 	 *            颜色
-	 * @return
+	 * @return 返回编辑器，以供链式调用
 	 */
+	@SuppressWarnings("unchecked")
 	public T borderFull(BorderStyle borderStyle, Color borderColor){
 		CellEditor cellEditor = newCellEditor();
 		cellEditor.border(borderStyle, borderColor);
@@ -97,8 +99,9 @@ public abstract class AbstractRegionEditor<T> extends AbstractEditor{
 	 *            样式
 	 * @param borderColor
 	 *            颜色
-	 * @return
+	 * @return 返回编辑器，以供链式调用
 	 */
+	@SuppressWarnings("unchecked")
 	public T borderLeft(BorderStyle borderStyle, Color borderColor){
 		//左边框
 		CellEditor cellEditorLeft = this.newLeftCellEditor();
@@ -113,8 +116,9 @@ public abstract class AbstractRegionEditor<T> extends AbstractEditor{
 	 *            样式
 	 * @param borderColor
 	 *            颜色
-	 * @return
+	 * @return 返回编辑器，以供链式调用
 	 */
+	@SuppressWarnings("unchecked")
 	public T borderRight(BorderStyle borderStyle, Color borderColor){
 		//右边框
 		CellEditor cellEditorRight = this.newRightCellEditor();
@@ -129,8 +133,9 @@ public abstract class AbstractRegionEditor<T> extends AbstractEditor{
 	 *            样式
 	 * @param borderColor
 	 *            颜色
-	 * @return
+	 * @return 返回编辑器，以供链式调用
 	 */
+	@SuppressWarnings("unchecked")
 	public T borderTop(BorderStyle borderStyle, Color borderColor){
 		//上边框
 		CellEditor cellEditorTop = this.newTopCellEditor();
@@ -145,8 +150,9 @@ public abstract class AbstractRegionEditor<T> extends AbstractEditor{
 	 *            样式
 	 * @param borderColor
 	 *            颜色
-	 * @return
+	 * @return 返回编辑器，以供链式调用
 	 */
+	@SuppressWarnings("unchecked")
 	public T borderBottom(BorderStyle borderStyle, Color borderColor){
 		//下边框
 		CellEditor cellEditorBottom = this.newBottomCellEditor();
@@ -159,8 +165,9 @@ public abstract class AbstractRegionEditor<T> extends AbstractEditor{
 	 * 
 	 * @param fontEditor
 	 *            实现IFontEditor接口
-	 * @return
+	 * @return 返回编辑器，以供链式调用
 	 */
+	@SuppressWarnings("unchecked")
 	public T font(IFontEditor fontEditor) {
 		CellEditor cellEditor = newCellEditor();
 		cellEditor.font(fontEditor);
@@ -172,8 +179,9 @@ public abstract class AbstractRegionEditor<T> extends AbstractEditor{
 	 * 
 	 * @param bg
 	 *            颜色，例如HSSFColor.RED.index
-	 * @return
+	 * @return 返回编辑器，以供链式调用
 	 */
+	@SuppressWarnings("unchecked")
 	public T bgColor(Color bg) {
 		CellEditor cellEditor = newCellEditor();
 		cellEditor.bgColor(bg);
@@ -192,8 +200,9 @@ public abstract class AbstractRegionEditor<T> extends AbstractEditor{
 	 *            THICK_FORWARD_DIAG, BIG_SPOTS, BRICKS, THIN_HORZ_BANDS,
 	 *            THIN_VERT_BANDS, THIN_BACKWARD_DIAG, THIN_FORWARD_DIAG,
 	 *            SQUARES, DIAMONDS
-	 * @return
+	 * @return 返回编辑器，以供链式调用
 	 */
+	@SuppressWarnings("unchecked")
 	public T bgColor(Color bg, FillPattern fillPattern) {
 		CellEditor cellEditor = newCellEditor();
 		cellEditor.bgColor(bg, fillPattern);
@@ -203,8 +212,9 @@ public abstract class AbstractRegionEditor<T> extends AbstractEditor{
 	/**
 	 * 设置水平对齐方式
 	 * @param align 对齐方式，例如HSSFCellStyle.ALIGN_CENTER。可选值：ALIGN_GENERAL, ALIGN_LEFT, ALIGN_CENTER, ALIGN_RIGHT, ALIGN_FILL, ALIGN_JUSTIFY, ALIGN_CENTER_SELECTION
-	 * @return
+	 * @return 返回编辑器，以供链式调用
 	 */
+	@SuppressWarnings("unchecked")
 	public T align(Align align){
 		CellEditor cellEditor = newCellEditor();
 		cellEditor.align(align);
@@ -214,8 +224,9 @@ public abstract class AbstractRegionEditor<T> extends AbstractEditor{
 	/**
 	 * 设置垂直对齐方式
 	 * @param align 对齐方式，例如HSSFCellStyle.VERTICAL_CENTER。可选值：VERTICAL_TOP, VERTICAL_CENTER, VERTICAL_BOTTOM, VERTICAL_JUSTIFY
-	 * @return
+	 * @return 返回编辑器，以供链式调用
 	 */
+	@SuppressWarnings("unchecked")
 	public T vAlign(VAlign align){
 		CellEditor cellEditor = newCellEditor();
 		cellEditor.vAlign(align);
@@ -225,8 +236,9 @@ public abstract class AbstractRegionEditor<T> extends AbstractEditor{
 	/**
 	 * 是否自动换行。
 	 * @param autoWarp true自动换行，false不换行
-	 * @return
+	 * @return 返回编辑器，以供链式调用
 	 */
+	@SuppressWarnings("unchecked")
 	public T warpText(boolean autoWarp){
 		CellEditor cellEditor = newCellEditor();
 		cellEditor.warpText(autoWarp);
@@ -236,8 +248,9 @@ public abstract class AbstractRegionEditor<T> extends AbstractEditor{
 	/**
 	 * 合并区间，注意：合并区间可能导致区间内一些单元格的值丢失
 	 * 
-	 * @return
+	 * @return 返回编辑器，以供链式调用
 	 */
+	@SuppressWarnings("unchecked")
 	public T merge() {
 		workingSheet.addMergedRegion(getCellRange());
 		return (T) this;
@@ -246,8 +259,9 @@ public abstract class AbstractRegionEditor<T> extends AbstractEditor{
 	/**
 	 * 设置自定义的样式
 	 * @param style 样式
-	 * @return
+	 * @return 返回编辑器，以供链式调用
 	 */
+	@SuppressWarnings("unchecked")
 	public T style(HSSFCellStyle style){
 		CellEditor cellEditor = newCellEditor();
 		cellEditor.style(style);
@@ -257,8 +271,9 @@ public abstract class AbstractRegionEditor<T> extends AbstractEditor{
 	/**
 	 * 是否隐藏公式，只有给工作表设置密码后，该设置才生效
 	 * @param hidden true隐藏，false显示
-	 * @return
+	 * @return 返回编辑器，以供链式调用
 	 */
+	@SuppressWarnings("unchecked")
 	public T hidden(boolean hidden){
 		CellEditor cellEditor = newCellEditor();
 		cellEditor.hidden(hidden);
@@ -268,8 +283,9 @@ public abstract class AbstractRegionEditor<T> extends AbstractEditor{
 	/**
 	 * 设置缩进
 	 * @param indent
-	 * @return
+	 * @return 返回编辑器，以供链式调用
 	 */
+	@SuppressWarnings("unchecked")
 	public T indent(int indent){
 		CellEditor cellEditor = newCellEditor();
 		cellEditor.indent(indent);
@@ -279,8 +295,9 @@ public abstract class AbstractRegionEditor<T> extends AbstractEditor{
 	/**
 	 * 是否锁定，锁定后用户将不能编辑该单元格。只有给工作表设置密码后，该设置才生效
 	 * @param locked true锁定，false解锁
-	 * @return
+	 * @return 返回编辑器，以供链式调用
 	 */
+	@SuppressWarnings("unchecked")
 	public T lock(boolean locked){
 		CellEditor cellEditor = newCellEditor();
 		cellEditor.lock(locked);
@@ -290,8 +307,9 @@ public abstract class AbstractRegionEditor<T> extends AbstractEditor{
 	/**
 	 * 设置文字旋转角度
 	 * @param rotation 角度，-90度至90度
-	 * @return
+	 * @return 返回编辑器，以供链式调用
 	 */
+	@SuppressWarnings("unchecked")
 	public T rotate(int rotation){
 		CellEditor cellEditor = newCellEditor();
 		cellEditor.rotate(rotation);
@@ -301,8 +319,9 @@ public abstract class AbstractRegionEditor<T> extends AbstractEditor{
 	/**
 	 * 设置区域内单元格所在列的宽度
 	 * @param width 宽，1表示一个字符好宽度的1/256
-	 * @return
+	 * @return 返回编辑器，以供链式调用
 	 */
+	@SuppressWarnings("unchecked")
 	public T width(int width){
 		CellEditor cellEditor = newTopCellEditor();
 		cellEditor.width(width);
@@ -312,8 +331,9 @@ public abstract class AbstractRegionEditor<T> extends AbstractEditor{
 	/**
 	 * 增加区域内单元格所在列的宽度
 	 * @param width 要增加的宽度，1表示一个字符好宽度的1/256
-	 * @return
+	 * @return 返回编辑器，以供链式调用
 	 */
+	@SuppressWarnings("unchecked")
 	public T addWidth(int width){
 		CellEditor cellEditor = newTopCellEditor();
 		cellEditor.addWidth(width);
@@ -323,8 +343,9 @@ public abstract class AbstractRegionEditor<T> extends AbstractEditor{
 	/**
 	 * 设置区域内单元格所在行的高度
 	 * @param height 高，单位是像素
-	 * @return
+	 * @return 返回编辑器，以供链式调用
 	 */
+	@SuppressWarnings("unchecked")
 	public T height(float height){
 		CellEditor cellEditor = newLeftCellEditor();
 		cellEditor.height(height);
@@ -334,8 +355,9 @@ public abstract class AbstractRegionEditor<T> extends AbstractEditor{
 	/**
 	 * 增加区域单元格所在行的高度
 	 * @param height 要增加的高度，单位是像素
-	 * @return
+	 * @return 返回编辑器，以供链式调用
 	 */
+	@SuppressWarnings("unchecked")
 	public T addHeight(float height){
 		CellEditor cellEditor = newLeftCellEditor();
 		cellEditor.addHeight(height);
@@ -345,8 +367,9 @@ public abstract class AbstractRegionEditor<T> extends AbstractEditor{
 	/**
 	 * 设置数据格式
 	 * @param format 格式字符串，如0.00%，0.00E+00，#,##0等，详情请查询excel单元格格式
-	 * @return
+	 * @return 返回编辑器，以供链式调用
 	 */
+	@SuppressWarnings("unchecked")
 	public T dataFormat(String format){
 		CellEditor cellEditor = newLeftCellEditor();
 		cellEditor.dataFormat(format);
@@ -373,5 +396,39 @@ public abstract class AbstractRegionEditor<T> extends AbstractEditor{
 	public String toString(){
 		CellEditor cellEditor = newCellEditor();
 		return cellEditor.toString();
+	}
+	
+	/**
+	 * 加粗字体
+	 * @return 返回编辑器，以供链式调用
+	 */	
+	@SuppressWarnings("unchecked")
+	public T bold(){
+		CellEditor cellEditor = newCellEditor();
+		cellEditor.bold();
+		return (T)this;
+	}
+	
+	/**
+	 * 设置字体颜色
+	 * @param color
+	 * @return 返回编辑器，以供链式调用
+	 */
+	@SuppressWarnings("unchecked")
+	public T color(Color color){
+		CellEditor cellEditor = newCellEditor();
+		cellEditor.color(color);
+		return (T)this;
+	}
+	
+	/**
+	 * 设置斜体
+	 * @return 返回编辑器，以供链式调用
+	 */
+	@SuppressWarnings("unchecked")
+	public T italic(){
+		CellEditor cellEditor = newCellEditor();
+		cellEditor.italic();
+		return (T)this;
 	}
 }

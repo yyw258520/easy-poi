@@ -29,6 +29,10 @@ public enum CharSet {
 	 * @return
 	 */
 	public static CharSet instance(byte charset){
+		return instance((int)charset);
+	}
+	
+	public static CharSet instance(int charset){
 		for(CharSet e : CharSet.values()){
 			if(e.getCharset() == charset){
 				return e;

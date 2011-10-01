@@ -1,7 +1,6 @@
 package wsepr.easypoi.excel.editor;
 
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,6 +18,10 @@ import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 
 import wsepr.easypoi.excel.ExcelContext;
+import wsepr.easypoi.excel.editor.font.BoldFontEditor;
+import wsepr.easypoi.excel.editor.font.FontColorEditor;
+import wsepr.easypoi.excel.editor.font.FontHeightEditor;
+import wsepr.easypoi.excel.editor.font.ItalicFontEditor;
 import wsepr.easypoi.excel.editor.listener.CellValueListener;
 import wsepr.easypoi.excel.style.Align;
 import wsepr.easypoi.excel.style.BorderStyle;
@@ -33,6 +36,11 @@ import wsepr.easypoi.excel.style.font.Font;
  *
  */
 public class CellEditor extends AbstractEditor{
+	private static ItalicFontEditor italicFont = new ItalicFontEditor();
+	private static BoldFontEditor boldFont = new BoldFontEditor();
+	private static FontColorEditor fontColor = new FontColorEditor();
+	private static FontHeightEditor fontHeight = new FontHeightEditor();
+	
 	private List<HSSFCell> workingCell = new ArrayList<HSSFCell>(2);
 
 	public CellEditor(int row, int col, ExcelContext context) {
@@ -48,7 +56,7 @@ public class CellEditor extends AbstractEditor{
 	/**
 	 * 写入内容
 	 * 
-	 * @param value
+	 * @param value 内容，可以是基本类型、String、Date，其他对象会转换成字符串
 	 * @return
 	 */
 	public CellEditor value(Object value) {
@@ -59,15 +67,15 @@ public class CellEditor extends AbstractEditor{
 	}
 
 	/**
-	 * 写入日期
+	 * 写入内容，并设置单元格格式
 	 * 
 	 * @param value
-	 *            日期
+	 *            内容，可以是基本类型、String、Date，其他对象会转换成字符串
 	 * @param pattern
-	 *            格式化字符串
+	 *            单元格格式
 	 * @return
 	 */
-	public CellEditor value(Date value, String pattern) {
+	public CellEditor value(Object value, String pattern) {
 		for (HSSFCell cell : workingCell) {
 			this.setCellValue(cell, value, pattern);
 		}
@@ -290,6 +298,46 @@ public class CellEditor extends AbstractEditor{
 		}
 		return this;
 	}
+	
+	/**
+	 * 加粗字体
+	 * @return
+	 */	
+	public CellEditor bold(){
+		font(boldFont);
+		return this;
+	}
+	
+	/**
+	 * 设置字体大小
+	 * @param height 字体高，像素
+	 * @return
+	 */
+	public CellEditor fontHeightInPoint(int height){
+		fontHeight.setHeight(height);
+		font(fontHeight);
+		return this;
+	}
+	
+	/**
+	 * 设置字体颜色
+	 * @param color
+	 * @return
+	 */
+	public CellEditor color(Color color){
+		fontColor.setColor(color);
+		font(fontColor);
+		return this;
+	}
+	
+	/**
+	 * 设置斜体
+	 * @return
+	 */
+	public CellEditor italic(){
+		font(italicFont);
+		return this;
+	}
 
 	/**
 	 * 设置背景色
@@ -483,8 +531,25 @@ public class CellEditor extends AbstractEditor{
 	 * @return
 	 */
 	public CellEditor width(int width){
+//		for (HSSFCell cell : workingCell) {
+//			workingSheet.setColumnWidth(cell.getColumnIndex(), width);
+//		}
+//		return this;
+		return width(new int[]{width});
+	}
+	
+	/**
+	 * 依次设置所有单元格的宽度
+	 * @param width 宽，1表示一个字符好宽度的1/256
+	 * @return
+	 */
+	protected CellEditor width(int[] widths){
+		int i=-1;
 		for (HSSFCell cell : workingCell) {
-			workingSheet.setColumnWidth(cell.getColumnIndex(), width);
+			if(i>=widths.length-1){
+				break;
+			}
+			workingSheet.setColumnWidth(cell.getColumnIndex(), widths[++i]);
 		}
 		return this;
 	}
@@ -511,6 +576,23 @@ public class CellEditor extends AbstractEditor{
 		for (HSSFCell cell : workingCell) {
 			HSSFRow row = getRow(cell.getRowIndex());
 			row.setHeightInPoints(height);
+		}
+		return this;
+	}
+	
+	/**
+	 * 依次设置所有单元格的高度
+	 * @param heights
+	 * @return
+	 */
+	protected CellEditor height(float[] heights){
+		int i=-1;
+		for (HSSFCell cell : workingCell) {
+			if(i>=heights.length-1){
+				break;
+			}
+			HSSFRow row = getRow(cell.getRowIndex());
+			row.setHeightInPoints(heights[++i]);
 		}
 		return this;
 	}
@@ -563,6 +645,17 @@ public class CellEditor extends AbstractEditor{
 		}
 		return null;
 	}
+	
+	/**
+	 * 把单元格设置为激活状态
+	 * @return
+	 */
+	public CellEditor activeCell(){
+		if(workingCell.size() > 0){
+			workingCell.get(0).setAsActiveCell();
+		}
+		return this;
+	}
 
 	/**
 	 * 更新单元格的样式
@@ -614,13 +707,17 @@ public class CellEditor extends AbstractEditor{
 	 *            单元格对象
 	 * @param value
 	 *            值
+	 * @param pattern 单元格格式
 	 */
 	private void setCellValue(HSSFCell cell, Object value, String pattern) {
 		if (value instanceof Double || value instanceof Float || value instanceof Long || value instanceof Integer
-				|| value instanceof Short || value instanceof BigDecimal) {			
+				|| value instanceof Short || value instanceof BigDecimal || value instanceof Byte) {			
 			cell.setCellValue(null2Double(value.toString()));
 			cell.setCellType(HSSFCell.CELL_TYPE_NUMERIC);//这应该在setValue之后
-		} else {
+		}else if(value instanceof Boolean){
+			cell.setCellValue((Boolean)value);
+			cell.setCellType(HSSFCell.CELL_TYPE_BOOLEAN);
+		}else {
 			if (value != null && value.toString().startsWith("=")) {
 				cell.setCellFormula(value.toString().substring(1));
 				cell.setCellType(HSSFCell.CELL_TYPE_FORMULA);
@@ -629,13 +726,15 @@ public class CellEditor extends AbstractEditor{
 					if(pattern == null || pattern.trim().equals("")){
 						pattern = ctx.getDefaultStyle().getDefaultDatePattern();
 					}
-					SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
-					cell.setCellValue(new HSSFRichTextString(dateFormat.format(value)));
+					cell.setCellValue((Date)value);
 				}else{
 					cell.setCellValue(new HSSFRichTextString(value == null ? "" : value.toString()));
 					cell.setCellType(HSSFCell.CELL_TYPE_STRING);
 				}
 			}
+		}
+		if(pattern != null){
+			this.dataFormat(pattern);
 		}
 		invokeListener(cell, value);
 	}
@@ -674,12 +773,28 @@ public class CellEditor extends AbstractEditor{
 	 * @param cell
 	 * @param value
 	 */
+	@SuppressWarnings("rawtypes")
 	private void invokeListener(HSSFCell cell, Object value) {
+		//防止循环调用
+		StackTraceElement[] st = new Throwable().getStackTrace();
+		try {
+			for(StackTraceElement e : st){
+				Class[] interfacesList = Class.forName(e.getClassName()).getInterfaces();
+				for(Class clazz : interfacesList){
+					if(clazz.getSimpleName().equals("CellValueListener")){
+						return;
+					}
+				}
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		//触发监听器
 		int sheetIndex = workBook.getSheetIndex(cell.getSheet());
 		List<CellValueListener> listeners = ctx.getListenerList(sheetIndex);
 		for (CellValueListener l : listeners) {
 			l.onValueChange(this, value, cell.getRowIndex(),
-					cell.getColumnIndex(), sheetIndex, ctx.getExcel());
+					cell.getColumnIndex(), ctx.getExcel());
 		}
 	}
 	
@@ -703,4 +818,5 @@ public class CellEditor extends AbstractEditor{
 		}
 		return v;
 	}
+	
 }

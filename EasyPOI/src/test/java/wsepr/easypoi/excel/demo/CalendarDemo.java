@@ -42,6 +42,7 @@ public class CalendarDemo {
 				font.fontHeightInPoints(14)
 					.boldweight(BoldWeight.BOLD)
 					.color(Color.WHITE);
+				System.out.println(font.charSet());
 			}
 		};
 		for (int month = 0; month < 12; month++) {
@@ -115,6 +116,6 @@ public class CalendarDemo {
                 if(calendar.get(Calendar.MONTH) > month) break;
             }
 		}
-		excel.saveExcel("F:/temp/excel/calendar.xls");//保存文件
+		excel.saveExcel("E:/temp/excel/calendar.xls");//保存文件
 	}
 }

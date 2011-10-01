@@ -12,7 +12,7 @@ import javax.imageio.ImageIO;
 import org.apache.poi.hssf.usermodel.HSSFClientAnchor;
 import org.apache.poi.hssf.usermodel.HSSFPatriarch;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.CellRangeAddress;
+import org.apache.poi.ss.util.CellRangeAddress;
 
 import wsepr.easypoi.excel.ExcelContext;
 
@@ -28,6 +28,11 @@ public class RegionEditor extends AbstractRegionEditor<RegionEditor> {
 	public RegionEditor(int beginRow, int beginCol, int endRow, int endCol, ExcelContext context) {
 		super(context);
 		cellRange = new CellRangeAddress(beginRow, endRow, beginCol, endCol);
+	}
+	
+	public RegionEditor(CellRangeAddress cellRange, ExcelContext context){
+		super(context);
+		this.cellRange = cellRange;
 	}
 	
 	/**

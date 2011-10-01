@@ -1,7 +1,7 @@
 package wsepr.easypoi.excel.editor;
 
 import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.util.CellRangeAddress;
+import org.apache.poi.ss.util.CellRangeAddress;
 
 import wsepr.easypoi.excel.ExcelContext;
 import wsepr.easypoi.excel.util.ExcelUtil;
@@ -59,9 +59,21 @@ public class ColumnEditor extends AbstractRegionEditor<ColumnEditor> {
 	/**
 	 * 根据内容自动设置列宽度。自动计算宽度性能比较低，因此建议在操作完数据后调用一次
 	 */
-	public void autoWidth(){
+	public ColumnEditor autoWidth(){
 		workingSheet.autoSizeColumn((short)col, false);
 		workingSheet.setColumnWidth(col, workingSheet.getColumnWidth(col)+1000);
+		return this;
+	}
+	
+	/**
+	 * 依次设置一行单元格的高度，如果heights的长度比单元格的数量少，则超出的单元格不设置高度
+	 * @param heights
+	 * @return
+	 */
+	public ColumnEditor height(float[] heights){
+		CellEditor cellEditorLeft = this.newLeftCellEditor();
+		cellEditorLeft.height(heights);
+		return this;
 	}
 	
 	/**

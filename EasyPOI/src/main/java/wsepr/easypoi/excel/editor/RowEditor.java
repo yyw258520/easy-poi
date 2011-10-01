@@ -1,7 +1,7 @@
 package wsepr.easypoi.excel.editor;
 
 import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.util.CellRangeAddress;
+import org.apache.poi.ss.util.CellRangeAddress;
 
 import wsepr.easypoi.excel.ExcelContext;
 
@@ -124,6 +124,17 @@ public class RowEditor extends AbstractRegionEditor<RowEditor> {
 	 */
 	public HSSFRow toHSSFRow(){
 		return row;
+	}
+	
+	/**
+	 * 依次设置一行单元格的宽度，如果widths的长度比单元格的数量少，则超出的单元格不设置宽度
+	 * @param widths
+	 * @return
+	 */
+	public RowEditor width(int[] widths){
+		CellEditor cellEditor = newTopCellEditor();
+		cellEditor.width(widths);
+		return this;
 	}
 	
 	/**

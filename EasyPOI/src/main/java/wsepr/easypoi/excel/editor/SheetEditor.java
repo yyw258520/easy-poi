@@ -16,6 +16,7 @@ public class SheetEditor extends AbstractEditor{
 
 	private HSSFSheet sheet;
 	private int sheetIndex;
+
 	public SheetEditor(HSSFSheet sheet, ExcelContext context){
 		super(context);
 		this.sheet = sheet;
@@ -65,12 +66,12 @@ public class SheetEditor extends AbstractEditor{
 	
 	/**
 	 * 设置工作表名，当auto设置为true时该方法会自动处理重名的异常
-	 * @param name
-	 * @param auto
+	 * @param name 表名
+	 * @param autoRename 如果该参数为true，则当表重名时该方法会自动在name后面加下横线，避免重名
 	 * @return
 	 */
-	public SheetEditor sheetName(final String name, boolean auto){
-		if(auto){
+	public SheetEditor sheetName(final String name, boolean autoRename){
+		if(autoRename){
 			String newName = new String(name);
 			HSSFSheet sheet = workBook.getSheet(name);
 			while(sheet != null){
@@ -192,16 +193,18 @@ public class SheetEditor extends AbstractEditor{
 	 * 添加单元格监听器
 	 * @param listener 监听器，在单元格的值改变时触发
 	 */
-	public void addCellValueListener(CellValueListener listener){
+	public SheetEditor addCellValueListener(CellValueListener listener){
 		ctx.getListenerList(sheetIndex).add(listener);
+		return this;
 	}
 	
 	/**
 	 * 移除单元格监听器
 	 * @param listener 监听器，在单元格的值改变时触发
 	 */
-	public void removeCellValueListener(CellValueListener listener){
+	public SheetEditor removeCellValueListener(CellValueListener listener){
 		ctx.getListenerList(sheetIndex).remove(listener);
+		return this;
 	}
 	
 	/**
@@ -211,4 +214,24 @@ public class SheetEditor extends AbstractEditor{
 	public HSSFSheet toHSSFSheet(){
 		return sheet;
 	}
+	
+	/**
+	 * 获取表的序号
+	 * @return 序号，从0开始
+	 */
+	public int getSheetIndex() {
+		return sheetIndex;
+	}
+	
+	/**
+	 * 按行分组
+	 * @param fromRow 开始行，从0开始
+	 * @param toRow 结束行，从0开始
+	 * @return
+	 */
+	public SheetEditor groupRow(int fromRow, int toRow){
+		sheet.groupRow(fromRow, toRow);
+		return this;
+	}
+
 }

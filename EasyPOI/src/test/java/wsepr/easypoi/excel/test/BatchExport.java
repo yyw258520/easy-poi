@@ -16,7 +16,7 @@ public class BatchExport {
 	private final static int BATCH_SIZE = DATA_COUNT / 10;
 	private static Excel excel = new Excel();
 	private static SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
-	private static String excelFile = "F:/temp/batch_" + format.format(new Date()) + ".xls";
+	private static String excelFile = "E:/temp/batch_" + format.format(new Date()) + ".xls";
 	/**
 	 * @param args
 	 */

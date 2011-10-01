@@ -13,6 +13,8 @@ import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import org.apache.poi.ss.usermodel.Name;
+import org.apache.poi.ss.util.CellRangeAddress;
 
 import wsepr.easypoi.excel.editor.CellEditor;
 import wsepr.easypoi.excel.editor.ColumnEditor;
@@ -215,7 +217,7 @@ public class Excel {
 	 * 
 	 * @param row 行，从0开始
 	 * @param col 列，从0开始
-	 * @return
+	 * @return 单元格编辑器
 	 */
 	public CellEditor cell(int row, int col) {
 		CellEditor cellEditor = new CellEditor(row, col, ctx);
@@ -225,7 +227,7 @@ public class Excel {
 	/**
 	 * 操作一行的单元格
 	 * @param row 行，从0开始
-	 * @return
+	 * @return 行编辑器
 	 */
 	public RowEditor row(int row){
 		return new RowEditor(row, ctx);
@@ -235,7 +237,7 @@ public class Excel {
 	 * 操作指定行，从第startCol列开始的单元格
 	 * @param row 行，从0开始
 	 * @param startCol 只操作指定的列之后的单元格
-	 * @return
+	 * @return 行编辑器
 	 */
 	public RowEditor row(int row, int startCol){
 		return new RowEditor(row, startCol, ctx);
@@ -243,7 +245,7 @@ public class Excel {
 	
 	/**
 	 * 该方法始终返回最后一个空白行的编辑器，当需要循环插入n行时特别有用
-	 * @return
+	 * @return 行编辑器
 	 */
 	public RowEditor row(){
 		int rowNum = ExcelUtil.getLastRowNum(ctx.getWorkingSheet());
@@ -267,7 +269,7 @@ public class Excel {
 	/**
 	 * 操作一列的单元格
 	 * @param col 列，从0开始
-	 * @return
+	 * @return 列编辑器
 	 */
 	public ColumnEditor column(int col){
 		ColumnEditor columnEditor = new ColumnEditor(col, ctx);
@@ -278,7 +280,7 @@ public class Excel {
 	 * 操作指定列中，从第startRow行
 	 * @param col 列，从0开始
 	 * @param startRow 只操作指定的行之后的单元格
-	 * @return
+	 * @return 列编辑器
 	 */
 	public ColumnEditor column(int col, int startRow){
 		ColumnEditor columnEditor = new ColumnEditor(col, startRow, ctx);
@@ -291,10 +293,20 @@ public class Excel {
 	 * @param beginCol	开始列，从0开始
 	 * @param endRow 结束行，从0开始
 	 * @param endCol 结束列，从0开始
-	 * @return
+	 * @return 区域编辑器
 	 */
 	public RegionEditor region(int beginRow, int beginCol, int endRow, int endCol){
 		RegionEditor regionEditor = new RegionEditor(beginRow, beginCol, endRow, endCol, ctx);
+		return regionEditor;
+	}
+	
+	/**
+	 * 操作一个区域的单元格，如合并、插入图片，调整样式等
+	 * @param ref 区域表达式，例如：$C$1:$H$1
+	 * @return 区域编辑器
+	 */
+	public RegionEditor region(String ref){
+		RegionEditor regionEditor = new RegionEditor(CellRangeAddress.valueOf(ref), ctx);
 		return regionEditor;
 	}
 	
@@ -328,11 +340,25 @@ public class Excel {
 	}
 	
 	/**
-	 * 获取处于工作状态的工作表的需要
+	 * 获取处于工作状态的工作表的序号
 	 * @return 工作表序号，从0开始
 	 */
 	public int getWorkingSheetIndex() {
 		return ctx.getWorkingSheetIndex();
+	}
+	
+	/**
+	 * 建立一个别名，别名为单元格引用、常量或公式提供了一个更简洁明了的引用名称<br/>
+	 * 例如：createName("Interest_Rate","'Loan Calculator'!$E$5");
+	 * @param name 别名
+	 * @param formulaText 引用、常量或公式
+	 * @return 新建的别名对象
+	 */
+	public Name createName(String name, String formulaText){
+		Name refersName = ctx.getWorkBook().createName();
+		refersName.setNameName(name);
+		refersName.setRefersToFormula(formulaText);
+		return refersName;
 	}
 	
 }

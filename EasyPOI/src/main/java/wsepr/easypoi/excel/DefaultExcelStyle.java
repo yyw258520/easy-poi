@@ -27,7 +27,7 @@ public class DefaultExcelStyle {
 
 	private Color fontColor = Color.AUTOMATIC;//HSSFFont.COLOR_NORMAL;
 
-	private String defaultDatePattern = "yyyy/MM/dd HH:mm:ss";
+	private String defaultDatePattern = "yyyy/m/d h:mm";
 	
 	private Color borderColor = Color.AUTOMATIC;
 	
@@ -174,7 +174,7 @@ public class DefaultExcelStyle {
 	}
 	
 	/**
-	 * 设置默认的日期格式化模式，默认是yyyy/MM/dd HH:mm:ss
+	 * 设置默认的日期格式化模式，默认是yyyy/m/d h:mm，请参考excel的日期格式
 	 * @param defaultDatePattern
 	 */
 	public void setDefaultDatePattern(String defaultDatePattern) {
@@ -182,7 +182,7 @@ public class DefaultExcelStyle {
 	}
 
 	/**
-	 * 返回默认的日期格式化模式，默认是yyyy/MM/dd HH:mm:ss
+	 * 返回默认的日期格式化模式，默认是yyyy/m/d h:mm，请参考excel的日期格式
 	 * @return
 	 */
 	public String getDefaultDatePattern() {
