@@ -11,7 +11,7 @@ import wsepr.easypoi.excel.ExcelContext;
 import wsepr.easypoi.excel.util.ExcelUtil;
 
 /**
- * 所有编辑器的基类
+ * 编辑器的基类
  * @author luxiaopan
  *
  */

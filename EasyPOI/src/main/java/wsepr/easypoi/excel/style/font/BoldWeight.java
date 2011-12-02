@@ -3,16 +3,16 @@ package wsepr.easypoi.excel.style.font;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 
 /**
- * 字体加粗
+ * 字体样式属性，字体加粗
  */
 public enum BoldWeight {
 	/**
-	 * 正常
+	 * 正常，不加粗
 	 */
 	NORMAL(HSSFFont.BOLDWEIGHT_NORMAL), 
 	
 	/**
-	 * 加粗
+	 * 加粗，weight等于700
 	 */
 	BOLD(HSSFFont.BOLDWEIGHT_BOLD);
 
@@ -21,7 +21,11 @@ public enum BoldWeight {
 	private BoldWeight(short weight) {
 		this.weight = weight;
 	}
-
+	
+	/**
+	 * 返回加粗的等级
+	 * @return
+	 */
 	public short getWeight() {
 		return weight;
 	}

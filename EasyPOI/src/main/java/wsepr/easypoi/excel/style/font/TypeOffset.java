@@ -3,7 +3,7 @@ package wsepr.easypoi.excel.style.font;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 
 /**
- * 上标，下标
+ * 字体样式属性，上标，下标
  * 
  */
 public enum TypeOffset {

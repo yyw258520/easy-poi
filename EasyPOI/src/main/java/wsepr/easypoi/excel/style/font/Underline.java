@@ -3,7 +3,7 @@ package wsepr.easypoi.excel.style.font;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 
 /**
- * 字体下横线样式
+ * 字体样式属性，字体下横线样式
  *
  */
 public enum Underline {

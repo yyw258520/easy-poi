@@ -3,7 +3,7 @@ package wsepr.easypoi.excel.style.font;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 
 /**
- * 字符集
+ * 字体样式属性，字符集
  *
  */
 public enum CharSet {

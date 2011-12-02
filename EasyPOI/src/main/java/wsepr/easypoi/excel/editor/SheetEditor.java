@@ -233,5 +233,16 @@ public class SheetEditor extends AbstractEditor{
 		sheet.groupRow(fromRow, toRow);
 		return this;
 	}
+	
+	/**
+	 * 按列分组
+	 * @param fromColumn 开始列
+	 * @param toColumn 结束列
+	 * @return
+	 */
+	public SheetEditor groupColumn(int fromColumn, int toColumn){
+		sheet.groupColumn(fromColumn, toColumn);
+		return this;
+	}
 
 }

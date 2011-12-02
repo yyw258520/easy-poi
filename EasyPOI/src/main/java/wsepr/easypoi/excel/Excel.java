@@ -25,10 +25,8 @@ import wsepr.easypoi.excel.util.ExcelUtil;
 
 
 /**
- * 核心类，能获取所有编辑器的实例
- * 建议使用POI 3.2以上
- * 
- * @author luxiaopan
+ * 核心类，能获取所有编辑器的实例<br/>
+ * 使用poi3.7开发
  * 
  */
 public class Excel {
@@ -43,7 +41,7 @@ public class Excel {
 	}
 	
 	/**
-	 * 新建一个Excel文件
+	 * 新建一个Excel文件，并设置默认样式
 	 * @param defaultStyle 默认样式
 	 */
 	public Excel(DefaultExcelStyle defaultStyle) {
@@ -225,7 +223,8 @@ public class Excel {
 	}
 
 	/**
-	 * 操作一行的单元格
+	 * 操作一行的单元格<br/>
+	 * <b>注意：如果要使用该方法设置一行的样式，请确保需要设置样式的单元格都已写入值，包括空值。否则请使用region方法选取区域</b>
 	 * @param row 行，从0开始
 	 * @return 行编辑器
 	 */
@@ -234,7 +233,8 @@ public class Excel {
 	}
 	
 	/**
-	 * 操作指定行，从第startCol列开始的单元格
+	 * 操作指定行，从第startCol列开始的单元格<br/>
+	 * <b>注意：如果要使用该方法设置一行的样式，请确保需要设置样式的单元格都已写入值，包括空值。否则请使用region方法选取区域</b>
 	 * @param row 行，从0开始
 	 * @param startCol 只操作指定的列之后的单元格
 	 * @return 行编辑器
@@ -244,7 +244,14 @@ public class Excel {
 	}
 	
 	/**
-	 * 该方法始终返回最后一个空白行的编辑器，当需要循环插入n行时特别有用
+	 * <p>该方法始终返回最后一个空白行的编辑器，当需要循环插入n行时特别有用</p>
+	 * <p>
+	 * <blockquote><pre>
+	 * for(int i=0;i&lt;data.size();i++){
+	 * 		excel.row().value(data.get(i));
+	 * }</pre></blockquote>
+	 * <p>
+	 * <b>注意：如果要使用该方法设置一行的样式，请确保需要设置样式的单元格都已写入值，包括空值。否则请使用region方法选取区域</b>
 	 * @return 行编辑器
 	 */
 	public RowEditor row(){
@@ -267,7 +274,8 @@ public class Excel {
 	}
 	
 	/**
-	 * 操作一列的单元格
+	 * 操作一列的单元格<br/>
+	 * <b>注意：如果要使用该方法设置一列的样式，请确保需要设置样式的单元格都已写入值，包括空值。否则请使用region方法选取区域</b>
 	 * @param col 列，从0开始
 	 * @return 列编辑器
 	 */
@@ -277,7 +285,8 @@ public class Excel {
 	}
 	
 	/**
-	 * 操作指定列中，从第startRow行
+	 * 操作指定列中，从第startRow行<br/>
+	 * <b>注意：如果要使用该方法设置一列的样式，请确保需要设置样式的单元格都已写入值，包括空值。否则请使用region方法选取区域</b>
 	 * @param col 列，从0开始
 	 * @param startRow 只操作指定的行之后的单元格
 	 * @return 列编辑器
@@ -332,7 +341,7 @@ public class Excel {
 	}
 	
 	/**
-	 * 获取工作簿
+	 * 获取POI的工作簿对象
 	 * @return
 	 */
 	public HSSFWorkbook getWorkBook() {

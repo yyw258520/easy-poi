@@ -11,7 +11,7 @@ import wsepr.easypoi.excel.Excel;
 import wsepr.easypoi.excel.style.Align;
 
 public class BatchExport {
-	private final static int DATA_COUNT = 60;
+	private final static int DATA_COUNT = 60000;
 	private final static int FIELD_COUNT = 10;
 	private final static int BATCH_SIZE = DATA_COUNT / 10;
 	private static Excel excel = new Excel();
