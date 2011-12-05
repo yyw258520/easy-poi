@@ -68,6 +68,6 @@ public class HelloWord {
 		excel.row(0).value(val);//第二个表写入数据
 		excel.sheet().groupColumn(0, 3);//按列分组
 		
-		excel.saveExcel("E:/helloworld.xls");
+		excel.saveExcel("E:/temp/excel/helloworld.xls");
 	}
 }
